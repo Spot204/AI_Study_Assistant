@@ -1,24 +1,48 @@
 package com.example.aistudyassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        // Header actions
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        findViewById(R.id.btn_settings).setOnClickListener(v -> 
+            Toast.makeText(this, "Cài đặt", Toast.LENGTH_SHORT).show());
+
+        setupMenuItems();
+        
+        // Logout action
+        findViewById(R.id.btn_logout).setOnClickListener(v -> 
+            Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show());
+    }
+
+    private void setupMenuItems() {
+        findViewById(R.id.menu_edit_profile).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.menu_notifications).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, NotificationsActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.menu_goals).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LearningGoalsActivity.class);
+            startActivity(intent);
+        });
+        
+        findViewById(R.id.menu_help).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, HelpSupportActivity.class);
+            startActivity(intent);
         });
     }
 }
