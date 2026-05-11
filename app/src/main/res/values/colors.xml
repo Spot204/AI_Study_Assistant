@@ -2,4 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- UI Colors based on the provided theme -->
+    <color name="background">#F8FAFC</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="secondary_background">#F1F5F9</color>
+    <color name="border_color">#E2E8F0</color>
+
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+
+    <color name="color_primary">#6366F1</color>
+    <color name="color_accent">#8B5CF6</color>
+
+    <color name="chart_3">#F59E0B</color> <!-- Flame/Streak -->
+    <color name="chart_4">#3B82F6</color> <!-- Study Hours -->
+
+    <color name="premium_bg">#FEF3C7</color>
+    <color name="premium_text">#D97706</color>
+
+    <color name="destructive_bg">#FEE2E2</color>
+    <color name="destructive_text">#EF4444</color>
 </resources>
