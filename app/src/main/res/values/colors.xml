@@ -2,4 +2,39 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- UI Colors -->
+    <color name="background_page">#FFFFFF</color>
+    <color name="text_grey">#757575</color>
+
+    <!-- Tab Colors -->
+    <color name="tab_container">#F3F4F6</color>
+
+    <!-- Purple Card (Quick Test) -->
+    <color name="purple_bg">#FAF5FF</color>
+    <color name="purple_stroke">#E9D5FF</color>
+    <color name="purple_text_dark">#581C87</color>
+    <color name="purple_text_main">#7E22CE</color>
+    <color name="purple_icon">#A855F7</color>
+    <color name="purple_icon_bg">#F3E8FF</color>
+
+    <!-- Blue Colors -->
+    <color name="blue_icon_bg">#DBEAFE</color>
+    <color name="blue_icon">#3B82F6</color>
+
+    <!-- Orange Colors -->
+    <color name="orange_icon_bg">#FFEDD5</color>
+    <color name="orange_icon">#F97316</color>
+
+    <!-- Indigo Colors -->
+    <color name="indigo_icon_bg">#E0E7FF</color>
+    <color name="indigo_icon">#6366F1</color>
+
+    <!-- Green Colors -->
+    <color name="green_icon_bg">#DCFCE7</color>
+    <color name="green_icon">#22C55E</color>
+
+    <!-- Pink Colors -->
+    <color name="pink_icon_bg">#FCE7F3</color>
+    <color name="pink_icon">#EC4899</color>
 </resources>
