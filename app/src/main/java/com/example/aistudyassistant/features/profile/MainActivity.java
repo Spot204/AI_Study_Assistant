@@ -1,16 +1,17 @@
-package com.example.aistudyassistant;
+package com.example.aistudyassistant.features.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.aistudyassistant.R;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.profile_activity_main);
 
         // Header actions
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());

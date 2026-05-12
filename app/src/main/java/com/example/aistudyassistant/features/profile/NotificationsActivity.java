@@ -1,17 +1,18 @@
-package com.example.aistudyassistant;
+package com.example.aistudyassistant.features.profile;
 
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.aistudyassistant.R;
 
 public class NotificationsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifications);
+        setContentView(R.layout.profile_activity_notifications);
 
         findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
             @Override
