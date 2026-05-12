@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Ai study Assistant</string>
+    <string name="practice_and_quiz">Practice &amp; Quiz</string>
+    <string name="practice_subtitle">Luyện tập &amp; Kiểm tra</string>
+
+    <string name="tab_quick_quiz">Quick Quiz</string>
+    <string name="tab_from_summaries">From Summaries</string>
+    <string name="tab_from_sets">From Sets</string>
+
+    <string name="quick_test">Quick Test</string>
+    <string name="quick_test_desc">5 random questions • 5 min</string>
+
+    <string name="daily_challenge">Daily Challenge</string>
+    <string name="daily_challenge_desc">Complete today\'s challenge • +100 XP</string>
+
+    <string name="full_test">Full Test</string>
+    <string name="full_test_desc">20 mixed questions • 20 min</string>
+
+    <string name="start">Start →</string>
+
+    <string name="other_practice_modes">Other Practice Modes</string>
+
+    <string name="chat_ai_tutor">Chat with AI Tutor</string>
+    <string name="chat_ai_tutor_desc">Ask questions and get instant help</string>
+
+    <string name="speaking_practice">Speaking Practice</string>
+    <string name="speaking_practice_desc">Improve pronunciation with AI feedback</string>
+
+    <string name="translation_challenge">Translation Challenge</string>
+    <string name="translation_challenge_desc">Translate sentences to master grammar</string>
 </resources>
