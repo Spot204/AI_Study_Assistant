@@ -11,31 +11,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AiStudyAssistant">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".features.profile.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".features.profile.EditProfileActivity"
             android:exported="false" />
 
         <activity
-            android:name=".NotificationsActivity"
+            android:name=".features.profile.NotificationsActivity"
             android:exported="false" />
 
         <activity
-            android:name=".LearningGoalsActivity"
+            android:name=".features.profile.LearningGoalsActivity"
             android:exported="false" />
 
         <activity
-            android:name=".HelpSupportActivity"
+            android:name=".features.profile.HelpSupportActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>
