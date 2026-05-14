@@ -1,10 +1,14 @@
-package com.example.aistudyassistant.features.profile;
+package com.example.aistudyassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.aistudyassistant.R;
+
+import com.example.aistudyassistant.features.profile.EditProfileActivity;
+import com.example.aistudyassistant.features.profile.HelpSupportActivity;
+import com.example.aistudyassistant.features.profile.LearningGoalsActivity;
+import com.example.aistudyassistant.features.profile.NotificationsActivity;
 
 public class MainActivity extends AppCompatActivity {
 

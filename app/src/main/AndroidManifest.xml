@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AiStudyAssistant">
 
         <activity
-            android:name=".features.profile.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +35,26 @@
 
         <activity
             android:name=".features.profile.HelpSupportActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.study_tools.QuizListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.study_tools.QuizPlayActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.study_tools.QuizResultActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.study_tools.ScheduleActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.study_tools.CreateScheduleActivity"
             android:exported="false" />
 
     </application>
