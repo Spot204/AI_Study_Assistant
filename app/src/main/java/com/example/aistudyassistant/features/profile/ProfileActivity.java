@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.R;
 
-public class MainActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupMenuItems() {
         findViewById(R.id.menu_edit_profile).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.menu_notifications).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, NotificationsActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, NotificationsActivity.class);
             startActivity(intent);
         });
 
         findViewById(R.id.menu_goals).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LearningGoalsActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, LearningGoalsActivity.class);
             startActivity(intent);
         });
         
         findViewById(R.id.menu_help).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, HelpSupportActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, HelpSupportActivity.class);
             startActivity(intent);
         });
     }
