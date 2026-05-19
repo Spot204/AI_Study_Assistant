@@ -1,53 +1,58 @@
 package com.example.aistudyassistant;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import com.example.aistudyassistant.features.profile.EditProfileActivity;
-import com.example.aistudyassistant.features.profile.HelpSupportActivity;
-import com.example.aistudyassistant.features.profile.LearningGoalsActivity;
-import com.example.aistudyassistant.features.profile.NotificationsActivity;
+import com.example.aistudyassistant.features.chatbot.ChatFragment;
+import com.example.aistudyassistant.features.quiz.QuizFragment;
+import com.example.aistudyassistant.features.schedule.ScheduleFragment;
+import com.example.aistudyassistant.fragments.*;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_activity_main);
+        setContentView(R.layout.activity_main);
 
-        // Header actions
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_settings).setOnClickListener(v -> 
-            Toast.makeText(this, "Cài đặt", Toast.LENGTH_SHORT).show());
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
 
-        setupMenuItems();
-        
-        // Logout action
-        findViewById(R.id.btn_logout).setOnClickListener(v -> 
-            Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show());
+        // Hiển thị màn hình Home mặc định khi ứng dụng khởi động
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+        }
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.nav_flashcard) {
+                selectedFragment = new FlashcardFragment();
+            } else if (itemId == R.id.nav_chat) {
+                selectedFragment = new ChatFragment();
+            } else if (itemId == R.id.nav_quiz) {
+                selectedFragment = new QuizFragment();
+            } else if (itemId == R.id.nav_schedule) {
+                selectedFragment = new ScheduleFragment();
+            }
+
+            if (selectedFragment != null) {
+                loadFragment(selectedFragment);
+                return true;
+            }
+            return false;
+        });
     }
 
-    private void setupMenuItems() {
-        findViewById(R.id.menu_edit_profile).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
-            startActivity(intent);
-        });
+    private void loadFragment(Fragment fragment) {
 
-        findViewById(R.id.menu_notifications).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, NotificationsActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.menu_goals).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LearningGoalsActivity.class);
-            startActivity(intent);
-        });
-        
-        findViewById(R.id.menu_help).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, HelpSupportActivity.class);
-            startActivity(intent);
-        });
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

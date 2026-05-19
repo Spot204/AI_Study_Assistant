@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/ivTypeIcon"
@@ -24,7 +24,7 @@
             android:backgroundTint="@color/secondary_background"
             android:contentDescription="@null"
             android:padding="10dp"
-            android:src="@android:drawable/ic_menu_book"
+            android:src="@drawable/ic_book"
             app:tint="@color/text_sub" />
 
         <TextView

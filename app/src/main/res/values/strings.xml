@@ -8,6 +8,19 @@
     <string name="average">Trung bình</string>
     <string name="streak">Streak</string>
     <string name="your_quizzes">Bài quiz của bạn</string>
+    <string name="desc_add_quiz">Thêm quiz mới</string>
+    <string name="desc_quiz_icon">Icon quiz</string>
+    <string name="desc_play_quiz">Bắt đầu làm quiz</string>
+    <string name="desc_ai_icon">Icon AI</string>
+    <string name="desc_stat_completed">Icon hoàn thành</string>
+    <string name="desc_stat_average">Icon trung bình</string>
+    <string name="desc_stat_streak">Icon streak</string>
+    <string name="desc_back">Quay lại</string>
+    <string name="desc_timer">Thời gian làm bài</string>
+    <string name="desc_add_schedule">Thêm lịch học mới</string>
+    <string name="desc_prev_month">Tháng trước</string>
+    <string name="desc_next_month">Tháng sau</string>
+    <string name="desc_calendar_icon">Icon lịch</string>
 
     <!-- AI Chat Strings -->
     <string name="ai_assistant_name">AI Study Assistant</string>
@@ -24,6 +37,17 @@
     <string name="nav_chat">AI Chat</string>
     <string name="nav_quiz">Quiz</string>
     <string name="nav_schedule">Lịch học</string>
+
+    <!-- Main Screen -->
+    <string name="main_title">AI Study Assistant</string>
+    <string name="menu_profile">Hồ sơ</string>
+    <string name="menu_ai_chat">Chat AI</string>
+    <string name="menu_ocr">Quét tài liệu</string>
+    <string name="menu_study">Học tập</string>
+    <string name="desc_profile">Icon Hồ sơ</string>
+    <string name="desc_ai_chat">Icon Chat AI</string>
+    <string name="desc_ocr">Icon Quét tài liệu</string>
+    <string name="desc_study">Icon Học tập</string>
 
     <!-- Quiz Play Screen -->
     <string name="quiz_sample_question_num">Câu 1</string>

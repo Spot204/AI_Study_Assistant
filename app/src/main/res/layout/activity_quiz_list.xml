@@ -16,42 +16,16 @@
             android:layout_height="64dp"
             android:paddingHorizontal="16dp">
 
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_icon_circle"
-                android:padding="10dp"
-                android:src="@android:drawable/ic_menu_revert"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:text="@string/quiz_title"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_input_add"
-                app:backgroundTint="@color/purple_primary"
-                app:elevation="0dp"
-                app:fabCustomSize="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -66,19 +40,18 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- AI Banner -->
+            <!-- AI Banner with White Background and Shadow -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#FED7AA"
-                app:strokeWidth="1dp"
-                app:cardBackgroundColor="@color/ai_card_bg">
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@android:color/transparent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_ai_banner_shadow"
                     android:padding="16dp">
 
                     <ImageView
@@ -89,6 +62,7 @@
                         android:backgroundTint="@color/icon_bg_orange"
                         android:padding="10dp"
                         android:src="@android:drawable/btn_star_big_on"
+                        android:contentDescription="@string/desc_ai_icon"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/orange_main" />
@@ -132,36 +106,37 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Stats Row -->
+            <!-- Stats Row with White Background and Shadow -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <!-- Completed Stat -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/card_border"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card_shadow"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@android:drawable/ic_menu_sort_by_size"
+                            android:contentDescription="@string/desc_stat_completed"
                             app:tint="@color/purple_primary" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="12"
                             android:textColor="@color/black"
                             android:textSize="18sp"
@@ -177,29 +152,30 @@
 
                 <View android:layout_width="12dp" android:layout_height="0dp" />
 
-                <!-- Average Stat -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/card_border"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card_shadow"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@android:drawable/ic_menu_compass"
+                            android:contentDescription="@string/desc_stat_average"
                             app:tint="@color/green_main" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="82%"
                             android:textColor="@color/black"
                             android:textSize="18sp"
@@ -215,29 +191,30 @@
 
                 <View android:layout_width="12dp" android:layout_height="0dp" />
 
-                <!-- Streak Stat -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/card_border"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card_shadow"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@android:drawable/btn_star_big_off"
+                            android:contentDescription="@string/desc_stat_streak"
                             app:tint="@color/orange_main" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="5"
                             android:textColor="@color/black"
                             android:textSize="18sp"
@@ -255,40 +232,41 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="28dp"
                 android:text="@string/your_quizzes"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- Quiz List Items -->
+            <!-- Quiz Items with White Background and Shadow -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:orientation="vertical">
 
-                <!-- Item 1 -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="@color/card_border"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="@android:color/transparent">
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/quizCard1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp">
+                        android:background="@drawable/bg_card_shadow"
+                        android:padding="16dp">
                         <ImageView
                             android:id="@+id/quizIcon1"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:background="@drawable/bg_icon_circle"
                             android:backgroundTint="@color/icon_bg_purple"
                             android:padding="12dp"
                             android:src="@android:drawable/ic_menu_sort_by_size"
+                            android:contentDescription="@string/desc_quiz_icon"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:tint="@color/purple_primary" />
@@ -297,8 +275,8 @@
                             android:id="@+id/quizTitle1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:text="Toán cao cấp - Chương..."
+                            android:layout_marginStart="16dp"
+                            android:text="Toán cao cấp - Chương 1"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold"
@@ -316,100 +294,19 @@
                             app:layout_constraintStart_toStartOf="@id/quizTitle1"
                             app:layout_constraintTop_toBottomOf="@id/quizTitle1" />
 
-                        <TextView
-                            android:id="@+id/quizScore1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="🏆 85%"
-                            android:textColor="@color/orange_main"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="@id/quizTitle1"
-                            app:layout_constraintTop_toBottomOf="@id/quizInfo1" />
-
                         <ImageView
                             android:id="@+id/arrow1"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_media_play"
+                            android:contentDescription="@string/desc_play_quiz"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/text_sub" />
+                            app:tint="@color/text_sub"
+                            android:alpha="0.5" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
-
-                <!-- Item 2 -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/card_border"
-                    app:strokeWidth="1dp">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp">
-                        <ImageView
-                            android:id="@+id/quizIcon2"
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:background="@drawable/bg_icon_circle"
-                            android:backgroundTint="@color/icon_bg_green"
-                            android:padding="12dp"
-                            android:src="@android:drawable/ic_menu_sort_by_size"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/green_main" />
-
-                        <TextView
-                            android:id="@+id/quizTitle2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:text="Tiếng Anh - Grammar"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@id/arrow2"
-                            app:layout_constraintStart_toEndOf="@id/quizIcon2"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/quizInfo2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="30 câu  •  20 phút"
-                            android:textColor="@color/text_sub"
-                            android:textSize="14sp"
-                            app:layout_constraintStart_toStartOf="@id/quizTitle2"
-                            app:layout_constraintTop_toBottomOf="@id/quizTitle2" />
-
-                        <TextView
-                            android:id="@+id/quizScore2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="🏆 70%"
-                            android:textColor="@color/orange_main"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="@id/quizTitle2"
-                            app:layout_constraintTop_toBottomOf="@id/quizInfo2" />
-
-                        <ImageView
-                            android:id="@+id/arrow2"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_media_play"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/text_sub" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
