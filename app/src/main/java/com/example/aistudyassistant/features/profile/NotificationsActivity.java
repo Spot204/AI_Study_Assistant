@@ -27,4 +27,20 @@ public class NotificationsActivity extends AppCompatActivity {
         // Note: In a real app, you would create an Adapter and set it here
         // For demonstration of the UI only.
     }
+
+    public static class LearningGoalsActivity extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.profile_activity_learning_goals);
+
+            findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+    }
 }

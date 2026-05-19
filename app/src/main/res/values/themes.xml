@@ -1,9 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.AiStudyAssistant" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.AiStudyAssistant" parent="Base.Theme.AiStudyAssistant" />
+
+    <!-- Style cao cấp cho Indicator (Hình viên thuốc dẹt, hiện đại) -->
+    <style name="CustomIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#EEF2FF</item> <!-- Màu Indigo nhạt thanh lịch -->
+        <item name="android:width">52dp</item>
+        <item name="android:height">30dp</item>
+    </style>
+
+    <!-- Style cho chữ (Active) -->
+    <style name="NavTextActive">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/nav_active_icon</item>
+    </style>
+
+    <!-- Style cho chữ (Inactive) -->
+    <style name="NavTextInactive">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/nav_inactive_icon</item>
+    </style>
 </resources>

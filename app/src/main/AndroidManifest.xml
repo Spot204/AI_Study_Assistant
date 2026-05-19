@@ -30,33 +30,13 @@
             android:exported="false" />
 
         <activity
-            android:name=".features.profile.LearningGoalsActivity"
+            android:name=".features.profile.NotificationsActivity$LearningGoalsActivity"
             android:exported="false" />
 
         <activity
             android:name=".features.profile.HelpSupportActivity"
             android:exported="false" />
-
-        <activity
-            android:name=".features.study_tools.QuizListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".features.study_tools.QuizPlayActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".features.study_tools.QuizResultActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".features.study_tools.ScheduleActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".features.study_tools.CreateScheduleActivity"
-            android:exported="false" />
-
+        <activity android:name=".features.quiz.CreateQuizActivity"/>
     </application>
 
 </manifest>

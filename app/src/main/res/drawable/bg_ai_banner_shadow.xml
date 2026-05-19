@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item android:left="1dp" android:top="2dp" android:right="1dp" android:bottom="3dp">
+        <shape>
+            <solid android:color="#15F97316" /> <!-- Bóng đổ màu cam mờ -->
+            <corners android:radius="22dp" />
+        </shape>
+    </item>
+    <!-- Main Content -->
+    <item android:bottom="3dp">
+        <shape>
+            <solid android:color="@color/ai_card_bg" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+</layer-list>
