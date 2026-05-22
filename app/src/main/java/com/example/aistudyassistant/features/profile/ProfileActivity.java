@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.aistudyassistant.R;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -37,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.menu_goals).setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, LearningGoalsActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, NotificationsActivity.LearningGoalsActivity.class);
             startActivity(intent);
         });
         
