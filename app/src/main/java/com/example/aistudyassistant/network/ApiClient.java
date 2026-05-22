@@ -3,8 +3,7 @@ package com.example.aistudyassistant.network;
 import com.example.aistudyassistant.network.models.LoginRequest;
 import com.example.aistudyassistant.network.models.RegisterRequest;
 import com.example.aistudyassistant.network.models.AuthResponse;
-import com.example.aistudyassistant.network.models.ScanRequest;
-import com.example.aistudyassistant.network.models.ScanResponse;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -26,8 +25,6 @@ public class ApiClient {
         @POST("auth/register")
         Call<AuthResponse> register(@Body RegisterRequest request);
 
-        @POST("scan")
-        Call<ScanResponse> scanNotes(@Body ScanRequest request);
     }
 
     public static synchronized ApiService getService() {
