@@ -18,6 +18,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         this.tasks = tasks;
     }
 
+    public void updateTasks(List<ScheduleTask> newTasks) {
+        this.tasks = newTasks;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,7 +34,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ScheduleTask task = tasks.get(position);
         holder.tvTaskTitle.setText(task.getTitle());
-        holder.tvTaskTime.setText(task.getStartTime() + " - " + task.getEndTime());
+        String timeString = String.format("%s - %s", task.getStartTime(), task.getEndTime());
+        holder.tvTaskTime.setText(timeString);
         
         if (task.isCompleted()) {
             holder.ivStatus.setImageResource(android.R.drawable.checkbox_on_background);
