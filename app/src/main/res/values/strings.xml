@@ -37,6 +37,7 @@
     <string name="nav_chat">AI Chat</string>
     <string name="nav_quiz">Quiz</string>
     <string name="nav_schedule">Lịch học</string>
+    <string name="nav_profile">Hồ sơ</string>
 
     <!-- Main Screen -->
     <string name="main_title">AI Study Assistant</string>
