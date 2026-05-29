@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.aistudyassistant.features.chatbot.ChatFragment;
+import com.example.aistudyassistant.features.profile.ProfileFragment;
 import com.example.aistudyassistant.features.quiz.QuizFragment;
 import com.example.aistudyassistant.features.schedule.ScheduleFragment;
 import com.example.aistudyassistant.fragments.*;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new QuizFragment();
             } else if (itemId == R.id.nav_schedule) {
                 selectedFragment = new ScheduleFragment();
+            } else if (itemId == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
             }
 
             if (selectedFragment != null) {
