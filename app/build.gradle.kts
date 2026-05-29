@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -43,8 +44,11 @@ dependencies {
     
     // Room
     implementation(libs.room.runtime)
+    implementation(libs.firebase.auth)
     annotationProcessor(libs.room.compiler)
     implementation(libs.room.ktx)
+    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
+    implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

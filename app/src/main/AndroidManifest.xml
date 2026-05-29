@@ -49,10 +49,6 @@
         <activity
             android:name="com.example.aistudyassistant.features.quiz.QuizResultActivity"
             android:exported="false" />
-
-        <activity
-            android:name="com.example.aistudyassistant.features.quiz.CreateQuizActivity"
-            android:exported="false" />
     </application>
 
 </manifest>
