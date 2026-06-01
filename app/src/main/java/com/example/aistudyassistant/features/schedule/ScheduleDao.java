@@ -9,7 +9,7 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface ScheduleDao {
+public interface  ScheduleDao {
     @Insert
     void insert(ScheduleTask task);
 
