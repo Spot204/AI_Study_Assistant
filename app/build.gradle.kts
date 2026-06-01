@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    kotlin("kapt")
 }
 
 android {
@@ -45,7 +46,7 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.firebase.auth)
-    annotationProcessor(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-analytics")

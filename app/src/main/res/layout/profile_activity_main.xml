@@ -136,6 +136,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    android:id="@+id/tv_profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nguyễn Văn A"
@@ -145,6 +146,7 @@
                     android:layout_marginTop="16dp" />
 
                 <TextView
+                    android:id="@+id/tv_profile_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sinh viên năm 3"

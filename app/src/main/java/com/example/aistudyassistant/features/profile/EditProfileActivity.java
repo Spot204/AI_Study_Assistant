@@ -5,18 +5,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.services.ProfileService;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private EditText edtFullName, edtEmail, edtBio, edtSchool;
+    private ProfileService profileService;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity_edit);
 
+        profileService = new ProfileService(this);
+
         // Khởi tạo views
         initViews();
+        loadProfileData();
 
         // Nút quay lại
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -32,6 +38,20 @@ public class EditProfileActivity extends AppCompatActivity {
         edtSchool = findViewById(R.id.edt_school);
     }
 
+    private void loadProfileData() {
+        profileService.getUser(user -> {
+            if (user != null) {
+                this.currentUser = user;
+                runOnUiThread(() -> {
+                    edtFullName.setText(user.getFullName());
+                    edtEmail.setText(user.getEmail());
+                    edtBio.setText(user.getBio());
+                    edtSchool.setText(user.getSchool());
+                });
+            }
+        });
+    }
+
     private void saveProfileData() {
         String fullName = edtFullName.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
@@ -44,10 +64,18 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: Thực hiện lưu dữ liệu vào Firebase Firestore hoặc SQLite thông qua Repository
-        // Tạm thời hiển thị Toast và đóng Activity
-        
-        Toast.makeText(this, "Đã cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
-        finish();
+        if (currentUser == null) {
+            currentUser = new User(fullName, email, bio, school);
+        } else {
+            currentUser.setFullName(fullName);
+            currentUser.setEmail(email);
+            currentUser.setBio(bio);
+            currentUser.setSchool(school);
+        }
+
+        profileService.saveUser(currentUser, () -> runOnUiThread(() -> {
+            Toast.makeText(this, "Đã cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
+            finish();
+        }));
     }
 }
