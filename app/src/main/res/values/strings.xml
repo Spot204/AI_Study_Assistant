@@ -37,6 +37,7 @@
     <string name="nav_chat">AI Chat</string>
     <string name="nav_quiz">Quiz</string>
     <string name="nav_schedule">Lịch học</string>
+    <string name="nav_profile">Hồ sơ</string>
 
     <!-- Main Screen -->
     <string name="main_title">AI Study Assistant</string>
@@ -75,9 +76,9 @@
     <string name="schedule_today_title">Lịch hôm nay</string>
     <string name="schedule_task_count">4 nhiệm vụ</string>
     <string name="schedule_task_1">Ôn tập Toán cao cấp</string>
-    <string name="schedule_task_2">Quiz: Python Basics</string>
-    <string name="schedule_task_3">Flashcard: Tiếng Anh</string>
-    <string name="schedule_task_4">Đọc tài liệu Kinh tế</string>
+    <string name="schedule_task_2">Học từ vựng Tiếng Anh</string>
+    <string name="schedule_task_3">Làm đồ án cuối kỳ</string>
+    <string name="schedule_task_4">Nghiên cứu AI</string>
     <string name="schedule_stats_title">Thống kê tuần</string>
     <string name="schedule_stats_growth">+15%</string>
     <string name="schedule_total_time">18.3h</string>
