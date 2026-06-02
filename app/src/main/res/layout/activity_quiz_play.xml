@@ -92,16 +92,17 @@
         android:id="@+id/questionCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="0dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/progressBar">
+        app:cardCornerRadius="24dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_shadow"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -140,20 +141,20 @@
             android:id="@+id/cardOptionA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_shadow"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
 
                 <TextView
+                    android:id="@+id/tvOptionALetter"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_icon_circle"
@@ -164,6 +165,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvOptionA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -175,22 +177,23 @@
 
         <!-- Option B -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOptionB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_shadow"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
 
                 <TextView
+                    android:id="@+id/tvOptionBLetter"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_icon_circle"
@@ -201,6 +204,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvOptionB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -212,22 +216,23 @@
 
         <!-- Option C -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOptionC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_shadow"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
 
                 <TextView
+                    android:id="@+id/tvOptionCLetter"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_icon_circle"
@@ -238,6 +243,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvOptionC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -249,22 +255,23 @@
 
         <!-- Option D -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOptionD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_shadow"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
 
                 <TextView
+                    android:id="@+id/tvOptionDLetter"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_icon_circle"
@@ -275,6 +282,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvOptionD"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
