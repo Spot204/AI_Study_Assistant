@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+app/src/main/assets/qwen3_thinking_4b_q4_block128_ekv2048.task
