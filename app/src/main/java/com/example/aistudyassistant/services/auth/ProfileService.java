@@ -2,8 +2,7 @@ package com.example.aistudyassistant.services.auth;
 
 import android.content.Context;
 import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.features.profile.User;
-import com.example.aistudyassistant.features.profile.UserDao;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

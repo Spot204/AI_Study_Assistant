@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.MainActivity;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.features.profile.User;
 import com.example.aistudyassistant.network.ApiClient;
 import com.example.aistudyassistant.network.models.LoginRequest;
 import com.example.aistudyassistant.network.models.AuthResponse;

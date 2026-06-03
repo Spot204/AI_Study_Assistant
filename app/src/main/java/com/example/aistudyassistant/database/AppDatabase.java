@@ -9,9 +9,6 @@ import androidx.room.TypeConverters;
 import com.example.aistudyassistant.database.converters.Converters;
 import com.example.aistudyassistant.database.dao.*;
 import com.example.aistudyassistant.database.entities.*;
-import com.example.aistudyassistant.features.profile.User;
-import com.example.aistudyassistant.features.profile.UserDao;
-import com.example.aistudyassistant.features.schedule.ScheduleDao;
 import com.example.aistudyassistant.features.schedule.ScheduleTask;
 
 @Database(entities = {
