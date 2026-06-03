@@ -9,13 +9,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.network.ApiClient;
-import com.example.aistudyassistant.network.models.RegisterRequest;
-import com.example.aistudyassistant.network.models.AuthResponse;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.User;
+import com.example.aistudyassistant.firebase.FirestoreService;
+import com.example.aistudyassistant.services.auth.AuthCallback;
+import com.example.aistudyassistant.services.auth.AuthService;
+import com.example.aistudyassistant.services.auth.ProfileService;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,6 +24,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private TextView tvLoginLink;
     private ProgressBar progressBar;
+    private AuthService authService;
+    private ProfileService profileService;
+    private FirestoreService firestoreService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,11 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegisterSubmit);
         tvLoginLink = findViewById(R.id.tvLoginLink);
         progressBar = findViewById(R.id.registerProgressBar);
+
+        authService = new AuthService();
+        profileService = new ProfileService(this);
+        AppDatabase db = AppDatabase.getDatabase(this);
+        firestoreService = new FirestoreService(db.studySessionDao());
 
         btnRegister.setOnClickListener(v -> {
             String name = edtName.getText().toString().trim();
@@ -55,30 +64,30 @@ public class RegisterActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.VISIBLE);
 
-            // Gửi dữ liệu gọi API đăng ký thông qua Retrofit Client
-            ApiClient.getService().register(new RegisterRequest(name, email, password))
-                    .enqueue(new Callback<AuthResponse>() {
-                        @Override
-                        public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+            authService.Register(email, password, new AuthCallback() {
+                @Override
+                public void onSuccess(String uid) {
+                    User newUser = new User(uid, name, email);
+                    // 1. Lưu vào Firestore
+                    firestoreService.saveUserToFirestore(newUser);
+                    // 2. Lưu vào Room
+                    profileService.saveUser(newUser, () -> {
+                        runOnUiThread(() -> {
                             progressBar.setVisibility(View.GONE);
-                            if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                                Toast.makeText(RegisterActivity.this, "Đăng ký thành công! Hãy đăng nhập nhé.", Toast.LENGTH_LONG).show();
-                                finish(); // Quay lại màn hình Login
-                            } else {
-                                String errorMsg = "Đăng ký thất bại!";
-                                if (response.body() != null) {
-                                    errorMsg = response.body().getMessage();
-                                }
-                                Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<AuthResponse> call, Throwable t) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(RegisterActivity.this, "Lỗi kết nối máy chủ!", Toast.LENGTH_SHORT).show();
-                        }
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
                     });
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thất bại: " + error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
         });
 
         tvLoginLink.setOnClickListener(v -> finish());

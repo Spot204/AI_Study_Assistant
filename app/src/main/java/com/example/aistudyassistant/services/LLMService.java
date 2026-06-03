@@ -33,7 +33,7 @@ public class LLMService {
 
             // Cấu hình và khởi tạo MediaPipe Engine
             LlmInference.LlmInferenceOptions options = LlmInference.LlmInferenceOptions.builder()
-                    .setModelFilePath(modelPath)
+                    .setModelPath(modelPath)
                     .build();
 
             llmInference = LlmInference.createFromOptions(context, options);

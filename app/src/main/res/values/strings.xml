@@ -28,4 +28,75 @@
 
     <string name="translation_challenge">Translation Challenge</string>
     <string name="translation_challenge_desc">Translate sentences to master grammar</string>
+
+    <!-- Chat Strings -->
+    <string name="ai_assistant_name">AI Tutor</string>
+    <string name="online_status">Đang hoạt động</string>
+    <string name="ai_welcome_msg">Chào cậu! Tớ có thể giúp gì cho cậu hôm nay?</string>
+    <string name="suggest_title">Gợi ý cho cậu</string>
+    <string name="chat_hint">Nhập tin nhắn...</string>
+
+    <!-- Schedule Strings -->
+    <string name="desc_back">Quay lại</string>
+    <string name="create_schedule_title">Tạo lịch học</string>
+    <string name="btn_save">Lưu</string>
+    <string name="label_title">Tiêu đề</string>
+    <string name="hint_title">Nhập tiêu đề lịch học...</string>
+    <string name="label_task_type">Loại nhiệm vụ</string>
+    <string name="task_type_review">Ôn tập</string>
+    <string name="task_type_quiz">Kiểm tra</string>
+    <string name="task_type_flashcard">Flashcard</string>
+    <string name="task_type_reading">Đọc hiểu</string>
+    <string name="label_date">Ngày</string>
+    <string name="label_time">Thời gian</string>
+    <string name="time_to">Đến</string>
+    <string name="label_reminder">Nhắc nhở</string>
+    <string name="reminder_15_mins">15 phút trước</string>
+    <string name="label_repeat">Lặp lại</string>
+    <string name="repeat_none">Không</string>
+    <string name="quiz_title">Trắc nghiệm</string>
+    <string name="desc_ai_icon">AI Icon</string>
+    <string name="create_quiz_with_ai">Tạo quiz bằng AI</string>
+    <string name="ai_quiz_desc">Tự động tạo câu hỏi từ tài liệu của bạn</string>
+    <string name="create_new">Tạo mới</string>
+    <string name="desc_stat_completed">Số bài đã làm</string>
+    <string name="completed">Đã xong</string>
+    <string name="desc_stat_average">Điểm trung bình</string>
+    <string name="average">Trung bình</string>
+    <string name="desc_stat_streak">Chuỗi ngày học</string>
+    <string name="streak">Chuỗi</string>
+    <string name="your_quizzes">Bộ trắc nghiệm của bạn</string>
+    <string name="desc_quiz_icon">Quiz Icon</string>
+    <string name="desc_play_quiz">Bắt đầu làm bài</string>
+    <string name="desc_timer">Thời gian còn lại</string>
+    <string name="quiz_sample_timer">15:00</string>
+    <string name="quiz_sample_progress">Câu 1/10</string>
+    <string name="quiz_sample_question_num">Câu 1</string>
+    <string name="quiz_sample_question">Nội dung câu hỏi trắc nghiệm sẽ hiển thị tại đây?</string>
+    <string name="quiz_option_a">Phương án A</string>
+    <string name="quiz_option_b">Phương án B</string>
+    <string name="quiz_option_c">Phương án C</string>
+    <string name="quiz_option_d">Phương án D</string>
+    <string name="deck_card_count">%1$d thẻ</string>
+    <string name="deck_mastery_percent">%1$d%%</string>
+    <string name="quiz_result_title">Kết quả</string>
+    <string name="quiz_result_subtitle">Làm tốt lắm!</string>
+    <string name="quiz_result_score_label">Điểm của bạn</string>
+    <string name="quiz_result_correct">Đúng</string>
+    <string name="quiz_result_incorrect">Sai</string>
+    <string name="quiz_result_time">Thời gian</string>
+    <string name="btn_back">Quay lại</string>
+    <string name="btn_retry">Làm lại</string>
+    <string name="schedule_title">Lịch học</string>
+    <string name="desc_add_schedule">Thêm lịch học</string>
+    <string name="desc_prev_month">Tháng trước</string>
+    <string name="desc_next_month">Tháng sau</string>
+    <string name="schedule_today_title">Hôm nay</string>
+    <string name="schedule_task_count">%1$d nhiệm vụ</string>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_flashcard">Flashcard</string>
+    <string name="nav_chat">Chat AI</string>
+    <string name="nav_quiz">Quiz</string>
+    <string name="nav_schedule">Lịch học</string>
+    <string name="nav_profile">Cá nhân</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.aistudyassistant.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -21,7 +22,7 @@ public interface StudySetDao {
     void deleteSet(StudySetEntity studySet);
 
     @Query("SELECT * FROM study_sets WHERE userId = :userId")
-    List<StudySetEntity> getAllSetsByUser(String userId);
+    LiveData<List<StudySetEntity>> getAllSetsByUser(String userId);
 
     @Query("SELECT * FROM study_sets WHERE setId = :setId LIMIT 1")
     StudySetEntity getSetById(String setId);

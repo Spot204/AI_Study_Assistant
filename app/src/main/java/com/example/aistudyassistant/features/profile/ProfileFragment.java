@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.features.auth.LoginActivity;
+import com.example.aistudyassistant.services.auth.AuthService;
 import com.example.aistudyassistant.services.auth.ProfileService;
 
 public class ProfileFragment extends Fragment {
@@ -36,25 +38,35 @@ public class ProfileFragment extends Fragment {
         setupMenuItems(view);
         
         // Logout action
-        view.findViewById(R.id.btn_logout).setOnClickListener(v -> 
-            Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show());
+        view.findViewById(R.id.btn_logout).setOnClickListener(v -> {
+            new AuthService().Logout();
+            profileService.logout(() -> {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        getActivity().finish();
+                    });
+                }
+            });
+        });
 
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         loadUserProfile();
     }
 
     private void loadUserProfile() {
-        profileService.getUser(user -> {
-            if (user != null && getActivity() != null) {
-                getActivity().runOnUiThread(() -> {
-                    tvName.setText(user.getFullName());
-                    tvSchool.setText(user.getSchool());
-                });
+        profileService.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                tvName.setText(user.getFullName());
+                tvSchool.setText(user.getSchool());
             }
         });
     }

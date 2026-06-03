@@ -63,7 +63,7 @@ public class ChatFragment extends Fragment {
         
         // Khởi tạo Database và Firebase Service
         db = AppDatabase.getDatabase(appContext);
-        firestoreService = new FirestoreService();
+        firestoreService = new FirestoreService(db.studySessionDao());
         
         // Tạo phiên làm việc mới cho lần chat này
         currentSession = new StudySessionEntity(UUID.randomUUID().toString(), null, "chat");

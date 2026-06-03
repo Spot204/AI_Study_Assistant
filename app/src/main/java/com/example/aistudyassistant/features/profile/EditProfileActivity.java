@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.services.auth.ProfileService;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -39,15 +40,13 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void loadProfileData() {
-        profileService.getUser(user -> {
+        profileService.getCurrentUser().observe(this, user -> {
             if (user != null) {
                 this.currentUser = user;
-                runOnUiThread(() -> {
-                    edtFullName.setText(user.getFullName());
-                    edtEmail.setText(user.getEmail());
-                    edtBio.setText(user.getBio());
-                    edtSchool.setText(user.getSchool());
-                });
+                edtFullName.setText(user.getFullName());
+                edtEmail.setText(user.getEmail());
+                edtBio.setText(user.getBio());
+                edtSchool.setText(user.getSchool());
             }
         });
     }
@@ -65,7 +64,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         if (currentUser == null) {
-            currentUser = new User(fullName, email, bio, school);
+            currentUser = new User(java.util.UUID.randomUUID().toString(), fullName, email, bio, school);
         } else {
             currentUser.setFullName(fullName);
             currentUser.setEmail(email);

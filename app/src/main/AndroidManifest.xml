@@ -43,6 +43,18 @@
             android:exported="false" />
 
         <activity
+            android:name=".features.auth.LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.auth.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".features.ocr_summary.OCRSummaryActivity"
+            android:exported="false" />
+
+        <activity
             android:name="com.example.aistudyassistant.features.quiz.QuizPlayActivity"
             android:exported="false" />
 

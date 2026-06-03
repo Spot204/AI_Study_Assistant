@@ -13,6 +13,7 @@ import com.example.aistudyassistant.R;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.ScheduleTask;
 import java.util.ArrayList;
 import java.util.List;
 

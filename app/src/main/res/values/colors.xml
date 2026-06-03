@@ -4,8 +4,22 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- UI Colors -->
+    <color name="color_primary">#6366F1</color>
+    <color name="color_secondary">#A855F7</color>
     <color name="background_page">#FFFFFF</color>
+    <color name="secondary_background">#F3F4F6</color>
     <color name="text_grey">#757575</color>
+
+    <!-- Quiz States -->
+    <color name="quiz_correct_light">#E8F5E9</color>
+    <color name="quiz_correct_dark">#2E7D32</color>
+    <color name="quiz_wrong_light">#FFEBEE</color>
+    <color name="quiz_wrong_dark">#C62828</color>
+    <color name="quiz_option_stroke">#E0E0E0</color>
+    <color name="quiz_option_text">#1F2937</color>
+    <color name="quiz_progress_track">#E5E7EB</color>
+    <color name="quiz_timer_bg">#FEF3C7</color>
+    <color name="quiz_timer_text">#92400E</color>
 
     <!-- Tab Colors -->
     <color name="tab_container">#F3F4F6</color>
@@ -37,4 +51,32 @@
     <!-- Pink Colors -->
     <color name="pink_icon_bg">#FCE7F3</color>
     <color name="pink_icon">#EC4899</color>
+
+    <!-- Navigation Colors -->
+    <color name="nav_active_icon">#6366F1</color>
+    <color name="nav_inactive_icon">#9CA3AF</color>
+
+    <!-- Missing Colors -->
+    <color name="ai_card_bg">#F5F3FF</color>
+    <color name="chart_3">#10B981</color>
+    <color name="background">#FFFFFF</color>
+    <color name="orange_main">#F97316</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="color_accent">#6366F1</color>
+    <color name="green_main">#22C55E</color>
+    <color name="icon_bg_purple">#F3E8FF</color>
+    <color name="purple_primary">#6366F1</color>
+    <color name="destructive_bg">#FEE2E2</color>
+    <color name="premium_bg">#FEF3C7</color>
+    <color name="nav_item_active_bg">#EEF2FF</color>
+    <color name="border_color">#E5E7EB</color>
+    <color name="text_sub">#9CA3AF</color>
+    <color name="bg_light">#F9FAFB</color>
+    <color name="icon_bg_orange">#FFEDD5</color>
+    <color name="icon_bg_green">#DCFCE7</color>
+    <color name="destructive_text">#C62828</color>
+    <color name="text_primary">#111111</color>
+    <color name="text_secondary">#666666</color>
+    <color name="card_border">#E5E7EB</color>
+    <color name="chart_4">#3B82F6</color>
 </resources>

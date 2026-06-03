@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.ScheduleTask;
 import java.util.concurrent.Executors;
 
 public class CreateScheduleActivity extends AppCompatActivity {
@@ -82,7 +83,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
             case "Reading": selected = typeReading; break;
         }
         if (selected != null) {
-            selected.setStrokeColor(getResources().getColor(R.color.color_primary, getTheme()));
+            selected.setStrokeColor(getResources().getColor(R.color.black, getTheme()));
             selected.setStrokeWidth(6);
         }
     }
@@ -152,7 +153,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         ScheduleTask task = new ScheduleTask(title, startTime, endTime, selectedType, date);
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            AppDatabase.getDatabase(this).scheduleDao().insert(task);
+            AppDatabase.getDatabase(this).scheduleDao().insertTask(task);
             runOnUiThread(this::finish);
         });
     }

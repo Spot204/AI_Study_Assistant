@@ -24,4 +24,7 @@ public interface StudySessionDao {
 
     @Query("SELECT * FROM study_sessions WHERE isSynced = 0")
     List<StudySessionEntity> getUnsyncedSessions();
+
+    @Query("DELETE FROM study_sessions")
+    void deleteAll();
 }

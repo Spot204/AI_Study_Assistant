@@ -9,7 +9,6 @@ import androidx.room.TypeConverters;
 import com.example.aistudyassistant.database.converters.Converters;
 import com.example.aistudyassistant.database.dao.*;
 import com.example.aistudyassistant.database.entities.*;
-import com.example.aistudyassistant.features.schedule.ScheduleTask;
 
 @Database(entities = {
         ScheduleTask.class, 
@@ -29,7 +28,7 @@ import com.example.aistudyassistant.features.schedule.ScheduleTask;
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
-    // Khai báo các DAO
+    // Khai báo các DAO (Sử dụng các class trong package database.dao)
     public abstract ScheduleDao scheduleDao();
     public abstract UserDao userDao();
     public abstract StudySessionDao studySessionDao();

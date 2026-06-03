@@ -36,6 +36,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlin {
+        jvmToolchain(11)
+    }
 
     androidResources{
         noCompress("task")
@@ -51,6 +54,7 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-firestore")
     ksp(libs.room.compiler)
     implementation(libs.mediapipe.genai)
     implementation(libs.room.ktx)

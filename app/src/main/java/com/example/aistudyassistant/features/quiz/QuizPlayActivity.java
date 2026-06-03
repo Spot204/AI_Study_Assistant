@@ -3,21 +3,27 @@ package com.example.aistudyassistant.features.quiz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.StudySessionEntity;
+import com.example.aistudyassistant.firebase.FirestoreService;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.concurrent.Executors;
 
 public class QuizPlayActivity extends AppCompatActivity {
 
@@ -32,17 +38,18 @@ public class QuizPlayActivity extends AppCompatActivity {
     private int currentQuestionIndex = 0;
     private int score = 0;
     private boolean isAnswered = false;
+    private String sessionId;
 
     private long startTime;
-    private Handler timerHandler = new Handler();
-    private Runnable timerRunnable = new Runnable() {
+    private final Handler timerHandler = new Handler();
+    private final Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
             long millis = System.currentTimeMillis() - startTime;
             int seconds = (int) (millis / 1000);
             int minutes = seconds / 60;
             seconds = seconds % 60;
-            tvTimer.setText(String.format("%02d:%02d", minutes, seconds));
+            tvTimer.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
             timerHandler.postDelayed(this, 500);
         }
     };
@@ -56,15 +63,19 @@ public class QuizPlayActivity extends AppCompatActivity {
         loadQuestions();
         displayQuestion();
 
+        sessionId = UUID.randomUUID().toString();
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
 
         btnBack.setOnClickListener(v -> showExitConfirmation());
-    }
 
-    @Override
-    public void onBackPressed() {
-        showExitConfirmation();
+        // Sử dụng OnBackPressedDispatcher thay cho onBackPressed() đã bị deprecated
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                showExitConfirmation();
+            }
+        });
     }
 
     private void showExitConfirmation() {
@@ -129,9 +140,14 @@ public class QuizPlayActivity extends AppCompatActivity {
             isAnswered = false;
             Question currentQuestion = questionList.get(currentQuestionIndex);
 
-            tvQuestionNum.setText("Câu " + (currentQuestionIndex + 1));
+            String questionNumText = "Câu " + (currentQuestionIndex + 1);
+            tvQuestionNum.setText(questionNumText);
+            
             tvQuestion.setText(currentQuestion.getQuestionText());
-            tvProgress.setText((currentQuestionIndex + 1) + "/" + questionList.size());
+            
+            String progressText = (currentQuestionIndex + 1) + "/" + questionList.size();
+            tvProgress.setText(progressText);
+            
             progressBar.setProgress((int) (((float) (currentQuestionIndex + 1) / questionList.size()) * 100));
 
             tvOptionA.setText(currentQuestion.getOptions().get(0));
@@ -163,12 +179,12 @@ public class QuizPlayActivity extends AppCompatActivity {
         Question currentQuestion = questionList.get(currentQuestionIndex);
         if (selectedIndex == currentQuestion.getCorrectAnswerIndex()) {
             score++;
-            selectedCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_green_light));
-            selectedLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_green_dark));
+            selectedCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.quiz_correct_light));
+            selectedLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.quiz_correct_dark));
             selectedLetter.setTextColor(ContextCompat.getColor(this, R.color.white));
         } else {
-            selectedCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
-            selectedLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_red_dark));
+            selectedCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.quiz_wrong_light));
+            selectedLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.quiz_wrong_dark));
             selectedLetter.setTextColor(ContextCompat.getColor(this, R.color.white));
             
             // Show correct answer
@@ -193,8 +209,8 @@ public class QuizPlayActivity extends AppCompatActivity {
             default: return;
         }
 
-        correctCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_green_light));
-        correctLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_green_dark));
+        correctCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.quiz_correct_light));
+        correctLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.quiz_correct_dark));
         correctLetter.setTextColor(ContextCompat.getColor(this, R.color.white));
     }
 
@@ -205,9 +221,25 @@ public class QuizPlayActivity extends AppCompatActivity {
     }
 
     private void showResults() {
+        long endTime = System.currentTimeMillis();
+        int durationMillis = (int) (endTime - startTime);
+        int durationMinutes = durationMillis / 60000;
+
+        StudySessionEntity session = new StudySessionEntity(sessionId, null, "quiz");
+        session.setScore(score);
+        session.setDurationMinutes(durationMinutes);
+        session.setEndedAt(endTime);
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            AppDatabase db = AppDatabase.getDatabase(this);
+            db.studySessionDao().insertSession(session);
+            new FirestoreService(db.studySessionDao()).syncStudySession(session);
+        });
+
         Intent intent = new Intent(this, QuizResultActivity.class);
+        intent.putExtra("SCORE", score);
+        intent.putExtra("TOTAL", questionList.size());
         startActivity(intent);
         finish();
     }
 }
-

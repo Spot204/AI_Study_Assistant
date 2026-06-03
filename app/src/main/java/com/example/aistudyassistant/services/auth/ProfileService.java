@@ -1,17 +1,21 @@
 package com.example.aistudyassistant.services.auth;
 
 import android.content.Context;
+import androidx.lifecycle.LiveData;
 import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.dao.UserDao;
+import com.example.aistudyassistant.database.entities.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ProfileService {
     private final UserDao userDao;
+    private final AppDatabase db;
     private final ExecutorService executorService;
 
     public ProfileService(Context context) {
-        AppDatabase db = AppDatabase.getDatabase(context);
+        this.db = AppDatabase.getDatabase(context);
         this.userDao = db.userDao();
         this.executorService = Executors.newSingleThreadExecutor();
     }
@@ -25,16 +29,21 @@ public class ProfileService {
         });
     }
 
-    public void getUser(UserCallback callback) {
-        executorService.execute(() -> {
-            User user = userDao.getUser();
-            if (callback != null) {
-                callback.onUserLoaded(user);
-            }
-        });
+    public LiveData<User> getCurrentUser() {
+        return userDao.getAnyUser();
     }
 
-    public interface UserCallback {
-        void onUserLoaded(User user);
+    public LiveData<User> getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
+
+    public void logout(Runnable onComplete) {
+        executorService.execute(() -> {
+            userDao.deleteAll();
+            db.studySessionDao().deleteAll();
+            if (onComplete != null) {
+                onComplete.run();
+            }
+        });
     }
 }
