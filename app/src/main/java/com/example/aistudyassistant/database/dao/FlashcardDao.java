@@ -28,4 +28,14 @@ public interface FlashcardDao {
 
     @Query("SELECT COUNT(*) FROM flashcards WHERE setId = :setId")
     int getCountBySet(String setId);
+
+    // =================================================================
+    // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
+    // =================================================================
+
+    @Query("SELECT * FROM flashcards WHERE syncStatus != 'synced'")
+    List<FlashcardEntity> getUnsyncedFlashcards();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM flashcards")
+    long getMaxUpdatedAt();
 }

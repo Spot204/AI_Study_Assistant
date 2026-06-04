@@ -17,4 +17,14 @@ public interface UserAchievementDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM user_achievements WHERE id = :id)")
     boolean isUnlocked(String id);
+
+    // =================================================================
+    // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY (FIREBASE)
+    // =================================================================
+
+    @Query("SELECT * FROM user_achievements WHERE syncStatus != 'synced'")
+    List<UserAchievementEntity> getUnsyncedUserAchievements();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM user_achievements")
+    long getMaxUpdatedAt();
 }

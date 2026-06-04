@@ -25,4 +25,14 @@ public interface LearningGoalDao {
 
     @Query("SELECT * FROM learning_goals WHERE goalId = :goalId LIMIT 1")
     LearningGoalEntity getGoalById(String goalId);
+
+    // =================================================================
+    // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
+    // =================================================================
+
+    @Query("SELECT * FROM learning_goals WHERE syncStatus != 'synced'")
+    List<LearningGoalEntity> getUnsyncedGoals();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM learning_goals")
+    long getMaxUpdatedAt();
 }

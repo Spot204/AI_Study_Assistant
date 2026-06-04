@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.entities.User;
-import com.example.aistudyassistant.services.auth.ProfileService;
+import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class EditProfileActivity extends AppCompatActivity {
 

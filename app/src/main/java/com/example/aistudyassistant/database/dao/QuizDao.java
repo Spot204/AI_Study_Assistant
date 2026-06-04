@@ -25,4 +25,14 @@ public interface QuizDao {
 
     @Query("SELECT * FROM quizzes WHERE quizId = :quizId LIMIT 1")
     QuizEntity getQuizById(String quizId);
+
+    // =================================================================
+    // 💥 CÁC HÀM PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
+    // =================================================================
+
+    @Query("SELECT * FROM quizzes WHERE syncStatus != 'synced'")
+    List<QuizEntity> getUnsyncedQuizzes();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM quizzes")
+    long getMaxUpdatedAt();
 }

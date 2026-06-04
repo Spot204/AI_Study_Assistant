@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import com.example.aistudyassistant.database.entities.ScheduleTask;
-
 import java.util.List;
 
 @Dao
@@ -21,9 +20,19 @@ public interface ScheduleDao {
     @Delete
     void deleteTask(ScheduleTask task);
 
-    @Query("SELECT * FROM schedule_tasks ORDER BY startTime ASC")
-    androidx.lifecycle.LiveData<List<ScheduleTask>> getAllTasks();
+    @Query("SELECT * FROM schedule_tasks WHERE userId = :userId ORDER BY date ASC, startTime ASC")
+    androidx.lifecycle.LiveData<List<ScheduleTask>> getAllTasks(String userId);
 
-    @Query("SELECT * FROM schedule_tasks WHERE date = :date ORDER BY startTime ASC")
-    List<ScheduleTask> getTasksByDate(String date);
+    @Query("SELECT * FROM schedule_tasks WHERE userId = :userId AND date = :date ORDER BY startTime ASC")
+    List<ScheduleTask> getTasksByDate(String userId, String date);
+
+    // =================================================================
+    // 💥 CÁC HÀM PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
+    // =================================================================
+
+    @Query("SELECT * FROM schedule_tasks WHERE syncStatus != 'synced'")
+    List<ScheduleTask> getUnsyncedTasks();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM schedule_tasks")
+    long getMaxUpdatedAt();
 }

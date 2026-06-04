@@ -1,6 +1,5 @@
 package com.example.aistudyassistant.features.auth;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +15,7 @@ import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.firebase.FirestoreService;
 import com.example.aistudyassistant.services.auth.AuthCallback;
 import com.example.aistudyassistant.services.auth.AuthService;
-import com.example.aistudyassistant.services.auth.ProfileService;
+import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class RegisterActivity extends AppCompatActivity {
 

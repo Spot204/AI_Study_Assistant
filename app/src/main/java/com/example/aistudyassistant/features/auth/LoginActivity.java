@@ -14,7 +14,7 @@ import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.services.auth.AuthCallback;
 import com.example.aistudyassistant.services.auth.AuthService;
-import com.example.aistudyassistant.services.auth.ProfileService;
+import com.example.aistudyassistant.services.profile.ProfileService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.features.flashcard.adapters.FlashcardDeckAdapter;
-import com.example.aistudyassistant.services.auth.ProfileService;
+import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class FlashcardFragment extends Fragment {
 

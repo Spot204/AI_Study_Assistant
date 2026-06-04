@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import com.example.aistudyassistant.database.entities.User;
+import java.util.List;
 
 @Dao
 public interface UserDao {
@@ -27,4 +28,14 @@ public interface UserDao {
 
     @Query("DELETE FROM users")
     void deleteAll();
+
+    // =================================================================
+    // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY (FIREBASE)
+    // =================================================================
+
+    @Query("SELECT * FROM users WHERE syncStatus != 'synced'")
+    List<User> getUnsyncedUsers();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM users")
+    long getMaxUpdatedAt();
 }

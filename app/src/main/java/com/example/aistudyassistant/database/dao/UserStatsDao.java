@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import com.example.aistudyassistant.database.entities.UserStatsEntity;
+import java.util.List;
 
 @Dao
 public interface UserStatsDao {
@@ -17,4 +18,14 @@ public interface UserStatsDao {
 
     @Query("SELECT * FROM user_stats WHERE userId = :userId LIMIT 1")
     UserStatsEntity getStatsByUser(String userId);
+
+    // =================================================================
+    // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY (FIREBASE)
+    // =================================================================
+
+    @Query("SELECT * FROM user_stats WHERE syncStatus != 'synced'")
+    List<UserStatsEntity> getUnsyncedUserStats();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM user_stats")
+    long getMaxUpdatedAt();
 }

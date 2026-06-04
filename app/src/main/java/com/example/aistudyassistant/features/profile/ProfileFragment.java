@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.features.auth.LoginActivity;
 import com.example.aistudyassistant.services.auth.AuthService;
-import com.example.aistudyassistant.services.auth.ProfileService;
+import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class ProfileFragment extends Fragment {
 

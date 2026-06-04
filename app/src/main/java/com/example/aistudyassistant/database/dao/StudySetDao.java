@@ -26,4 +26,14 @@ public interface StudySetDao {
 
     @Query("SELECT * FROM study_sets WHERE setId = :setId LIMIT 1")
     StudySetEntity getSetById(String setId);
+
+    // =================================================================
+    // 💥 CÁC HÀM PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
+    // =================================================================
+
+    @Query("SELECT * FROM study_sets WHERE syncStatus != 'synced'")
+    List<StudySetEntity> getUnsyncedStudySets();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM study_sets")
+    long getMaxUpdatedAt();
 }

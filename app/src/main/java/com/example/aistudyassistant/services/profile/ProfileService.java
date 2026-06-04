@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.services.auth;
+package com.example.aistudyassistant.services.profile;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;

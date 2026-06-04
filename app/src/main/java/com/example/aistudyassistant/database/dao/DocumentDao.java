@@ -25,4 +25,14 @@ public interface DocumentDao {
 
     @Query("SELECT * FROM documents WHERE documentId = :id LIMIT 1")
     DocumentEntity getDocumentById(String id);
+
+    // =================================================================
+    // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
+    // =================================================================
+
+    @Query("SELECT * FROM documents WHERE syncStatus != 'synced'")
+    List<DocumentEntity> getUnsyncedDocuments();
+
+    @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM documents")
+    long getMaxUpdatedAt();
 }
