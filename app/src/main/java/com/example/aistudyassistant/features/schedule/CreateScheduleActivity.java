@@ -138,7 +138,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         tvStartTime.setText("09:00");
         tvEndTime.setText("10:00");
     }
-
+    
     private void saveSchedule() {
         String title = edtTitle.getText().toString().trim();
         if (title.isEmpty()) {
