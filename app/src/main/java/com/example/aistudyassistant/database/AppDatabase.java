@@ -11,8 +11,8 @@ import com.example.aistudyassistant.database.dao.*;
 import com.example.aistudyassistant.database.entities.*;
 
 @Database(entities = {
-        ScheduleTask.class, 
-        User.class, 
+        ScheduleTask.class,
+        User.class,
         StudySessionEntity.class,
         StudySetEntity.class,
         FlashcardEntity.class,
@@ -28,19 +28,22 @@ import com.example.aistudyassistant.database.entities.*;
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
-    // Khai báo các DAO (Sử dụng các class trong package database.dao)
+    // =================================================================
+    // 💥 KHU VỰC KHAI BÁO CÁC DAO (Cổng giao tiếp với SQLite)
+    // Quy tắc Room: Phải là hàm abstract, không có ngoặc nhọn {}
+    // =================================================================
+
     public abstract ScheduleDao scheduleDao();
     public abstract UserDao userDao();
-    public abstract StudySessionDao studySessionDao();
-    public abstract StudySetDao studySetDao();
-    public abstract FlashcardDao flashcardDao();
-    public abstract UserStatsDao userStatsDao();
-    public abstract LearningGoalDao learningGoalDao();
-    public abstract AchievementDao achievementDao();
-    public abstract UserAchievementDao userAchievementDao();
-    public abstract NotificationDao notificationDao();
-    public abstract QuizDao quizDao();
+    public abstract StudySessionDao studySessionDao(); // Đã sửa đúng tên và kiểu trả về
+    public abstract StudySetDao studySetDao();         // Đã xóa ngoặc nhọn lỗi
+
+    // Khai báo thêm các DAO cần thiết cho các Repository chúng ta đã tạo
     public abstract DocumentDao documentDao();
+    public abstract FlashcardDao flashcardDao();
+    public abstract QuizDao quizDao();
+
+    // =================================================================
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
@@ -48,6 +51,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "ai_study_assistant_db")
+                            // Lệnh này cho phép xóa sạch dữ liệu cũ nếu thay đổi cấu trúc bảng (version tăng lên)
                             .fallbackToDestructiveMigration()
                             .build();
                 }

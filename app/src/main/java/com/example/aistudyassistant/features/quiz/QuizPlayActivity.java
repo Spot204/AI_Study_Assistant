@@ -7,14 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.StudySessionEntity;
-import com.example.aistudyassistant.firebase.FirestoreService;
+// [ĐÃ THÊM] Import Repository chuẩn thay cho FirestoreService
+import com.example.aistudyassistant.data.repository.StudySessionRepository;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.Executors;
 
 public class QuizPlayActivity extends AppCompatActivity {
 
@@ -39,6 +38,9 @@ public class QuizPlayActivity extends AppCompatActivity {
     private int score = 0;
     private boolean isAnswered = false;
     private String sessionId;
+
+    // [ĐÃ THÊM] Khai báo Repository để quản lý lưu trữ
+    private StudySessionRepository sessionRepo;
 
     private long startTime;
     private final Handler timerHandler = new Handler();
@@ -58,6 +60,10 @@ public class QuizPlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_play);
+
+        // [ĐÃ THÊM] Khởi tạo Repository một lần duy nhất lúc mở màn hình
+        AppDatabase db = AppDatabase.getDatabase(this);
+        sessionRepo = new StudySessionRepository(db.studySessionDao());
 
         initViews();
         loadQuestions();
@@ -142,12 +148,12 @@ public class QuizPlayActivity extends AppCompatActivity {
 
             String questionNumText = "Câu " + (currentQuestionIndex + 1);
             tvQuestionNum.setText(questionNumText);
-            
+
             tvQuestion.setText(currentQuestion.getQuestionText());
-            
+
             String progressText = (currentQuestionIndex + 1) + "/" + questionList.size();
             tvProgress.setText(progressText);
-            
+
             progressBar.setProgress((int) (((float) (currentQuestionIndex + 1) / questionList.size()) * 100));
 
             tvOptionA.setText(currentQuestion.getOptions().get(0));
@@ -186,8 +192,7 @@ public class QuizPlayActivity extends AppCompatActivity {
             selectedCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.quiz_wrong_light));
             selectedLetter.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.quiz_wrong_dark));
             selectedLetter.setTextColor(ContextCompat.getColor(this, R.color.white));
-            
-            // Show correct answer
+
             showCorrectAnswer(currentQuestion.getCorrectAnswerIndex());
         }
 
@@ -228,13 +233,11 @@ public class QuizPlayActivity extends AppCompatActivity {
         StudySessionEntity session = new StudySessionEntity(sessionId, null, "quiz");
         session.setScore(score);
         session.setDurationMinutes(durationMinutes);
+        session.setStartedAt(startTime);
         session.setEndedAt(endTime);
 
-        Executors.newSingleThreadExecutor().execute(() -> {
-            AppDatabase db = AppDatabase.getDatabase(this);
-            db.studySessionDao().insertSession(session);
-            new FirestoreService(db.studySessionDao()).syncStudySession(session);
-        });
+        // [ĐÃ SỬA] Bàn giao gói dữ liệu cho Repository lưu (Đã tích hợp sẵn luồng chạy ngầm)
+        sessionRepo.insertSession(session);
 
         Intent intent = new Intent(this, QuizResultActivity.class);
         intent.putExtra("SCORE", score);

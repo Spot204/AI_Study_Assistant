@@ -81,4 +81,16 @@ public class StudySessionEntity {
 
     public String getSyncStatus() { return syncStatus; }
     public void setSyncStatus(String syncStatus) { this.syncStatus = syncStatus; }
+    private java.util.List<com.example.aistudyassistant.database.entities.ChatMessage> messages = new java.util.ArrayList<>();
+
+    public java.util.List<com.example.aistudyassistant.database.entities.ChatMessage> getMessages() {
+        if (messages == null) {
+            messages = new java.util.ArrayList<>();
+        }
+        return messages;
+    }
+
+    public void setMessages(java.util.List<com.example.aistudyassistant.database.entities.ChatMessage> messages) {
+        this.messages = messages;
+    }
 }

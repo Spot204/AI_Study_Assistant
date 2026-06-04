@@ -42,10 +42,8 @@ public class AchievementEntity {
 
     public String getIconUrl() { return iconUrl; }
     public void setIconUrl(String iconUrl) { this.iconUrl = iconUrl; }
-
     public String getRequirementType() { return requirementType; }
     public void setRequirementType(String requirementType) { this.requirementType = requirementType; }
-
     public double getRequirementValue() { return requirementValue; }
     public void setRequirementValue(double requirementValue) { this.requirementValue = requirementValue; }
 }

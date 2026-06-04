@@ -97,9 +97,12 @@ public class ChatFragment extends Fragment {
 
         // Tự động bật bàn phím
         if (edtChat != null) {
+            // Yêu cầu tập trung vào ô nhập liệu
             edtChat.requestFocus();
+
+            // Hiển thị bàn phím ảo tự động sau một khoảng trễ ngắn
             edtChat.postDelayed(() -> {
-                if (isAdded() && getContext() != null) {
+                if (getContext() != null) {
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
                         imm.showSoftInput(edtChat, InputMethodManager.SHOW_IMPLICIT);
