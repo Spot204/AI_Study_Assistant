@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.User;
-import com.example.aistudyassistant.firebase.FirestoreService;
+// [ĐÃ THÊM] Import UserRepository thay cho FirestoreService và ProfileService cũ
+import com.example.aistudyassistant.data.repository.UserRepository;
 import com.example.aistudyassistant.services.auth.AuthCallback;
 import com.example.aistudyassistant.services.auth.AuthService;
-import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -24,8 +24,9 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvLoginLink;
     private ProgressBar progressBar;
     private AuthService authService;
-    private ProfileService profileService;
-    private FirestoreService firestoreService;
+
+    // [ĐÃ SỬA] Sử dụng UserRepository tập trung
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.registerProgressBar);
 
         authService = new AuthService();
-        profileService = new ProfileService(this);
+
+        // [ĐÃ SỬA] Khởi tạo UserRepository với cổng UserDao
         AppDatabase db = AppDatabase.getDatabase(this);
-        firestoreService = new FirestoreService(db.studySessionDao());
+        userRepository = new UserRepository(db.userDao());
 
         btnRegister.setOnClickListener(v -> {
             String name = edtName.getText().toString().trim();
@@ -67,15 +69,15 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String uid) {
                     User newUser = new User(uid, name, email);
-                    // 1. Lưu vào Firestore
-                    firestoreService.saveUserToFirestore(newUser);
-                    // 2. Lưu vào Room
-                    profileService.saveUser(newUser, () -> {
-                        runOnUiThread(() -> {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                            finish();
-                        });
+
+                    // [ĐÃ SỬA] Bàn giao toàn bộ việc lưu trữ (Local + Cloud) cho Repository lo
+                    userRepository.saveUser(newUser);
+
+                    // Chuyển UI ngay lập tức để user trải nghiệm mượt mà không độ trễ
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
                     });
                 }
 

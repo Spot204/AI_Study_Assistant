@@ -32,7 +32,7 @@ public class DocumentFirestore {
      */
     public DocumentEntity toEntity() {
         // Khởi tạo lại đúng Constructor thực tế của bạn
-        DocumentEntity entity = new DocumentEntity(documentId, userId, storageUri, ocrTextUri);
+        DocumentEntity entity = new DocumentEntity(documentId, userId, storageUri);
         entity.setSummary(this.summary);
         entity.setUploadedAt(this.uploadedAt);
         entity.setUpdatedAt(this.updatedAt);

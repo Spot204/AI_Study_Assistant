@@ -11,10 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.MainActivity;
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.User;
+// [ĐÃ THÊM] Import UserRepository chuẩn
+import com.example.aistudyassistant.data.repository.UserRepository;
 import com.example.aistudyassistant.services.auth.AuthCallback;
 import com.example.aistudyassistant.services.auth.AuthService;
-import com.example.aistudyassistant.services.profile.ProfileService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,7 +28,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvRegisterLink;
     private ProgressBar progressBar;
     private AuthService authService;
-    private ProfileService profileService;
+
+    // [ĐÃ SỬA] Dùng UserRepository thay cho ProfileService
+    private UserRepository userRepository;
+
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
@@ -35,7 +40,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         authService = new AuthService();
-        profileService = new ProfileService(this);
+
+        // [ĐÃ SỬA] Khởi tạo UserRepository
+        AppDatabase db = AppDatabase.getDatabase(this);
+        userRepository = new UserRepository(db.userDao());
+
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -56,12 +65,14 @@ public class LoginActivity extends AppCompatActivity {
             // TÀI KHOẢN MẶC ĐỊNH ĐỂ TEST NHANH
             if (email.equals("admin@gmail.com") && password.equals("123456")) {
                 User defaultUser = new User("default_id", "Admin User", "admin@gmail.com");
-                profileService.saveUser(defaultUser, () -> {
-                    runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(LoginActivity.this, "Đăng nhập mặc định thành công!", Toast.LENGTH_SHORT).show();
-                        navigateToMain("Admin User", "admin@gmail.com");
-                    });
+
+                // [ĐÃ SỬA] Gọi UserRepository lưu dữ liệu
+                userRepository.saveUser(defaultUser);
+
+                runOnUiThread(() -> {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(LoginActivity.this, "Đăng nhập mặc định thành công!", Toast.LENGTH_SHORT).show();
+                    navigateToMain("Admin User", "admin@gmail.com");
                 });
                 return;
             }
@@ -70,18 +81,17 @@ public class LoginActivity extends AppCompatActivity {
             authService.Login(email, password, new AuthCallback() {
                 @Override
                 public void onSuccess(String uid) {
-                    // Đăng nhập Firebase thành công, lưu thông tin vào Local Room
-                    // Trong thực tế, bạn có thể lấy profile từ Firestore ở đây.
-                    // Tạm thời lấy name từ email nếu không có thông tin profile.
+                    // Đăng nhập Firebase thành công, khởi tạo User
                     String name = email.split("@")[0];
                     User user = new User(uid, name, email);
-                    
-                    profileService.saveUser(user, () -> {
-                        runOnUiThread(() -> {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                            navigateToMain(name, email);
-                        });
+
+                    // [ĐÃ SỬA] Gọi UserRepository lưu dữ liệu (Tự động đồng bộ Room + Cloud)
+                    userRepository.saveUser(user);
+
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                        navigateToMain(name, email);
                     });
                 }
 
@@ -99,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
-
 
     private void navigateToMain(String name, String email) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
