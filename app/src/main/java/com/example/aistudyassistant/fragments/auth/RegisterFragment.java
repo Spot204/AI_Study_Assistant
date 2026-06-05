@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.features.auth.AuthActivity;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.data.repository.UserRepository;
@@ -81,8 +80,8 @@ public class RegisterFragment extends Fragment {
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                             // Quay lại màn hình đăng nhập
-                            if (getActivity() instanceof AuthActivity) {
-                                ((AuthActivity) getActivity()).replaceFragment(new LoginFragment());
+                            if (getActivity() != null) {
+                                getActivity().finish();
                             }
                         });
                     }
@@ -101,8 +100,8 @@ public class RegisterFragment extends Fragment {
         });
 
         tvLoginLink.setOnClickListener(v -> {
-            if (getActivity() instanceof AuthActivity) {
-                ((AuthActivity) getActivity()).replaceFragment(new LoginFragment());
+            if (getActivity() != null) {
+                getActivity().finish();
             }
         });
     }

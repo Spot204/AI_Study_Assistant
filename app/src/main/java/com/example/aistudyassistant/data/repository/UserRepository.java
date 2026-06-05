@@ -38,12 +38,15 @@ public class UserRepository {
             // 2. Đẩy lên Firebase Firestore (Cloud)
             firestore.collection(COLLECTION_NAME)
                     .document(user.getUserId())
-                    .set(user, SetOptions.merge()) // Dùng merge để không ghi đè mất dữ liệu cũ nếu có
+                    .set(user, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> executorService.execute(() -> {
-                        // Nếu đẩy lên Cloud thành công -> Đổi trạng thái Local thành 'synced'
                         user.setSyncStatus("synced");
                         userDao.updateUser(user);
-                    }));
+                    }))
+                    .addOnFailureListener(e -> {
+                        android.util.Log.e("FIRESTORE_ERROR", "Không thể đồng bộ User: " + e.getMessage());
+                        // Vẫn giữ local để đồng bộ lại sau (syncUnsyncedUsers)
+                    });
         });
     }
 

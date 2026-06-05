@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.MainActivity;
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.features.auth.AuthActivity;
+import com.example.aistudyassistant.auth.RegisterActivity;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.data.repository.UserRepository;
@@ -104,9 +104,7 @@ public class LoginFragment extends Fragment {
         });
 
         tvRegisterLink.setOnClickListener(v -> {
-            if (getActivity() instanceof AuthActivity) {
-                ((AuthActivity) getActivity()).loadFragment(new RegisterFragment());
-            }
+            startActivity(new Intent(getActivity(), RegisterActivity.class));
         });
     }
 

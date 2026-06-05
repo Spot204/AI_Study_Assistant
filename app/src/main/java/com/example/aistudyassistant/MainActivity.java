@@ -1,6 +1,6 @@
 package com.example.aistudyassistant;
 
-import com.example.aistudyassistant.features.auth.AuthActivity;
+import com.example.aistudyassistant.auth.LoginActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             // Thử đợi thêm một chút hoặc kiểm tra lại
             android.util.Log.d("AUTH_DEBUG", "Đang kiểm tra lại phiên đăng nhập...");
             if (mAuth.getCurrentUser() == null) {
-                Intent intent = new Intent(this, AuthActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
