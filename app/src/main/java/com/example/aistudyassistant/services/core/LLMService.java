@@ -1,109 +1,97 @@
 package com.example.aistudyassistant.services.core;
 
 import android.content.Context;
-import android.util.Log;
-import com.google.mediapipe.tasks.genai.llminference.LlmInference;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LLMService {
 
-    private LlmInference llmInference;
-    private boolean isModelReady = false;
+    private LlmApiService apiService;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    
+    // THAY THẾ: Nhập API Key của bạn ở đây (Ví dụ Gemini API)
+    private static final String API_KEY = "YOUR_GEMINI_API_KEY_HERE"; 
+    private static final String BASE_URL = "https://generativelanguage.googleapis.com/";
 
-    // Cổng giao tiếp báo cáo trạng thái nạp Model (Khắc phục lỗi dòng 78 của ChatFragment)
     public interface InitializationCallback {
         void onSuccess();
         void onError(String errorMsg);
     }
 
-    // Cổng giao tiếp trả kết quả sinh chữ AI (Khắc phục lỗi dòng 132 của ChatFragment)
     public interface ResponseCallback {
         void onResult(String response);
     }
 
-    // Constructor rỗng (Khắc phục lỗi dòng 77 của ChatFragment: Expected 1 argument but found 0)
     public LLMService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiService = retrofit.create(LlmApiService.class);
     }
 
     /**
-     * Khởi tạo AI chạy ngầm. Tránh đơ màn hình khi copy file > 2GB.
+     * Giờ đây hàm này chỉ đơn giản là báo thành công ngay lập tức 
+     * vì không cần nạp model vào RAM nữa.
      */
     public void initializeModelAsync(Context context, InitializationCallback callback) {
         executorService.execute(() -> {
-            try {
-                // Đã sửa lại đúng chính tả tên file dựa trên bức ảnh chụp thư mục assets của bạn
-                String modelName = "qwen3_thinking_4b_q4_block128_ekv2048.task";
-
-                File modelFile = new File(context.getFilesDir(), modelName);
-                String modelPath = modelFile.getAbsolutePath();
-
-                // Tự động copy file từ assets vào bộ nhớ trong của máy ở lần đầu chạy app
-                if (!modelFile.exists()) {
-                    Log.d("LLMService", "Đang copy model >2GB... Vui lòng đợi vài phút!");
-                    try (InputStream in = context.getAssets().open(modelName);
-                         OutputStream out = new FileOutputStream(modelFile)) {
-                        // Tăng bộ đệm (buffer) lên 8KB để copy nhanh hơn
-                        byte[] buffer = new byte[8192];
-                        int read;
-                        while ((read = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, read);
-                        }
-                    }
-                    Log.d("LLMService", "Copy model hoàn tất!");
-                }
-
-                // Cấu hình và khởi tạo MediaPipe Engine
-                LlmInference.LlmInferenceOptions options = LlmInference.LlmInferenceOptions.builder()
-                        .setModelPath(modelPath)
-                        .setMaxTokens(1024) // Giới hạn từ AI sinh ra
-                        .build();
-
-                llmInference = LlmInference.createFromOptions(context, options);
-                isModelReady = true;
-
-                // Báo thành công về cho giao diện (UI)
+            // Giả lập kiểm tra kết nối internet hoặc API service
+            if (apiService != null) {
                 callback.onSuccess();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.onError(e.getMessage());
+            } else {
+                callback.onError("Không thể khởi tạo API Service");
             }
         });
     }
 
     /**
-     * Hàm gọi AI xử lý ngầm (Background Thread)
+     * Gửi câu hỏi lên Server và nhận kết quả
      */
     public void generateResponseAsync(String prompt, ResponseCallback callback) {
-        if (!isModelReady || llmInference == null) {
-            callback.onResult("Model AI chưa được khởi tạo thành công!");
-            return;
-        }
-
         executorService.execute(() -> {
             try {
-                String response = llmInference.generateResponse(prompt);
-                callback.onResult(response);
+                // Tạo cấu trúc Body cho Gemini API
+                JsonObject body = new JsonObject();
+                JsonArray contents = new JsonArray();
+                JsonObject contentObj = new JsonObject();
+                JsonArray parts = new JsonArray();
+                JsonObject partObj = new JsonObject();
+                
+                partObj.addProperty("text", prompt);
+                parts.add(partObj);
+                contentObj.add("parts", parts);
+                contents.add(contentObj);
+                body.add("contents", contents);
+
+                Response<JsonObject> response = apiService.getChatResponse(API_KEY, body).execute();
+
+                if (response.isSuccessful() && response.body() != null) {
+                    // Trích xuất text từ JSON trả về của Gemini
+                    String aiText = response.body()
+                            .getAsJsonArray("candidates")
+                            .get(0).getAsJsonObject()
+                            .getAsJsonObject("content")
+                            .getAsJsonArray("parts")
+                            .get(0).getAsJsonObject()
+                            .get("text").getAsString();
+                    
+                    callback.onResult(aiText);
+                } else {
+                    callback.onResult("Lỗi API: " + response.code() + " - " + response.message());
+                }
             } catch (Exception e) {
-                callback.onResult("Lỗi vận hành AI: " + e.getLocalizedMessage());
+                callback.onResult("Lỗi kết nối Server: " + e.getLocalizedMessage());
             }
         });
     }
 
     public void close() {
-        try {
-            if (llmInference != null) {
-                llmInference.close();
-            }
-            executorService.shutdown();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        executorService.shutdown();
     }
 }

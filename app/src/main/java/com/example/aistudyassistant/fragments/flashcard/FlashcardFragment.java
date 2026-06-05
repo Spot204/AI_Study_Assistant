@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.fragments;
+package com.example.aistudyassistant.fragments.flashcard;
 
 import android.os.Bundle;
 import com.example.aistudyassistant.features.ocr_summary.OCRSummaryActivity;

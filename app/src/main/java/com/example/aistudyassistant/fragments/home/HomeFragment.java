@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.fragments;
+package com.example.aistudyassistant.fragments.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

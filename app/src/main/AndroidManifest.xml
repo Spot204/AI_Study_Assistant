@@ -43,11 +43,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".features.auth.LoginActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".features.auth.RegisterActivity"
+            android:name=".features.auth.AuthActivity"
             android:exported="false" />
 
         <activity

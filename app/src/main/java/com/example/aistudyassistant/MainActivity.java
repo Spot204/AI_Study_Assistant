@@ -1,6 +1,6 @@
 package com.example.aistudyassistant;
 
-import com.example.aistudyassistant.features.auth.LoginActivity;
+import com.example.aistudyassistant.features.auth.AuthActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +10,12 @@ import com.example.aistudyassistant.database.AppDatabase;
 // [ĐÃ SỬA] Import Repository mới thay cho FirestoreService cũ
 import com.example.aistudyassistant.data.repository.StudySessionRepository;
 
-import com.example.aistudyassistant.features.chatbot.ChatFragment;
-import com.example.aistudyassistant.features.profile.ProfileFragment;
-import com.example.aistudyassistant.features.quiz.QuizFragment;
-import com.example.aistudyassistant.features.schedule.ScheduleFragment;
-import com.example.aistudyassistant.fragments.*;
+import com.example.aistudyassistant.fragments.home.HomeFragment;
+import com.example.aistudyassistant.fragments.chatbot.ChatFragment;
+import com.example.aistudyassistant.fragments.quiz.QuizFragment;
+import com.example.aistudyassistant.fragments.schedule.ScheduleFragment;
+import com.example.aistudyassistant.fragments.profile.ProfileFragment;
+import com.example.aistudyassistant.fragments.flashcard.FlashcardFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,12 +25,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Kiểm tra xem user đã đăng nhập chưa (Bỏ qua nếu là tài khoản admin test)
-        boolean isMockLogin = getIntent().getStringExtra("USER_EMAIL") != null;
-        if (FirebaseAuth.getInstance().getCurrentUser() == null && !isMockLogin) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-            return;
+        // [SỬA LỖI] Kiểm tra đăng nhập an toàn hơn (có độ trễ để Firebase kịp đồng bộ)
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String userEmail = getIntent().getStringExtra("USER_EMAIL");
+        
+        if (mAuth.getCurrentUser() == null && userEmail == null) {
+            // Thử đợi thêm một chút hoặc kiểm tra lại
+            android.util.Log.d("AUTH_DEBUG", "Đang kiểm tra lại phiên đăng nhập...");
+            if (mAuth.getCurrentUser() == null) {
+                Intent intent = new Intent(this, AuthActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+                return;
+            }
         }
 
         setContentView(R.layout.activity_main);

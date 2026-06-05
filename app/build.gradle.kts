@@ -56,7 +56,6 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation("com.google.firebase:firebase-firestore")
     ksp(libs.room.compiler)
-    implementation(libs.mediapipe.genai)
     implementation(libs.room.ktx)
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-analytics")
