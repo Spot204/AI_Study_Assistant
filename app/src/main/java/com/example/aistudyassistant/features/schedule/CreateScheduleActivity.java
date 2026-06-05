@@ -3,18 +3,22 @@ package com.example.aistudyassistant.features.schedule;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.aistudyassistant.R;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
-import java.util.Calendar;
-import java.util.Locale;
 
+import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.ScheduleTask;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 
 public class CreateScheduleActivity extends AppCompatActivity {
@@ -49,7 +53,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         tvDate = findViewById(R.id.tvDate);
         tvStartTime = findViewById(R.id.tvStartTime);
         tvEndTime = findViewById(R.id.tvEndTime);
-        
+
         typeReview = findViewById(R.id.typeReview);
         typeQuiz = findViewById(R.id.typeQuiz);
         typeFlashcard = findViewById(R.id.typeFlashcard);
@@ -58,7 +62,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     private void setupListeners() {
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
-        
+
         cardDate.setOnClickListener(v -> showDatePicker());
         cardStartTime.setOnClickListener(v -> showTimePicker(true));
         cardEndTime.setOnClickListener(v -> showTimePicker(false));
@@ -68,9 +72,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         typeFlashcard.setOnClickListener(v -> { selectedType = "Flashcard"; updateTypeSelection(); });
         typeReading.setOnClickListener(v -> { selectedType = "Reading"; updateTypeSelection(); });
 
-        btnSave.setOnClickListener(v -> {
-            saveSchedule();
-        });
+        btnSave.setOnClickListener(v -> saveSchedule());
     }
 
     private void updateTypeSelection() {
@@ -90,7 +92,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
 
     private void resetTypeBorders() {
         int grayColor = 0xFFEEEEEE;
-        
+
         typeReview.setStrokeColor(grayColor);
         typeReview.setStrokeWidth(2);
         typeQuiz.setStrokeColor(grayColor);
@@ -138,7 +140,7 @@ public class CreateScheduleActivity extends AppCompatActivity {
         tvStartTime.setText("09:00");
         tvEndTime.setText("10:00");
     }
-    
+
     private void saveSchedule() {
         String title = edtTitle.getText().toString().trim();
         if (title.isEmpty()) {
@@ -150,7 +152,26 @@ public class CreateScheduleActivity extends AppCompatActivity {
         String startTime = tvStartTime.getText().toString();
         String endTime = tvEndTime.getText().toString();
 
-        ScheduleTask task = new ScheduleTask(title, startTime, endTime, selectedType, date);
+        // [ĐÃ SỬA LỖI] Dùng Setter để khởi tạo an toàn
+        ScheduleTask task = new ScheduleTask();
+
+        task.setTaskId(UUID.randomUUID().toString());
+
+        String currentUserId = "";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            currentUserId = user.getUid();
+        }
+        task.setUserId(currentUserId);
+
+        task.setTitle(title);
+        task.setDate(date);
+        task.setStartTime(startTime);
+        task.setEndTime(endTime);
+        task.setType(selectedType);
+
+        task.setSyncStatus("pending_insert");
+        task.setUpdatedAt(System.currentTimeMillis());
 
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase.getDatabase(this).scheduleDao().insertTask(task);
