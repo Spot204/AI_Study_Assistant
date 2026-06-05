@@ -9,34 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.database.AppDatabase;
 
 public class HomeFragment extends Fragment {
 
-    private static final String ARG_USER_NAME = "param_user_name";
     private String userName = "Bá Anh";
-
-    public static HomeFragment newInstance(String name) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_USER_NAME, name);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            userName = getArguments().getString(ARG_USER_NAME);
-        }
-    }
+    private TextView tvWelcome;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        TextView tvWelcome = view.findViewById(R.id.tvWelcomeHeader);
+        tvWelcome = view.findViewById(R.id.tvWelcomeHeader);
         TextView tvStreak = view.findViewById(R.id.tvStreakCount);
         TextView tvTip = view.findViewById(R.id.tvDailyTipText);
 
@@ -45,5 +30,16 @@ public class HomeFragment extends Fragment {
         tvTip.setText("Hãy quét tài liệu hoặc chat trực tiếp với trợ lý AI đề tự do tóm tắt các ghi chú khó nhằn nhé!");
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        AppDatabase.getDatabase(requireContext()).userDao().getAnyUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                userName = user.getFullName();
+                tvWelcome.setText("Chào cậu, " + userName + "!");
+            }
+        });
     }
 }

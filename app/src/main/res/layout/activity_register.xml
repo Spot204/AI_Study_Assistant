@@ -57,7 +57,7 @@
                     android:textColor="#4F5B76"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:layout_bottom_navigation_margin="6dp" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/edtRegisterName"

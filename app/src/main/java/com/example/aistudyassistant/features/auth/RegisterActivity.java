@@ -1,6 +1,5 @@
 package com.example.aistudyassistant.features.auth;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,13 +8,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.network.ApiClient;
-import com.example.aistudyassistant.network.models.RegisterRequest;
-import com.example.aistudyassistant.network.models.AuthResponse;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.User;
+// [ĐÃ THÊM] Import UserRepository thay cho FirestoreService và ProfileService cũ
+import com.example.aistudyassistant.data.repository.UserRepository;
+import com.example.aistudyassistant.services.auth.AuthCallback;
+import com.example.aistudyassistant.services.auth.AuthService;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,6 +23,10 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private TextView tvLoginLink;
     private ProgressBar progressBar;
+    private AuthService authService;
+
+    // [ĐÃ SỬA] Sử dụng UserRepository tập trung
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,12 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegisterSubmit);
         tvLoginLink = findViewById(R.id.tvLoginLink);
         progressBar = findViewById(R.id.registerProgressBar);
+
+        authService = new AuthService();
+
+        // [ĐÃ SỬA] Khởi tạo UserRepository với cổng UserDao
+        AppDatabase db = AppDatabase.getDatabase(this);
+        userRepository = new UserRepository(db.userDao());
 
         btnRegister.setOnClickListener(v -> {
             String name = edtName.getText().toString().trim();
@@ -55,30 +65,30 @@ public class RegisterActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.VISIBLE);
 
-            // Gửi dữ liệu gọi API đăng ký thông qua Retrofit Client
-            ApiClient.getService().register(new RegisterRequest(name, email, password))
-                    .enqueue(new Callback<AuthResponse>() {
-                        @Override
-                        public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                            progressBar.setVisibility(View.GONE);
-                            if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                                Toast.makeText(RegisterActivity.this, "Đăng ký thành công! Hãy đăng nhập nhé.", Toast.LENGTH_LONG).show();
-                                finish(); // Quay lại màn hình Login
-                            } else {
-                                String errorMsg = "Đăng ký thất bại!";
-                                if (response.body() != null) {
-                                    errorMsg = response.body().getMessage();
-                                }
-                                Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+            authService.Register(email, password, new AuthCallback() {
+                @Override
+                public void onSuccess(String uid) {
+                    User newUser = new User(uid, name, email);
 
-                        @Override
-                        public void onFailure(Call<AuthResponse> call, Throwable t) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(RegisterActivity.this, "Lỗi kết nối máy chủ!", Toast.LENGTH_SHORT).show();
-                        }
+                    // [ĐÃ SỬA] Bàn giao toàn bộ việc lưu trữ (Local + Cloud) cho Repository lo
+                    userRepository.saveUser(newUser);
+
+                    // Chuyển UI ngay lập tức để user trải nghiệm mượt mà không độ trễ
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
                     });
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thất bại: " + error, Toast.LENGTH_SHORT).show();
+                    });
+                }
+            });
         });
 
         tvLoginLink.setOnClickListener(v -> finish());
