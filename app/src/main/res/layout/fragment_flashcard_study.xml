@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0B10">
+    android:background="#FFFFFF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_study_header"
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Toán cao cấp A1"
-                android:textColor="#FFFFFF"
+                android:textColor="#0A0B10"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1 / 4"
-                android:textColor="#8A8D9F"
+                android:textColor="#0A0B10"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -160,14 +160,14 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/bg_circle_border_gray" android:src="@drawable/ic_chevron_left" app:tint="#FFFFFF"/>
+                android:background="@drawable/bg_circle_border_gray" android:src="@drawable/ic_chevron_left" app:tint="#0A0B10"/>
 
             <ImageButton
                 android:id="@+id/btn_study_next"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
-                android:background="@drawable/bg_circle_border_gray" android:src="@drawable/ic_chevron_right" app:tint="#FFFFFF"/>
+                android:background="@drawable/bg_circle_border_gray" android:src="@drawable/ic_chevron_right" app:tint="#0A0B10"/>
         </LinearLayout>
 
         <LinearLayout

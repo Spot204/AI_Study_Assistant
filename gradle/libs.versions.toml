@@ -9,6 +9,7 @@ activity = "1.13.0"
 constraintlayout = "2.2.1"
 room = "2.8.4"
 firebaseAuth = "24.1.0"
+ksp = "2.1.0-1.0.29"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -25,4 +26,4 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
