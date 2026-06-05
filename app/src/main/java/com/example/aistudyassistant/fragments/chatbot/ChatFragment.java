@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.chatbot;
+package com.example.aistudyassistant.fragments.chatbot;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -25,7 +25,6 @@ import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.ChatMessage;
 import com.example.aistudyassistant.database.entities.StudySessionEntity;
-// [ĐÃ THÊM] Sử dụng Repository chuẩn
 import com.example.aistudyassistant.data.repository.StudySessionRepository;
 import com.example.aistudyassistant.services.core.LLMService;
 
@@ -38,11 +37,11 @@ public class ChatFragment extends Fragment {
     private LinearLayout chatContainer;
 
     private LLMService llmService;
-    private StudySessionRepository sessionRepo; // Thay thế cho FirestoreService và AppDatabase
+    private StudySessionRepository sessionRepo;
     private StudySessionEntity currentSession;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private boolean isAiReady = false; // Biến kiểm soát trạng thái nạp Model
+    private boolean isAiReady = false;
 
     @Nullable
     @Override
@@ -60,47 +59,39 @@ public class ChatFragment extends Fragment {
 
         Context appContext = requireContext().getApplicationContext();
 
-        // 1. KHỞI TẠO REPOSITORY
         sessionRepo = new StudySessionRepository(AppDatabase.getDatabase(appContext).studySessionDao());
 
-        // 2. KHỞI TẠO PHIÊN CHAT VÀ LƯU VÀO REPOSITORY (Tự động lo Local + Cloud)
         currentSession = new StudySessionEntity(UUID.randomUUID().toString(), null, "chat");
         currentSession.setMessages(new ArrayList<>());
         currentSession.setStartedAt(System.currentTimeMillis());
         sessionRepo.insertSession(currentSession);
 
-        // 3. HIỂN THỊ TRẠNG THÁI NẠP MODEL
-        TextView loadingView = addMessage("Hệ thống đang nạp model AI vào RAM. Vui lòng đợi trong giây lát...", false);
-        btnSend.setEnabled(false); // Khóa nút gửi khi chưa load xong
+        TextView connectingView = addMessage("Đang kết nối với trí tuệ nhân tạo...", false);
+        btnSend.setEnabled(false); 
 
-        // 4. GỌI AI KHỞI ĐỘNG CHẠY NGẦM
         llmService = new LLMService();
         llmService.initializeModelAsync(appContext, new LLMService.InitializationCallback() {
             @Override
             public void onSuccess() {
                 mainHandler.post(() -> {
                     isAiReady = true;
-                    btnSend.setEnabled(true); // Mở khóa nút gửi
-                    chatContainer.removeView(loadingView);
-                    addMessage("Model AI đã sẵn sàng! Bạn cần tôi giúp gì?", false);
+                    btnSend.setEnabled(true);
+                    chatContainer.removeView(connectingView);
+                    addMessage("Trợ lý AI đã sẵn sàng hỗ trợ học tập! Bạn cần tóm tắt hay giải đáp nội dung gì?", false);
                 });
             }
 
             @Override
             public void onError(String errorMsg) {
                 mainHandler.post(() -> {
-                    chatContainer.removeView(loadingView);
-                    addMessage("Lỗi khởi tạo AI: " + errorMsg, false);
+                    chatContainer.removeView(connectingView);
+                    addMessage("Không thể kết nối AI: " + errorMsg, false);
                 });
             }
         });
 
-        // Tự động bật bàn phím
         if (edtChat != null) {
-            // Yêu cầu tập trung vào ô nhập liệu
             edtChat.requestFocus();
-
-            // Hiển thị bàn phím ảo tự động sau một khoảng trễ ngắn
             edtChat.postDelayed(() -> {
                 if (getContext() != null) {
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -123,20 +114,17 @@ public class ChatFragment extends Fragment {
         String message = edtChat.getText().toString().trim();
         if (message.isEmpty()) return;
 
-        // Hiển thị tin nhắn User
         addMessage(message, true);
         edtChat.setText("");
 
-        // Hiển thị trạng thái đang xử lý và khóa spam
         TextView typingView = addMessage("AI đang suy nghĩ...", false);
         btnSend.setEnabled(false);
 
-        // Gọi AI xử lý ngầm qua luồng Async
         llmService.generateResponseAsync(message, response -> {
             mainHandler.post(() -> {
                 chatContainer.removeView(typingView);
                 addMessage(response, false);
-                btnSend.setEnabled(true); // Mở lại nút gửi
+                btnSend.setEnabled(true);
             });
         });
     }
@@ -144,10 +132,8 @@ public class ChatFragment extends Fragment {
     private TextView addMessage(String text, boolean isUser) {
         if (!isAdded() || getContext() == null) return null;
 
-        // Chỉ lưu tin nhắn thật vào DB (Bỏ qua các thông báo hệ thống như "đang nạp", "đang suy nghĩ")
-        if (!text.contains("Hệ thống đang nạp") && !text.equals("AI đang suy nghĩ...")) {
+        if (!text.contains("Đang kết nối") && !text.equals("AI đang suy nghĩ...")) {
             currentSession.getMessages().add(new ChatMessage(text, isUser, System.currentTimeMillis()));
-            // Đẩy phần cập nhật lưu trữ cho Repository xử lý ngầm
             sessionRepo.updateSession(currentSession);
         }
 
@@ -174,7 +160,6 @@ public class ChatFragment extends Fragment {
         textView.setLayoutParams(params);
         chatContainer.addView(textView);
 
-        // Cuộn xuống dòng cuối cùng
         if (getView() != null) {
             NestedScrollView chatScrollView = getView().findViewById(R.id.chatScrollView);
             if (chatScrollView != null) {
@@ -189,12 +174,10 @@ public class ChatFragment extends Fragment {
         super.onDestroy();
         currentSession.setEndedAt(System.currentTimeMillis());
 
-        // Bàn giao toàn bộ việc lưu phiên cuối cùng cho Repository
         if (sessionRepo != null) {
             sessionRepo.updateSession(currentSession);
         }
 
-        // Đóng Model để giải phóng vài GB RAM cho điện thoại
         if (llmService != null) {
             llmService.close();
         }

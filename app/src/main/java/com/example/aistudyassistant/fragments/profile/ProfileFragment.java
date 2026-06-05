@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.profile;
+package com.example.aistudyassistant.fragments.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.features.auth.LoginActivity;
+import com.example.aistudyassistant.features.auth.AuthActivity;
+import com.example.aistudyassistant.features.profile.EditProfileActivity;
+import com.example.aistudyassistant.features.profile.HelpSupportActivity;
+import com.example.aistudyassistant.features.profile.NotificationsActivity;
 import com.example.aistudyassistant.services.auth.AuthService;
 import com.example.aistudyassistant.services.profile.ProfileService;
 
@@ -44,7 +47,7 @@ public class ProfileFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        Intent intent = new Intent(getActivity(), AuthActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         getActivity().finish();

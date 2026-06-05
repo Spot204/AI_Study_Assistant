@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.schedule;
+package com.example.aistudyassistant.fragments.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.aistudyassistant.database.AppDatabase;
 import java.util.ArrayList;
 
+import com.example.aistudyassistant.features.schedule.CreateScheduleActivity;
+import com.example.aistudyassistant.features.schedule.ScheduleAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -34,14 +36,14 @@ public class ScheduleFragment extends Fragment {
         adapter = new ScheduleAdapter(new ArrayList<>());
         rvTasks.setAdapter(adapter);
 
-        // [ĐÃ SỬA] 1. Lấy mã ID của người dùng đang đăng nhập (userId)
+        // 1. Lấy mã ID của người dùng đang đăng nhập (userId)
         String currentUserId = "";
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             currentUserId = currentUser.getUid();
         }
 
-        // [ĐÃ SỬA] 2. Truyền currentUserId vào bên trong getAllTasks(...)
+        // 2. Truyền currentUserId vào bên trong getAllTasks(...)
         AppDatabase.getDatabase(requireContext()).scheduleDao().getAllTasks(currentUserId).observe(getViewLifecycleOwner(), tasks -> {
             if (tasks != null) {
                 adapter.updateTasks(tasks);
