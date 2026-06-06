@@ -2,6 +2,7 @@ package com.example.aistudyassistant.fragments.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.example.aistudyassistant.services.auth.AuthService;
 
 public class LoginFragment extends Fragment {
 
+    private static final String TAG = "LoginFragment";
     private EditText edtEmail, edtPassword;
     private Button btnLogin;
     private TextView tvRegisterLink;
@@ -40,6 +42,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated: Initializing login fragment");
 
         authService = new AuthService();
         AppDatabase db = AppDatabase.getDatabase(requireContext());
@@ -55,7 +58,10 @@ public class LoginFragment extends Fragment {
             String email = edtEmail.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
 
+            Log.d(TAG, "Login button clicked for email: " + email);
+
             if (email.isEmpty() || password.isEmpty()) {
+                Log.w(TAG, "Login failed: Email or password empty");
                 Toast.makeText(getContext(), "Vui lòng nhập tài khoản/mật khẩu!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -63,6 +69,7 @@ public class LoginFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
 
             if (email.equals("admin@gmail.com") && password.equals("123456")) {
+                Log.i(TAG, "Admin bypass triggered");
                 User defaultUser = new User("default_id", "Admin User", "admin@gmail.com");
                 userRepository.saveUser(defaultUser);
                 if (getActivity() != null) {
@@ -75,9 +82,11 @@ public class LoginFragment extends Fragment {
                 return;
             }
 
+            Log.d(TAG, "Attempting Firebase login...");
             authService.Login(email, password, new AuthCallback() {
                 @Override
                 public void onSuccess(String uid) {
+                    Log.i(TAG, "Firebase login success, UID: " + uid);
                     String name = email.split("@")[0];
                     User user = new User(uid, name, email);
                     userRepository.saveUser(user);
@@ -93,6 +102,7 @@ public class LoginFragment extends Fragment {
 
                 @Override
                 public void onFailure(String error) {
+                    Log.e(TAG, "Firebase login failed: " + error);
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             progressBar.setVisibility(View.GONE);
@@ -104,11 +114,13 @@ public class LoginFragment extends Fragment {
         });
 
         tvRegisterLink.setOnClickListener(v -> {
+            Log.d(TAG, "Register link clicked");
             startActivity(new Intent(getActivity(), RegisterActivity.class));
         });
     }
 
     private void navigateToMain(String name, String email) {
+        Log.d(TAG, "Navigating to MainActivity for user: " + email);
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("USER_NAME", name);

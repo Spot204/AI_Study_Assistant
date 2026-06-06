@@ -3,6 +3,7 @@ package com.example.aistudyassistant.data.repository;
 import com.example.aistudyassistant.data.model.StudySessionFirestore;
 import com.example.aistudyassistant.database.dao.StudySessionDao;
 import com.example.aistudyassistant.database.entities.StudySessionEntity;
+import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class StudySessionRepository {
+    private static final String TAG = "StudySessionRepository";
     private final StudySessionDao studySessionDao;
     private final FirebaseFirestore firestore;
     private final FirebaseAuth auth;
@@ -39,6 +41,7 @@ public class StudySessionRepository {
      * Thêm một phiên học/chat mới (Offline-First)
      */
     public void insertSession(StudySessionEntity session) {
+        Log.d(TAG, "Inserting new session: " + session.getSessionId() + " (Type: " + session.getType() + ")");
         executorService.execute(() -> {
             // Bước 1: Lưu tức thì xuống SQLite để hiển thị UI không độ trễ
             studySessionDao.insertSession(session);
@@ -46,14 +49,19 @@ public class StudySessionRepository {
             // Bước 2: Thử đẩy lên Firebase Cloud
             String collectionPath = getUserCollectionPath();
             if (collectionPath != null) {
+                Log.d(TAG, "Syncing new session to Firebase: " + session.getSessionId());
                 StudySessionFirestore cloudModel = new StudySessionFirestore(session);
                 firestore.collection(collectionPath)
                         .document(session.getSessionId())
                         .set(cloudModel)
                         .addOnSuccessListener(aVoid -> executorService.execute(() -> {
+                            Log.i(TAG, "Session synced successfully: " + session.getSessionId());
                             session.setSyncStatus("synced");
                             studySessionDao.updateSession(session);
-                        }));
+                        }))
+                        .addOnFailureListener(e -> Log.e(TAG, "Failed to sync session: " + session.getSessionId(), e));
+            } else {
+                Log.w(TAG, "Cannot sync session: User not logged in");
             }
         });
     }
@@ -62,6 +70,7 @@ public class StudySessionRepository {
      * Cập nhật phiên học (Ví dụ: Thêm tin nhắn mới vào phiên chat)
      */
     public void updateSession(StudySessionEntity session) {
+        Log.d(TAG, "Updating session: " + session.getSessionId());
         session.setUpdatedAt(System.currentTimeMillis());
         session.setSyncStatus("pending_update");
 
@@ -75,9 +84,11 @@ public class StudySessionRepository {
                         .document(session.getSessionId())
                         .set(cloudModel)
                         .addOnSuccessListener(aVoid -> executorService.execute(() -> {
+                            Log.i(TAG, "Session update synced: " + session.getSessionId());
                             session.setSyncStatus("synced");
                             studySessionDao.updateSession(session);
-                        }));
+                        }))
+                        .addOnFailureListener(e -> Log.e(TAG, "Failed to sync session update: " + session.getSessionId(), e));
             }
         });
     }
@@ -106,12 +117,20 @@ public class StudySessionRepository {
      * HÀM UPLOAD: Quét các phiên học/chat chưa được đồng bộ (đang treo dưới máy) và đẩy lên Cloud
      */
     public void syncUnsyncedSessions() {
+        Log.i(TAG, "Starting background sync for unsynced sessions...");
         executorService.execute(() -> {
             List<StudySessionEntity> unsyncedList = studySessionDao.getUnsyncedSessions();
-            if (unsyncedList == null || unsyncedList.isEmpty()) return;
+            if (unsyncedList == null || unsyncedList.isEmpty()) {
+                Log.d(TAG, "No unsynced sessions found.");
+                return;
+            }
 
+            Log.d(TAG, "Found " + unsyncedList.size() + " unsynced sessions.");
             String collectionPath = getUserCollectionPath();
-            if (collectionPath == null) return;
+            if (collectionPath == null) {
+                Log.w(TAG, "Sync failed: User not logged in");
+                return;
+            }
 
             WriteBatch batch = firestore.batch();
             List<StudySessionEntity> sessionsToUpdateLocal = new ArrayList<>();
@@ -125,10 +144,11 @@ public class StudySessionRepository {
             }
 
             batch.commit().addOnSuccessListener(aVoid -> executorService.execute(() -> {
+                Log.i(TAG, "Batch sync successful for " + sessionsToUpdateLocal.size() + " sessions.");
                 for (StudySessionEntity session : sessionsToUpdateLocal) {
                     studySessionDao.updateSession(session);
                 }
-            }));
+            })).addOnFailureListener(e -> Log.e(TAG, "Batch sync failed", e));
         });
     }
 

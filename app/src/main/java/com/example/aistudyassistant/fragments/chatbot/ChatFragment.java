@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class ChatFragment extends Fragment {
+    private static final String TAG = "ChatFragment";
     private EditText edtChat;
     private ImageView btnSend;
     private LinearLayout chatContainer;
@@ -65,14 +67,17 @@ public class ChatFragment extends Fragment {
         currentSession.setMessages(new ArrayList<>());
         currentSession.setStartedAt(System.currentTimeMillis());
         sessionRepo.insertSession(currentSession);
+        Log.d(TAG, "Created new chat session: " + currentSession.getSessionId());
 
         TextView connectingView = addMessage("Đang kết nối với trí tuệ nhân tạo...", false);
-        btnSend.setEnabled(false); 
+        btnSend.setEnabled(false);
 
+        Log.i(TAG, "Initializing LLM Service...");
         llmService = new LLMService();
         llmService.initializeModelAsync(appContext, new LLMService.InitializationCallback() {
             @Override
             public void onSuccess() {
+                Log.i(TAG, "LLM Service initialized successfully");
                 mainHandler.post(() -> {
                     isAiReady = true;
                     btnSend.setEnabled(true);
@@ -83,6 +88,7 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void onError(String errorMsg) {
+                Log.e(TAG, "LLM Service initialization failed: " + errorMsg);
                 mainHandler.post(() -> {
                     chatContainer.removeView(connectingView);
                     addMessage("Không thể kết nối AI: " + errorMsg, false);
@@ -114,15 +120,21 @@ public class ChatFragment extends Fragment {
         String message = edtChat.getText().toString().trim();
         if (message.isEmpty()) return;
 
+        Log.d(TAG, "User sent message: " + message);
+
+        // Lưu tin nhắn của User vào danh sách VÀ in ra màn hình
         addMessage(message, true);
         edtChat.setText("");
 
         TextView typingView = addMessage("AI đang suy nghĩ...", false);
         btnSend.setEnabled(false);
 
-        llmService.generateResponseAsync(message, response -> {
+        // ĐÃ SỬA: Gọi đúng hàm đa lượt và truyền TOÀN BỘ danh sách tin nhắn vào
+        llmService.generateChatResponseAsync(currentSession.getMessages(), response -> {
+            Log.d(TAG, "AI response received: " + response);
             mainHandler.post(() -> {
                 chatContainer.removeView(typingView);
+                // Lưu tin nhắn của AI vào danh sách VÀ in ra màn hình
                 addMessage(response, false);
                 btnSend.setEnabled(true);
             });
@@ -132,6 +144,7 @@ public class ChatFragment extends Fragment {
     private TextView addMessage(String text, boolean isUser) {
         if (!isAdded() || getContext() == null) return null;
 
+        // Chỉ lưu những tin nhắn thật (Bỏ qua mấy câu thông báo hệ thống)
         if (!text.contains("Đang kết nối") && !text.equals("AI đang suy nghĩ...")) {
             currentSession.getMessages().add(new ChatMessage(text, isUser, System.currentTimeMillis()));
             sessionRepo.updateSession(currentSession);
@@ -172,6 +185,7 @@ public class ChatFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "onDestroy: Saving session and closing LLM Service");
         currentSession.setEndedAt(System.currentTimeMillis());
 
         if (sessionRepo != null) {
