@@ -2,31 +2,30 @@ package com.example.aistudyassistant.services.profile;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+import com.example.aistudyassistant.data.repository.UserRepository;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.dao.UserDao;
 import com.example.aistudyassistant.database.entities.User;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class ProfileService {
     private final UserDao userDao;
     private final AppDatabase db;
-    private final ExecutorService executorService;
+    private final UserRepository userRepository;
 
     public ProfileService(Context context) {
         this.db = AppDatabase.getDatabase(context);
         this.userDao = db.userDao();
-        this.executorService = Executors.newSingleThreadExecutor();
+        this.userRepository = new UserRepository(userDao);
     }
 
+    /**
+     * Lưu User đồng thời đồng bộ lên Firestore
+     */
     public void saveUser(User user, Runnable onComplete) {
-        executorService.execute(() -> {
-            userDao.insertUser(user);
-            if (onComplete != null) {
-                onComplete.run();
-            }
-        });
+        userRepository.saveUser(user);
+        if (onComplete != null) {
+            onComplete.run();
+        }
     }
 
     public LiveData<User> getCurrentUser() {
@@ -38,7 +37,7 @@ public class ProfileService {
     }
 
     public void logout(Runnable onComplete) {
-        executorService.execute(() -> {
+        new java.util.concurrent.ScheduledThreadPoolExecutor(1).execute(() -> {
             userDao.deleteAll();
             db.studySessionDao().deleteAll();
             if (onComplete != null) {

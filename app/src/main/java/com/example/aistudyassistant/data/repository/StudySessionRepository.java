@@ -41,29 +41,36 @@ public class StudySessionRepository {
      * Thêm một phiên học/chat mới (Offline-First)
      */
     public void insertSession(StudySessionEntity session) {
-        Log.d(TAG, "Inserting new session: " + session.getSessionId() + " (Type: " + session.getType() + ")");
+        if (session.getSessionId() == null || session.getSessionId().isEmpty()) {
+            session.setSessionId(java.util.UUID.randomUUID().toString());
+        }
+        session.setUpdatedAt(System.currentTimeMillis());
+        session.setSyncStatus("pending_insert");
+
+        Log.d(TAG, "Inserting new session: " + session.getSessionId());
         executorService.execute(() -> {
-            // Bước 1: Lưu tức thì xuống SQLite để hiển thị UI không độ trễ
+            // 1. Lưu SQLite trước
             studySessionDao.insertSession(session);
 
-            // Bước 2: Thử đẩy lên Firebase Cloud
-            String collectionPath = getUserCollectionPath();
-            if (collectionPath != null) {
-                Log.d(TAG, "Syncing new session to Firebase: " + session.getSessionId());
-                StudySessionFirestore cloudModel = new StudySessionFirestore(session);
-                firestore.collection(collectionPath)
-                        .document(session.getSessionId())
-                        .set(cloudModel)
-                        .addOnSuccessListener(aVoid -> executorService.execute(() -> {
-                            Log.i(TAG, "Session synced successfully: " + session.getSessionId());
-                            session.setSyncStatus("synced");
-                            studySessionDao.updateSession(session);
-                        }))
-                        .addOnFailureListener(e -> Log.e(TAG, "Failed to sync session: " + session.getSessionId(), e));
-            } else {
-                Log.w(TAG, "Cannot sync session: User not logged in");
-            }
+            // 2. Thử đẩy lên Firebase Cloud
+            syncSessionToCloud(session);
         });
+    }
+
+    private void syncSessionToCloud(StudySessionEntity session) {
+        String collectionPath = getUserCollectionPath();
+        if (collectionPath != null) {
+            StudySessionFirestore cloudModel = new StudySessionFirestore(session);
+            firestore.collection(collectionPath)
+                    .document(session.getSessionId())
+                    .set(cloudModel)
+                    .addOnSuccessListener(aVoid -> executorService.execute(() -> {
+                        session.setSyncStatus("synced");
+                        studySessionDao.updateSession(session);
+                        Log.i(TAG, "Session synced: " + session.getSessionId());
+                    }))
+                    .addOnFailureListener(e -> Log.e(TAG, "Sync failed for " + session.getSessionId(), e));
+        }
     }
 
     /**

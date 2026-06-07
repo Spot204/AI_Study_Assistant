@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.flashcard.adapters;
+package com.example.aistudyassistant.features.flashcard;
 
 import android.view.LayoutInflater;
 import android.view.View;

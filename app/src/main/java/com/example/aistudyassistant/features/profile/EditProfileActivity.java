@@ -9,7 +9,6 @@ import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class EditProfileActivity extends AppCompatActivity {
-
     private EditText edtFullName, edtEmail, edtBio, edtSchool;
     private ProfileService profileService;
     private User currentUser;

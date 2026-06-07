@@ -11,27 +11,31 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.aistudyassistant.MainActivity;
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.auth.RegisterActivity;
 import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.data.repository.UserRepository;
-import com.example.aistudyassistant.services.auth.AuthCallback;
+import com.example.aistudyassistant.fragments.home.HomeFragment;
 import com.example.aistudyassistant.services.auth.AuthService;
+import com.example.aistudyassistant.features.auth.LoginController;
+import com.example.aistudyassistant.features.auth.LoginView;
 
-public class LoginFragment extends Fragment {
+// Chú ý: Thêm "implements LoginView"
+public class LoginFragment extends Fragment implements LoginView {
 
     private static final String TAG = "LoginFragment";
     private EditText edtEmail, edtPassword;
     private Button btnLogin;
     private TextView tvRegisterLink;
     private ProgressBar progressBar;
-    private AuthService authService;
-    private UserRepository userRepository;
+
+    // Khai báo Controller
+    private LoginController loginController;
 
     @Nullable
     @Override
@@ -42,92 +46,80 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated: Initializing login fragment");
 
-        authService = new AuthService();
-        AppDatabase db = AppDatabase.getDatabase(requireContext());
-        userRepository = new UserRepository(db.userDao());
-
+        // Ánh xạ View
         edtEmail = view.findViewById(R.id.edtEmail);
         edtPassword = view.findViewById(R.id.edtPassword);
         btnLogin = view.findViewById(R.id.btnLogin);
         tvRegisterLink = view.findViewById(R.id.tvRegisterLink);
         progressBar = view.findViewById(R.id.progressBar);
 
+        // Khởi tạo Controller (Cung cấp đồ nghề cho nó)
+        AuthService authService = new AuthService();
+        AppDatabase db = AppDatabase.getDatabase(requireContext());
+        UserRepository userRepository = new UserRepository(db.userDao());
+
+        loginController = new LoginController(this, authService, userRepository);
+
+        // ============ CHỈ BẮT SỰ KIỆN CLICK ============
+
         btnLogin.setOnClickListener(v -> {
             String email = edtEmail.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
-
             Log.d(TAG, "Login button clicked for email: " + email);
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Log.w(TAG, "Login failed: Email or password empty");
-                Toast.makeText(getContext(), "Vui lòng nhập tài khoản/mật khẩu!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            progressBar.setVisibility(View.VISIBLE);
-
-            if (email.equals("admin@gmail.com") && password.equals("123456")) {
-                Log.i(TAG, "Admin bypass triggered");
-                User defaultUser = new User("default_id", "Admin User", "admin@gmail.com");
-                userRepository.saveUser(defaultUser);
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Đăng nhập mặc định thành công!", Toast.LENGTH_SHORT).show();
-                        navigateToMain("Admin User", "admin@gmail.com");
-                    });
-                }
-                return;
-            }
-
-            Log.d(TAG, "Attempting Firebase login...");
-            authService.Login(email, password, new AuthCallback() {
-                @Override
-                public void onSuccess(String uid) {
-                    Log.i(TAG, "Firebase login success, UID: " + uid);
-                    String name = email.split("@")[0];
-                    User user = new User(uid, name, email);
-                    userRepository.saveUser(user);
-
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                            navigateToMain(name, email);
-                        });
-                    }
-                }
-
-                @Override
-                public void onFailure(String error) {
-                    Log.e(TAG, "Firebase login failed: " + error);
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getContext(), "Lỗi: " + error, Toast.LENGTH_SHORT).show();
-                        });
-                    }
-                }
-            });
+            // Đẩy hết việc khó cho Controller lo!
+            loginController.performLogin(email, password);
         });
 
         tvRegisterLink.setOnClickListener(v -> {
-            Log.d(TAG, "Register link clicked");
-            startActivity(new Intent(getActivity(), RegisterActivity.class));
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadFragment(new RegisterFragment());
+            }
         });
     }
 
-    private void navigateToMain(String name, String email) {
-        Log.d(TAG, "Navigating to MainActivity for user: " + email);
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("USER_NAME", name);
-        intent.putExtra("USER_EMAIL", email);
-        startActivity(intent);
+    // ============ CÁC HÀM THỰC THI GIAO DIỆN TỪ LOGIN_VIEW ============
+
+    @Override
+    public void showLoading() {
         if (getActivity() != null) {
-            getActivity().finish();
+            getActivity().runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> progressBar.setVisibility(View.GONE));
+        }
+    }
+
+    @Override
+    public void showError(String message) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
+        }
+    }
+
+    @Override
+    public void showSuccess(String message) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
+        }
+    }
+
+    @Override
+    public void navigateToMain(String name, String email) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("USER_NAME", name);
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                getActivity().finish();
+            });
         }
     }
 }
