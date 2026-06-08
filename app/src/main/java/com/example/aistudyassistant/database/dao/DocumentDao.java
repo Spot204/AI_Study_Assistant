@@ -1,5 +1,6 @@
 package com.example.aistudyassistant.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -21,7 +22,7 @@ public interface DocumentDao {
     void deleteDocument(DocumentEntity document);
 
     @Query("SELECT * FROM documents WHERE userId = :userId ORDER BY uploadedAt DESC")
-    List<DocumentEntity> getDocumentsByUser(String userId);
+    LiveData<List<DocumentEntity>> getDocumentsByUser(String userId);
 
     @Query("SELECT * FROM documents WHERE documentId = :id LIMIT 1")
     DocumentEntity getDocumentById(String id);

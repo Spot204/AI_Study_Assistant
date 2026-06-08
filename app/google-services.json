@@ -12,7 +12,20 @@
           "package_name": "com.example.aistudyassistant"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "997673950223-gqcnq5lfagba3am1r36bm8srl3anhrj7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aistudyassistant",
+            "certificate_hash": "75d5752f4922d8b54b512cb5d82cdb38fe4a06af"
+          }
+        },
+        {
+          "client_id": "997673950223-is3agu30lp5fs0djvaohsuruhbvtn9u7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCh8eBVqhcncjOqB5fARd5tr7afHDJFGTc"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997673950223-is3agu30lp5fs0djvaohsuruhbvtn9u7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -103,4 +103,24 @@ public class UserRepository {
             }
         });
     }
+
+    /**
+     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy
+     */
+    public void downloadUserFromServer(String userId) {
+        firestore.collection(COLLECTION_NAME)
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        User remoteUser = documentSnapshot.toObject(User.class);
+                        if (remoteUser != null) {
+                            executorService.execute(() -> {
+                                remoteUser.setSyncStatus("synced");
+                                userDao.insertUser(remoteUser);
+                            });
+                        }
+                    }
+                });
+    }
 }

@@ -9,6 +9,20 @@ import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.database.AppDatabase;
 // [ĐÃ SỬA] Import Repository mới thay cho FirestoreService cũ
 import com.example.aistudyassistant.data.repository.StudySessionRepository;
+import com.example.aistudyassistant.data.repository.UserRepository;
+import com.example.aistudyassistant.data.repository.UserStatsRepository;
+import com.example.aistudyassistant.data.repository.StudySetRepository;
+import com.example.aistudyassistant.data.repository.FlashcardRepository;
+import com.example.aistudyassistant.data.repository.DocumentRepository;
+import com.example.aistudyassistant.data.repository.QuizRepository;
+import com.example.aistudyassistant.data.repository.ScheduleRepository;
+import com.example.aistudyassistant.data.repository.LearningGoalRepository;
+import com.example.aistudyassistant.services.SyncWorker;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import java.util.concurrent.TimeUnit;
 
 import com.example.aistudyassistant.fragments.home.HomeFragment;
 import com.example.aistudyassistant.fragments.chatbot.ChatFragment;
@@ -47,19 +61,34 @@ public class MainActivity extends AppCompatActivity {
         // 💥 KHỞI ĐỘNG CÁC LUỒNG ĐỒNG BỘ DỮ LIỆU TỰ ĐỘNG (BACKGROUND SYNC)
         // =================================================================
 
-        // Khởi tạo Repository và gọi hàm đồng bộ các phiên học (Study Sessions) chưa được đẩy lên mạng
-        StudySessionRepository sessionRepo = new StudySessionRepository(
-                AppDatabase.getDatabase(this).studySessionDao()
+        AppDatabase db = AppDatabase.getDatabase(this);
+
+        // 1. Chạy đồng bộ ngay lập tức cho tất cả repositories
+        new UserRepository(db.userDao()).syncUnsyncedUsers();
+        new UserStatsRepository(db.userStatsDao()).syncUnsyncedStats();
+        new StudySetRepository(db.studySetDao()).syncUnsyncedStudySets();
+        new FlashcardRepository(db.flashcardDao()).syncUnsyncedFlashcards();
+        new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
+        new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
+        new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();
+        new ScheduleRepository(db.scheduleDao()).syncUnsyncedTasks();
+        new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
+
+        // 2. Thiết lập WorkManager để đồng bộ định kỳ mỗi 15 phút
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest syncRequest = new PeriodicWorkRequest.Builder(
+                SyncWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "CloudSyncWork",
+                androidx.work.ExistingPeriodicWorkPolicy.KEEP,
+                syncRequest
         );
-        sessionRepo.syncUnsyncedSessions();
-
-        /* 💡 GỢI Ý MỞ RỘNG:
-           Sau này, nếu bạn muốn app tự động đồng bộ cả Lịch trình (Schedule) và Tài liệu (Document)
-           ngay khi mở app, bạn chỉ cần gọi thêm các Repository tương ứng ở đây. Ví dụ:
-
-           ScheduleRepository scheduleRepo = new ScheduleRepository(AppDatabase.getDatabase(this).scheduleDao());
-           scheduleRepo.uploadUnsyncedTasksToServer();
-        */
 
         // =================================================================
 
