@@ -82,4 +82,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Thư viện AI quét chữ từ ảnh
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+
+    // Thư viện bóc tách chữ từ file PDF (Để làm bước tiếp theo luôn)
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
 }
