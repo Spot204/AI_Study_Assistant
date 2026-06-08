@@ -4,32 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0B10"
+    android:background="#FFFFFF"
     android:padding="20dp">
-
-    <ImageButton
-        android:id="@+id/btn_fc_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_circle_gradient"
-        android:src="@drawable/ic_arrow_left"
-        android:contentDescription="Quay lại"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="#FFFFFF" />
 
     <TextView
         android:id="@+id/tv_fc_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:text="Flashcards"
-        android:textColor="#FFFFFF"
+        android:textColor="#111827"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_fc_back"
-        app:layout_constraintStart_toEndOf="@+id/btn_fc_back"
-        app:layout_constraintTop_toTopOf="@+id/btn_fc_back" />
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <ImageButton
         android:id="@+id/btn_fc_add"
@@ -40,27 +27,26 @@
         android:contentDescription="Thêm mới"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#FFFFFF" />
+        app:tint="#111827" />
 
     <EditText
         android:id="@+id/et_fc_search"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="24dp"
         android:background="@drawable/bg_input_field"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
         android:hint="Tìm kiếm bộ thẻ..."
+        android:importantForAutofill="no"
+        android:inputType="text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#8A8D9F"
+        android:textColor="#111827"
+        android:textColorHint="#6B7280"
         android:textSize="15sp"
-        android:inputType="text"
-        android:importantForAutofill="no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_fc_back" />
+        tools:layout_editor_absoluteY="84dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_fc_ai_banner"
@@ -103,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Upload tài liệu để tạo tự động"
-            android:textColor="#8A8D9F"
+            android:textColor="#E5E7EB"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/tv_fc_ai_title"
             app:layout_constraintStart_toStartOf="@+id/tv_fc_ai_title"
@@ -129,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Bộ thẻ của bạn"
-        android:textColor="#FFFFFF"
+        android:textColor="#111827"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

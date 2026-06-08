@@ -36,7 +36,7 @@ public class FlashcardFragment extends Fragment {
         profileService = new ProfileService(requireContext());
 
         rvDecks = view.findViewById(R.id.rv_fc_decks);
-        btnBack = view.findViewById(R.id.btn_fc_back);
+        //btnBack = view.findViewById(R.id.btn_fc_back);
         btnAdd = view.findViewById(R.id.btn_fc_add);
 
         rvDecks.setLayoutManager(new LinearLayoutManager(requireContext()));

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    app:cardBackgroundColor="#161824"
-    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="#F3F4F6" app:cardCornerRadius="20dp"
     app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +17,8 @@
             android:id="@+id/cv_deck_icon_bg"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:cardBackgroundColor="#7C4DFF" app:cardCornerRadius="16dp" app:cardElevation="0dp"
+            app:cardBackgroundColor="#7C4DFF" app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -30,17 +30,14 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_deck_book"
                 android:contentDescription="Icon môn học"
-                app:tint="#FFFFFF" />
-        </androidx.cardview.widget.CardView>
+                app:tint="#FFFFFF" /> </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_deck_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            tools:text="Toán cao cấp A1"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:text="Toán cao cấp A1"            android:textColor="#111827" android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cv_deck_icon_bg"
@@ -52,8 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             tools:text="45 thẻ"
-            android:textColor="#8A8D9F"
-            android:textSize="14sp"
+            android:textColor="#4B5563" android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/tv_deck_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_deck_title" />
 
@@ -66,8 +62,7 @@
             android:layout_marginEnd="16dp"
             android:max="100"
             tools:progress="75"
-            android:progressDrawable="@drawable/progress_custom"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:progressDrawable="@drawable/progress_custom" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_deck_progress_text"
             app:layout_constraintStart_toStartOf="@+id/tv_deck_count"
             app:layout_constraintTop_toBottomOf="@+id/tv_deck_count" />
@@ -77,8 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="75%"
-            android:textColor="#8A8D9F"
-            android:textSize="12sp"
+            android:textColor="#4B5563" android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/pb_deck_progress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/pb_deck_progress" />

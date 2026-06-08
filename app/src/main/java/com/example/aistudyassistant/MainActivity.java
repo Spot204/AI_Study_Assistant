@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Đã đăng nhập -> Load HomeFragment và chạy đồng bộ
             syncData();
+
             if (savedInstanceState == null) {
                 loadFragment(new HomeFragment());
             }
