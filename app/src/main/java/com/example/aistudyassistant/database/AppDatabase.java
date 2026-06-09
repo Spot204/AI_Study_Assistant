@@ -42,6 +42,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DocumentDao documentDao();
     public abstract FlashcardDao flashcardDao();
     public abstract QuizDao quizDao();
+    public abstract UserStatsDao userStatsDao();
+    public abstract LearningGoalDao learningGoalDao();
 
     // =================================================================
 

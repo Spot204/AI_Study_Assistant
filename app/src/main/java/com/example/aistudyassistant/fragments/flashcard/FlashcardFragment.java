@@ -36,7 +36,6 @@ public class FlashcardFragment extends Fragment {
         profileService = new ProfileService(requireContext());
 
         rvDecks = view.findViewById(R.id.rv_fc_decks);
-        //btnBack = view.findViewById(R.id.btn_fc_back);
         btnAdd = view.findViewById(R.id.btn_fc_add);
 
         rvDecks.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -46,12 +45,6 @@ public class FlashcardFragment extends Fragment {
         profileService.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
                 loadStudySets(user.getUserId());
-            }
-        });
-
-        btnBack.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
             }
         });
 

@@ -47,10 +47,9 @@ public class ProfileFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), LoginFragment.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if (getActivity() instanceof com.example.aistudyassistant.MainActivity) {
+                            ((com.example.aistudyassistant.MainActivity) getActivity()).loadFragment(new LoginFragment());
+                        }
                     });
                 }
             });

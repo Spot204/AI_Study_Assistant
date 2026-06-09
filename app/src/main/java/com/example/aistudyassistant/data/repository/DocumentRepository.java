@@ -1,5 +1,6 @@
 package com.example.aistudyassistant.data.repository;
 
+import androidx.lifecycle.LiveData;
 import com.example.aistudyassistant.database.dao.DocumentDao;
 import com.example.aistudyassistant.database.entities.DocumentEntity;
 import com.example.aistudyassistant.data.model.DocumentFirestore;
@@ -78,6 +79,10 @@ public class DocumentRepository {
                     .document(document.getDocumentId())
                     .delete();
         });
+    }
+
+    public LiveData<List<DocumentEntity>> getAllDocuments(String userId) {
+        return documentDao.getDocumentsByUser(userId);
     }
 
     // =================================================================

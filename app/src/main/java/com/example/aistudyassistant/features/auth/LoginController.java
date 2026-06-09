@@ -44,13 +44,27 @@ public class LoginController {
         authService.Login(email, password, new AuthCallback() {
             @Override
             public void onSuccess(String uid) {
-                String name = email.split("@")[0];
-                User user = new User(uid, name, email);
-                userRepository.saveUser(user);
+                // Thử tải dữ liệu người dùng từ Cloud về Local SQL
+                userRepository.downloadUserFromServer(uid, new UserRepository.UserDownloadCallback() {
+                    @Override
+                    public void onSuccess(User user) {
+                        view.hideLoading();
+                        view.showSuccess("Đăng nhập thành công!");
+                        view.navigateToMain(user.getFullName(), user.getEmail());
+                    }
 
-                view.hideLoading();
-                view.showSuccess("Đăng nhập thành công!");
-                view.navigateToMain(name, email);
+                    @Override
+                    public void onFailure(String error) {
+                        // Nếu không thấy trên Cloud (lỗi hiếm), tạo bản ghi tạm ở Local
+                        String name = email.split("@")[0];
+                        User newUser = new User(uid, name, email);
+                        userRepository.saveUser(newUser);
+
+                        view.hideLoading();
+                        view.showSuccess("Đăng nhập thành công!");
+                        view.navigateToMain(name, email);
+                    }
+                });
             }
 
             @Override

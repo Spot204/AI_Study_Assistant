@@ -1,5 +1,6 @@
 package com.example.aistudyassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,21 @@ import androidx.fragment.app.Fragment;
 
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.data.repository.StudySessionRepository;
+import com.example.aistudyassistant.data.repository.UserRepository;
+import com.example.aistudyassistant.data.repository.UserStatsRepository;
+import com.example.aistudyassistant.data.repository.StudySetRepository;
+import com.example.aistudyassistant.data.repository.FlashcardRepository;
+import com.example.aistudyassistant.data.repository.DocumentRepository;
+import com.example.aistudyassistant.data.repository.QuizRepository;
+import com.example.aistudyassistant.data.repository.ScheduleRepository;
+import com.example.aistudyassistant.data.repository.LearningGoalRepository;
+import com.example.aistudyassistant.services.SyncWorker;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import java.util.concurrent.TimeUnit;
+
 import com.example.aistudyassistant.fragments.home.HomeFragment;
 import com.example.aistudyassistant.fragments.chatbot.ChatFragment;
 import com.example.aistudyassistant.fragments.quiz.QuizFragment;
@@ -14,19 +30,12 @@ import com.example.aistudyassistant.fragments.schedule.ScheduleFragment;
 import com.example.aistudyassistant.fragments.profile.ProfileFragment;
 import com.example.aistudyassistant.fragments.flashcard.FlashcardFragment;
 import com.example.aistudyassistant.fragments.auth.LoginFragment;
-import com.example.aistudyassistant.fragments.auth.RegisterFragment; // Cần import để check ẩn/hiện
-import com.example.aistudyassistant.services.SyncWorker;
+import com.example.aistudyassistant.fragments.auth.RegisterFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,18 +48,51 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNavigation);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-        // Kiểm tra đăng nhập
-        if (mAuth.getCurrentUser() == null) {
-            // Chưa đăng nhập -> Load LoginFragment
+        String userEmail = getIntent().getStringExtra("USER_EMAIL");
+        
+        if (mAuth.getCurrentUser() == null && userEmail == null) {
             loadFragment(new LoginFragment());
-        } else {
-            // Đã đăng nhập -> Load HomeFragment và chạy đồng bộ
-            syncData();
+            return;
+        }
 
-            if (savedInstanceState == null) {
-                loadFragment(new HomeFragment());
-            }
+        // =================================================================
+        // 💥 KHỞI ĐỘNG CÁC LUỒNG ĐỒNG BỘ DỮ LIỆU TỰ ĐỘNG (BACKGROUND SYNC)
+        // =================================================================
+
+        AppDatabase db = AppDatabase.getDatabase(this);
+
+        // 1. Chạy đồng bộ ngay lập tức cho tất cả repositories
+        new UserRepository(db.userDao()).syncUnsyncedUsers();
+        new UserStatsRepository(db.userStatsDao()).syncUnsyncedStats();
+        new StudySetRepository(db.studySetDao()).syncUnsyncedStudySets();
+        new FlashcardRepository(db.flashcardDao()).syncUnsyncedFlashcards();
+        new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
+        new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
+        new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();
+        new ScheduleRepository(db.scheduleDao()).syncUnsyncedTasks();
+        new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
+
+        // 2. Thiết lập WorkManager để đồng bộ định kỳ mỗi 15 phút
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest syncRequest = new PeriodicWorkRequest.Builder(
+                SyncWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "CloudSyncWork",
+                ExistingPeriodicWorkPolicy.KEEP,
+                syncRequest
+        );
+
+        // =================================================================
+
+        // Hiển thị màn hình Home mặc định khi ứng dụng khởi động
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
         }
 
         bottomNav.setOnItemSelectedListener(item -> {
@@ -74,39 +116,20 @@ public class MainActivity extends AppCompatActivity {
 
     // Hàm loadFragment thông minh: tự ẩn/hiện BottomNav
     public void loadFragment(Fragment fragment) {
+        if (bottomNav == null) {
+            bottomNav = findViewById(R.id.bottomNavigation);
+        }
+
         // Nếu là trang Auth thì ẩn thanh điều hướng
         if (fragment instanceof LoginFragment || fragment instanceof RegisterFragment) {
-            bottomNav.setVisibility(View.GONE);
+            if (bottomNav != null) bottomNav.setVisibility(View.GONE);
         } else {
-            bottomNav.setVisibility(View.VISIBLE);
+            if (bottomNav != null) bottomNav.setVisibility(View.VISIBLE);
         }
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
-    }
-
-    private void syncData() {
-        // 1. Chạy đồng bộ ngay lập tức cho các phiên học chưa lưu
-        StudySessionRepository sessionRepo = new StudySessionRepository(
-                AppDatabase.getDatabase(this).studySessionDao()
-        );
-        sessionRepo.syncUnsyncedSessions();
-
-        // 2. Thiết lập WorkManager để tự động đồng bộ định kỳ mỗi 15 phút khi có mạng
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        PeriodicWorkRequest syncRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "DataSync",
-                ExistingPeriodicWorkPolicy.KEEP,
-                syncRequest
-        );
     }
 }
