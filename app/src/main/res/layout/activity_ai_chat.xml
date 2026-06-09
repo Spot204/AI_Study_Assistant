@@ -8,6 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
         android:layout_height="72dp"
         android:paddingHorizontal="16dp"
         android:background="@color/white"
@@ -136,34 +137,9 @@
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-
-        <ImageView
-            android:id="@+id/btnCamera"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:contentDescription="@string/app_name"
-            android:padding="8dp"
-            android:src="@android:drawable/ic_menu_camera"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text_sub" />
-
-        <ImageView
-            android:id="@+id/btnGallery"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:contentDescription="@string/app_name"
-            android:padding="8dp"
-            android:src="@android:drawable/ic_menu_gallery"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnCamera"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text_sub" />
-
         <EditText
             android:id="@+id/edtChat"
-            android:layout_width="0dp"
+            android:layout_width="330dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="8dp"
             android:background="@drawable/bg_input_field"
@@ -177,7 +153,6 @@
             android:focusableInTouchMode="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnSend"
-            app:layout_constraintStart_toEndOf="@id/btnGallery"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
