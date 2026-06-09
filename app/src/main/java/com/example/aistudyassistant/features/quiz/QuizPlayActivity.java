@@ -205,7 +205,55 @@ public class QuizPlayActivity extends AppCompatActivity {
     }
 
     private void showResults() {
+        long endTime = System.currentTimeMillis();
+        int durationMinutes = (int) ((endTime - startTime) / 60000);
+        if (durationMinutes < 1) durationMinutes = 1; // Tối thiểu 1 phút để ghi nhận
+
+        String quizId = getIntent().getStringExtra("QUIZ_ID");
+        if (quizId == null) quizId = "default_quiz"; // Fallback
+
+        int finalScore = score;
+        int totalQuestions = questionList.size();
+        int duration = durationMinutes;
+        String finalQuizId = quizId;
+
+        com.example.aistudyassistant.database.AppDatabase db = com.example.aistudyassistant.database.AppDatabase.getDatabase(this);
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            com.example.aistudyassistant.database.entities.StudySessionEntity session = 
+                new com.example.aistudyassistant.database.entities.StudySessionEntity(
+                    java.util.UUID.randomUUID().toString(),
+                    "test_user_id", // Replace with real userId
+                    "quiz",
+                    finalQuizId,
+                    System.currentTimeMillis(),
+                    duration
+                );
+            session.setScore(finalScore + "/" + totalQuestions);
+            db.studySessionDao().insertSession(session);
+
+            // Cập nhật điểm cao nhất
+            com.example.aistudyassistant.database.entities.QuizEntity quiz = db.quizDao().getQuizById(finalQuizId);
+            if (quiz != null) {
+                int scorePercent = (finalScore * 100 / totalQuestions);
+                if (scorePercent > quiz.getBestScore()) {
+                    quiz.setBestScore(scorePercent);
+                    db.quizDao().updateQuiz(quiz);
+                }
+            }
+
+            // Cập nhật mục tiêu học tập (ví dụ: cộng thêm thời gian học)
+            List<com.example.aistudyassistant.database.entities.LearningGoalEntity> goals = db.learningGoalDao().getGoalsByUser("test_user_id");
+            if (goals != null && !goals.isEmpty()) {
+                com.example.aistudyassistant.database.entities.LearningGoalEntity dailyGoal = goals.get(0);
+                dailyGoal.setCurrentValue(dailyGoal.getCurrentValue() + duration);
+                db.learningGoalDao().updateGoal(dailyGoal);
+            }
+        });
+
         Intent intent = new Intent(this, QuizResultActivity.class);
+        intent.putExtra("SCORE", score);
+        intent.putExtra("TOTAL", questionList.size());
+        intent.putExtra("TIME", tvTimer.getText().toString());
         startActivity(intent);
         finish();
     }

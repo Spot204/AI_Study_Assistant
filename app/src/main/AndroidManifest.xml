@@ -49,6 +49,10 @@
         <activity
             android:name="com.example.aistudyassistant.features.quiz.QuizResultActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".fragments.FlashcardStudyActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

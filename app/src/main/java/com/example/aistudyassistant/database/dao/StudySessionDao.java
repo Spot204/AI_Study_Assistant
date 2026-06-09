@@ -19,6 +19,9 @@ public interface StudySessionDao {
     @Query("SELECT * FROM study_sessions WHERE userId = :userId ORDER BY startedAt DESC")
     List<StudySessionEntity> getSessionsByUser(String userId);
 
+    @Query("SELECT SUM(durationMinutes) FROM study_sessions WHERE userId = :userId AND startedAt >= :startTime")
+    int getTotalDurationSince(String userId, long startTime);
+
     @Query("SELECT * FROM study_sessions WHERE sessionId = :sessionId LIMIT 1")
     StudySessionEntity getSessionById(String sessionId);
 

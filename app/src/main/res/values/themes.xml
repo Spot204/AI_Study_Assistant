@@ -6,6 +6,10 @@
 
     <style name="Theme.AiStudyAssistant" parent="Base.Theme.AiStudyAssistant" />
 
+    <style name="CircleImage" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
     <!-- Style cao cấp cho Indicator (Hình viên thuốc dẹt, hiện đại) -->
     <style name="CustomIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">#EEF2FF</item> <!-- Màu Indigo nhạt thanh lịch -->
