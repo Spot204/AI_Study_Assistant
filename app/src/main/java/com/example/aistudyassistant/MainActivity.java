@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
         new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
         new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();
-        new ScheduleRepository(db.scheduleDao()).syncUnsyncedTasks();
+        new ScheduleRepository(this, db.scheduleDao()).syncUnsyncedTasks();
         new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
 
         // 2. Thiết lập WorkManager để đồng bộ định kỳ mỗi 15 phút

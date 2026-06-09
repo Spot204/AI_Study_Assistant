@@ -37,9 +37,13 @@ public class FlashcardRepository {
         if (flashcards == null || flashcards.isEmpty()) return;
 
         executorService.execute(() -> {
+            String currentUserId = (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
             long now = System.currentTimeMillis();
             for (FlashcardEntity card : flashcards) {
-                card.setUpdatedAt(System.currentTimeMillis());
+                if (currentUserId != null) {
+                    card.setUserId(currentUserId);
+                }
+                card.setUpdatedAt(now);
                 card.setSyncStatus("pending_insert");
                 flashcardDao.insertFlashcard(card);
             }

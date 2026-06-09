@@ -78,6 +78,15 @@
                     android:text="08:00 - 09:30"
                     android:textColor="@color/text_sub"
                     android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/ivReminderIcon"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@android:drawable/ic_lock_idle_alarm"
+                    android:visibility="gone"
+                    app:tint="@color/purple_primary" />
             </LinearLayout>
         </LinearLayout>
 
@@ -90,7 +99,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/card_border" />
+            app:tint="@color/text_sub" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

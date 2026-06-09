@@ -43,6 +43,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         } else {
             holder.ivStatus.setImageResource(android.R.drawable.checkbox_off_background);
         }
+
+        if (task.getReminderMinutes() > 0) {
+            holder.ivReminderIcon.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivReminderIcon.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -52,7 +58,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTaskTitle, tvTaskTime;
-        ImageView ivStatus, ivTaskIcon;
+        ImageView ivStatus, ivTaskIcon, ivReminderIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +66,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             tvTaskTime = itemView.findViewById(R.id.tvTaskTime);
             ivStatus = itemView.findViewById(R.id.ivStatus);
             ivTaskIcon = itemView.findViewById(R.id.ivTaskIcon);
+            ivReminderIcon = itemView.findViewById(R.id.ivReminderIcon);
         }
     }
 }

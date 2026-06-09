@@ -30,7 +30,7 @@ public class SyncWorker extends Worker {
             DocumentRepository documentRepo = new DocumentRepository(db.documentDao());
             StudySessionRepository studySessionRepo = new StudySessionRepository(db.studySessionDao());
             QuizRepository quizRepo = new QuizRepository(db.quizDao());
-            ScheduleRepository scheduleRepo = new ScheduleRepository(db.scheduleDao());
+            ScheduleRepository scheduleRepo = new ScheduleRepository(getApplicationContext(), db.scheduleDao());
             LearningGoalRepository learningGoalRepo = new LearningGoalRepository(db.learningGoalDao());
 
             String currentUid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();

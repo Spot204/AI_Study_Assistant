@@ -34,6 +34,9 @@ public class StudySetRepository {
     }
 
     public void insertSet(StudySetEntity studySet, OnSuccessCallback callback) {
+        if (auth.getCurrentUser() != null) {
+            studySet.setUserId(auth.getCurrentUser().getUid());
+        }
         studySet.setUpdatedAt(System.currentTimeMillis());
         studySet.setSyncStatus("pending_insert");
         executorService.execute(() -> {

@@ -17,6 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.data.repository.ScheduleRepository;
+import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.ScheduleTask;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
@@ -41,6 +44,8 @@ public class CreateScheduleFragment extends Fragment {
     private MaterialCardView typeReview, typeQuiz, typeFlashcard, typeReading;
     private String selectedTaskType = "Review";
 
+    private ScheduleRepository scheduleRepository;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +55,9 @@ public class CreateScheduleFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Khởi tạo Repository
+        scheduleRepository = new ScheduleRepository(requireContext(), AppDatabase.getDatabase(requireContext()).scheduleDao());
 
         initViews(view);
         setupTaskTypeListeners();
@@ -204,7 +212,29 @@ public class CreateScheduleFragment extends Fragment {
             System.out.println("Reminder: " + reminder);
             System.out.println("Repeat: " + repeat);
 
-            Toast.makeText(requireContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
+            // THỰC HIỆN LƯU VÀO DATABASE
+            ScheduleTask newTask = new ScheduleTask();
+            newTask.setTitle(title);
+            newTask.setType(selectedTaskType);
+            newTask.setDate(date);
+            newTask.setStartTime(startTime);
+            newTask.setEndTime(endTime);
+            
+            // Chuyển đổi Reminder sang phút
+            int reminderMin = 0;
+            if (reminder.contains("5 phút")) reminderMin = 5;
+            else if (reminder.contains("10 phút")) reminderMin = 10;
+            else if (reminder.contains("15 phút")) reminderMin = 15;
+            else if (reminder.contains("30 phút")) reminderMin = 30;
+            else if (reminder.contains("1 giờ")) reminderMin = 60;
+            else if (reminder.equals("Không thông báo")) reminderMin = -1;
+
+            newTask.setReminderMinutes(reminderMin);
+            newTask.setRepeatType(repeat);
+
+            scheduleRepository.insertTask(newTask);
+
+            Toast.makeText(requireContext(), "Đã lưu lịch học thành công!", Toast.LENGTH_SHORT).show();
 
             if (getActivity() != null) getActivity().getSupportFragmentManager().popBackStack();
         });

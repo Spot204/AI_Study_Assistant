@@ -12,7 +12,7 @@ public class ScheduleController {
 
     public ScheduleController(Context context) {
         AppDatabase db = AppDatabase.getDatabase(context);
-        this.scheduleRepository = new ScheduleRepository(db.scheduleDao());
+        this.scheduleRepository = new ScheduleRepository(context, db.scheduleDao());
     }
 
     public void addTask(ScheduleTask task) {
@@ -28,7 +28,7 @@ public class ScheduleController {
     }
 
     public LiveData<List<ScheduleTask>> getAllTasks(String userId) {
-        return AppDatabase.getDatabase(null).scheduleDao().getAllTasks(userId);
+        return scheduleRepository.getAllTasks(userId);
     }
 
     public void syncSchedule() {

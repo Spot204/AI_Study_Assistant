@@ -28,6 +28,9 @@ public class LearningGoalRepository {
         if (goal.getGoalId() == null || goal.getGoalId().isEmpty()) {
             goal.setGoalId(UUID.randomUUID().toString());
         }
+        if (auth.getCurrentUser() != null) {
+            goal.setUserId(auth.getCurrentUser().getUid());
+        }
         goal.setUpdatedAt(System.currentTimeMillis());
         goal.setSyncStatus("pending_insert");
 

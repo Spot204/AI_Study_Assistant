@@ -28,6 +28,9 @@ public class QuizRepository {
         if (quiz.getQuizId() == null || quiz.getQuizId().isEmpty()) {
             quiz.setQuizId(UUID.randomUUID().toString());
         }
+        if (auth.getCurrentUser() != null) {
+            quiz.setUserId(auth.getCurrentUser().getUid());
+        }
         quiz.setUpdatedAt(System.currentTimeMillis());
         quiz.setSyncStatus("pending_insert");
 

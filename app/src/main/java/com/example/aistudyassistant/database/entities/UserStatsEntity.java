@@ -11,6 +11,7 @@ public class UserStatsEntity {
     @NonNull
     private String userId; // Mã ID duy nhất của người dùng (Nên lấy trùng với Firebase UID)
     private int streakCount; // Số ngày học liên tục (Streak)
+    private int totalStudyDays; // Tổng số ngày đã học (Bao nhiêu ngày)
     private int totalFlashcards; // Tổng số thẻ flashcard đã tạo
     private int totalQuizzes; // Tổng số bộ quiz đã làm/tạo
     private double studyHours; // Tổng số giờ đã tích lũy học trên app
@@ -26,6 +27,7 @@ public class UserStatsEntity {
     public UserStatsEntity(@NonNull String userId) {
         this.userId = userId;
         this.streakCount = 0;
+        this.totalStudyDays = 0;
         this.totalFlashcards = 0;
         this.totalQuizzes = 0;
         this.studyHours = 0.0;
@@ -44,6 +46,9 @@ public class UserStatsEntity {
 
     public int getStreakCount() { return streakCount; }
     public void setStreakCount(int streakCount) { this.streakCount = streakCount; }
+
+    public int getTotalStudyDays() { return totalStudyDays; }
+    public void setTotalStudyDays(int totalStudyDays) { this.totalStudyDays = totalStudyDays; }
 
     public int getTotalFlashcards() { return totalFlashcards; }
     public void setTotalFlashcards(int totalFlashcards) { this.totalFlashcards = totalFlashcards; }

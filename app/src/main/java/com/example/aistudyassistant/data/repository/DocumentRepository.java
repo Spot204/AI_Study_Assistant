@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import com.example.aistudyassistant.database.dao.DocumentDao;
 import com.example.aistudyassistant.database.entities.DocumentEntity;
 import com.example.aistudyassistant.data.model.DocumentFirestore;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -15,12 +16,14 @@ import java.util.concurrent.Executors;
 public class DocumentRepository {
     private final DocumentDao documentDao;
     private final FirebaseFirestore firestore;
+    private final FirebaseAuth auth;
     private final ExecutorService executorService;
     private static final String COLLECTION_NAME = "documents";
 
     public DocumentRepository(DocumentDao documentDao) {
         this.documentDao = documentDao;
         this.firestore = FirebaseFirestore.getInstance();
+        this.auth = FirebaseAuth.getInstance();
         this.executorService = Executors.newSingleThreadExecutor();
     }
 
@@ -28,6 +31,9 @@ public class DocumentRepository {
      * Thêm một tài liệu mới sau khi Service đã quét OCR và tóm tắt xong (Offline-First)
      */
     public void insertDocument(DocumentEntity document) {
+        if (auth.getCurrentUser() != null) {
+            document.setUserId(auth.getCurrentUser().getUid());
+        }
         executorService.execute(() -> {
             // Bước 1: Lưu tức thì vào SQLite dưới máy để UI hiển thị luôn, không bắt user chờ mạng
             documentDao.insertDocument(document);

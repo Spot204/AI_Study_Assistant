@@ -41,6 +41,11 @@ public class StudySessionRepository {
      * Thêm một phiên học/chat mới (Offline-First)
      */
     public void insertSession(StudySessionEntity session) {
+        String currentUid = auth.getUid();
+        if (session.getUserId() == null || session.getUserId().isEmpty()) {
+            if (currentUid != null) session.setUserId(currentUid);
+        }
+
         if (session.getSessionId() == null || session.getSessionId().isEmpty()) {
             session.setSessionId(java.util.UUID.randomUUID().toString());
         }
