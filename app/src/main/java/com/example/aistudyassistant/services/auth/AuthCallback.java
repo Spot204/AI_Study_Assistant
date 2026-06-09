@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.services;
+package com.example.aistudyassistant.services.auth;
 
 
 public interface AuthCallback {

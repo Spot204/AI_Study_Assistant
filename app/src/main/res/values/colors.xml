@@ -3,41 +3,38 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- UI Base Colors -->
-    <color name="background">#F8FAFC</color>
-    <color name="card_background">#FFFFFF</color>
-    <color name="text_primary">#0F172A</color>
-    <color name="text_secondary">#64748B</color>
+    <!-- UI Colors -->
+    <color name="background_page">#FFFFFF</color>
+    <color name="text_grey">#757575</color>
 
-    <!-- Premium Navigation Palette -->
-    <color name="nav_active_icon">#4F46E5</color>
-    <color name="nav_inactive_icon">#94A3B8</color>
-    <color name="nav_indicator_bg">#EEF2FF</color>
-    <color name="nav_card_bg">#FFFFFF</color>
+    <!-- Tab Colors -->
+    <color name="tab_container">#F3F4F6</color>
 
-    <!-- Other UI Colors -->
-    <color name="color_primary">#6366F1</color>
-    <color name="color_accent">#8B5CF6</color>
-    <color name="green_main">#10B981</color>
-    <color name="orange_main">#F97316</color>
+    <!-- Purple Card (Quick Test) -->
+    <color name="purple_bg">#FAF5FF</color>
+    <color name="purple_stroke">#E9D5FF</color>
+    <color name="purple_text_dark">#581C87</color>
+    <color name="purple_text_main">#7E22CE</color>
+    <color name="purple_icon">#A855F7</color>
+    <color name="purple_icon_bg">#F3E8FF</color>
 
-    <!-- Missing Colors for UI Elements -->
-    <color name="chart_3">#FACC15</color>
-    <color name="destructive_bg">#FEF2F2</color>
-    <color name="premium_bg">#F59E0B</color>
-    <color name="border_color">#E2E8F0</color>
-    <color name="secondary_background">#F1F5F9</color>
-    <color name="card_border">#7A7A7A</color>
-    <color name="nav_item_active_bg">#EEF2FF</color>
-    <color name="purple_primary">#7C3AED</color>
-    <color name="text_sub">#94A3B8</color>
-    <color name="bg_light">#F9FAFB</color>
+    <!-- Blue Colors -->
+    <color name="blue_icon_bg">#DBEAFE</color>
+    <color name="blue_icon">#3B82F6</color>
 
-    <!-- Additional UI colors -->
-    <color name="ai_card_bg">#FFF7ED</color>
-    <color name="icon_bg_orange">#FFEDD5</color>
-    <color name="icon_bg_purple">#F5F3FF</color>
-    <color name="icon_bg_green">#ECFDF5</color>
-    <color name="destructive_text">#DC2626</color>
-    <color name="chart_4">#8B5CF6</color>
+    <!-- Orange Colors -->
+    <color name="orange_icon_bg">#FFEDD5</color>
+    <color name="orange_icon">#F97316</color>
+
+    <!-- Indigo Colors -->
+    <color name="indigo_icon_bg">#E0E7FF</color>
+    <color name="indigo_icon">#6366F1</color>
+
+    <!-- Green Colors -->
+    <color name="green_icon_bg">#DCFCE7</color>
+    <color name="green_icon">#22C55E</color>
+
+    <!-- Pink Colors -->
+    <color name="pink_icon_bg">#FCE7F3</color>
+    <color name="pink_icon">#EC4899</color>
 </resources>

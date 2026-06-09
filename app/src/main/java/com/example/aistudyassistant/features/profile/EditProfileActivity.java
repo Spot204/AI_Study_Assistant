@@ -5,7 +5,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.services.ProfileService;
+import com.example.aistudyassistant.services.auth.ProfileService;
 
 public class EditProfileActivity extends AppCompatActivity {
 

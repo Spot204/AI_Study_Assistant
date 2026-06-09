@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.services;
+package com.example.aistudyassistant.services.auth;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

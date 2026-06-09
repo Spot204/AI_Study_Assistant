@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.services;
+package com.example.aistudyassistant.services.auth;
 
 import android.content.Context;
 import com.example.aistudyassistant.database.AppDatabase;

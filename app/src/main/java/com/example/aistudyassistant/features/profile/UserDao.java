@@ -16,8 +16,14 @@ public interface UserDao {
     @Update
     void updateUser(User user);
 
-    @Query("SELECT * FROM users WHERE id = 1 LIMIT 1")
-    User getUser();
+    @Query("SELECT * FROM users WHERE userId = :userId LIMIT 1")
+    User getUserById(String userId);
+
+    @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
+    User getUserByEmail(String email);
+
+    @Query("SELECT * FROM users LIMIT 1")
+    User getAnyUser();
 
     @Query("DELETE FROM users")
     void deleteAll();
