@@ -22,8 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/quiz_title"
                 android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold"
+                style="@style/AppTextAppearance.Title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +75,7 @@
                         android:layout_marginEnd="8dp"
                         android:text="@string/create_quiz_with_ai"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/btnCreateAi"
                         app:layout_constraintStart_toEndOf="@id/iconAi"
@@ -87,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/ai_quiz_desc"
                         android:textColor="@color/text_sub"
-                        android:textSize="13sp"
+                        style="@style/AppTextAppearance.BodySmall"
                         app:layout_constraintEnd_toEndOf="@id/tvAiTitle"
                         app:layout_constraintStart_toStartOf="@id/tvAiTitle"
                         app:layout_constraintTop_toBottomOf="@id/tvAiTitle" />
@@ -140,14 +139,15 @@
                             android:layout_marginTop="4dp"
                             android:text="12"
                             android:textColor="@color/black"
-                            android:textSize="18sp"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/completed"
                             android:textColor="@color/text_sub"
-                            android:textSize="12sp" />
+                            style="@style/AppTextAppearance.Caption" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -179,14 +179,15 @@
                             android:layout_marginTop="4dp"
                             android:text="82%"
                             android:textColor="@color/black"
-                            android:textSize="18sp"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/average"
                             android:textColor="@color/text_sub"
-                            android:textSize="12sp" />
+                            style="@style/AppTextAppearance.Caption" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -218,14 +219,15 @@
                             android:layout_marginTop="4dp"
                             android:text="5"
                             android:textColor="@color/black"
-                            android:textSize="18sp"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/streak"
                             android:textColor="@color/text_sub"
-                            android:textSize="12sp" />
+                            style="@style/AppTextAppearance.Caption" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -236,7 +238,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/your_quizzes"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                style="@style/AppTextAppearance.BodyLarge"
                 android:textStyle="bold" />
 
             <!-- Quiz Items with White Background and Shadow -->
@@ -279,7 +281,7 @@
                             android:layout_marginStart="16dp"
                             android:text="Toán cao cấp - Chương 1"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            style="@style/AppTextAppearance.BodyMedium"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toStartOf="@id/arrow1"
                             app:layout_constraintStart_toEndOf="@id/quizIcon1"
@@ -291,7 +293,7 @@
                             android:layout_height="wrap_content"
                             android:text="20 câu  •  15 phút"
                             android:textColor="@color/text_sub"
-                            android:textSize="14sp"
+                            style="@style/AppTextAppearance.BodySmall"
                             app:layout_constraintStart_toStartOf="@id/quizTitle1"
                             app:layout_constraintTop_toBottomOf="@id/quizTitle1" />
 

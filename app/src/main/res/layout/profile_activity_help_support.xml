@@ -32,10 +32,10 @@
         </FrameLayout>
 
         <TextView
+            style="@style/AppTextAppearance.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trợ giúp &amp; Hỗ trợ"
-            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             app:layout_constraintStart_toEndOf="@id/btn_back"
@@ -67,12 +67,12 @@
 
             <!-- FAQ Section -->
             <TextView
+                style="@style/AppTextAppearance.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Câu hỏi thường gặp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
                 android:layout_marginBottom="16dp" />
 
             <com.google.android.material.card.MaterialCardView
@@ -96,17 +96,18 @@
                         android:padding="16dp"
                         android:background="?attr/selectableItemBackground">
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Làm thế nào để tạo flashcard mới?"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold" />
                         <TextView
+                            style="@style/AppTextAppearance.BodySmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Nhấp vào biểu tượng dấu cộng tại màn hình chính để bắt đầu tạo flashcard."
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color" />
@@ -119,17 +120,18 @@
                         android:padding="16dp"
                         android:background="?attr/selectableItemBackground">
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Gói Premium có lợi ích gì?"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold" />
                         <TextView
+                            style="@style/AppTextAppearance.BodySmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Gói Premium cho phép bạn truy cập không giới hạn các bài Quiz nâng cao và AI hỗ trợ 24/7."
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -137,12 +139,12 @@
 
             <!-- Contact Section -->
             <TextView
+                style="@style/AppTextAppearance.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Liên hệ với chúng tôi"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
                 android:layout_marginBottom="16dp" />
 
             <LinearLayout
@@ -171,17 +173,18 @@
                     android:layout_weight="1"
                     android:layout_marginStart="16dp">
                     <TextView
+                        style="@style/AppTextAppearance.Body"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gửi Email"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold" />
                     <TextView
+                        style="@style/AppTextAppearance.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="support@aistudy.com"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textColor="@color/text_secondary" />
                 </LinearLayout>
             </LinearLayout>
 

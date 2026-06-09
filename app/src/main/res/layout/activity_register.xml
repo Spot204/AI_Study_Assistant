@@ -23,8 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tạo Tài Khoản"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/AppTextAppearance.Title"
             android:textColor="#1A1F36"
             android:layout_marginTop="16dp" />
 
@@ -33,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="Đồng hành cùng Trợ lý Học tập AI thông minh"
             android:textColor="#8792A2"
-            android:textSize="13sp"
+            style="@style/AppTextAppearance.Body"
             android:layout_marginTop="4dp" />
 
         <androidx.cardview.widget.CardView
@@ -55,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:text="Họ và Tên của bạn"
                     android:textColor="#4F5B76"
-                    android:textSize="12sp"
+                    style="@style/AppTextAppearance.Caption"
                     android:textStyle="bold"
                     android:layout_marginBottom="6dp" />
 
@@ -67,7 +66,7 @@
                     android:inputType="textPersonName"
                     android:hint="Bá Anh"
                     android:paddingHorizontal="14dp"
-                    android:textSize="14sp"
+                    style="@style/AppTextAppearance.Body"
                     android:textColor="#191F33"
                     android:layout_marginBottom="12dp" />
 
@@ -77,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="Địa chỉ Email"
                     android:textColor="#4F5B76"
-                    android:textSize="12sp"
+                    style="@style/AppTextAppearance.Caption"
                     android:textStyle="bold"
                     android:layout_marginBottom="6dp" />
 
@@ -89,7 +88,7 @@
                     android:inputType="textEmailAddress"
                     android:hint="et3rnxl24@gmail.com"
                     android:paddingHorizontal="14dp"
-                    android:textSize="14sp"
+                    style="@style/AppTextAppearance.Body"
                     android:textColor="#191F33"
                     android:layout_marginBottom="12dp"/>
 
@@ -99,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="Mật khẩu"
                     android:textColor="#4F5B76"
-                    android:textSize="12sp"
+                    style="@style/AppTextAppearance.Caption"
                     android:textStyle="bold"
                     android:layout_marginBottom="6dp" />
 
@@ -111,7 +110,7 @@
                     android:inputType="textPassword"
                     android:hint="••••••••"
                     android:paddingHorizontal="14dp"
-                    android:textSize="14sp"
+                    style="@style/AppTextAppearance.Body"
                     android:textColor="#191F33"
                     android:layout_marginBottom="12dp" />
 
@@ -121,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="Xác nhận mật khẩu"
                     android:textColor="#4F5B76"
-                    android:textSize="12sp"
+                    style="@style/AppTextAppearance.Caption"
                     android:textStyle="bold"
                     android:layout_marginBottom="6dp" />
 
@@ -133,7 +132,7 @@
                     android:inputType="textPassword"
                     android:hint="••••••••"
                     android:paddingHorizontal="14dp"
-                    android:textSize="14sp"
+                    style="@style/AppTextAppearance.Body"
                     android:textColor="#191F33"
                     android:layout_marginBottom="16dp" />
 
@@ -144,6 +143,7 @@
                     android:background="@drawable/bg_gradient_button"
                     android:text="Đăng Ký Tài Khoản"
                     android:textColor="#FFFFFF"
+                    style="@style/AppTextAppearance.Body"
                     android:textStyle="bold"
                     android:textAllCaps="false"/>
 
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:text="Đã có tài khoản? Đăng nhập ngay"
                     android:textColor="#4F46E5"
-                    android:textSize="13sp"
+                    style="@style/AppTextAppearance.BodySmall"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"/>
 

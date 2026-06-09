@@ -18,11 +18,17 @@ import com.example.aistudyassistant.data.repository.StudySessionRepository;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class QuizPlayActivity extends AppCompatActivity {
 
@@ -33,14 +39,16 @@ public class QuizPlayActivity extends AppCompatActivity {
     private LinearProgressIndicator progressBar;
     private ImageView btnBack;
 
-    private List<Question> questionList;
+    private List<Question> questionList = new ArrayList<>();
     private int currentQuestionIndex = 0;
     private int score = 0;
     private boolean isAnswered = false;
     private String sessionId;
+    private String quizId;
 
     // [ĐÃ THÊM] Khai báo Repository để quản lý lưu trữ
     private StudySessionRepository sessionRepo;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private long startTime;
     private final Handler timerHandler = new Handler();
@@ -65,9 +73,10 @@ public class QuizPlayActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.getDatabase(this);
         sessionRepo = new StudySessionRepository(db.studySessionDao());
 
+        quizId = getIntent().getStringExtra("QUIZ_ID");
+
         initViews();
         loadQuestions();
-        displayQuestion();
 
         sessionId = UUID.randomUUID().toString();
         startTime = System.currentTimeMillis();
@@ -123,7 +132,29 @@ public class QuizPlayActivity extends AppCompatActivity {
     }
 
     private void loadQuestions() {
-        questionList = new ArrayList<>();
+        if (quizId != null) {
+            executor.execute(() -> {
+                com.example.aistudyassistant.database.entities.QuizEntity quiz =
+                        AppDatabase.getDatabase(this).quizDao().getQuizById(quizId);
+                if (quiz != null && quiz.getQuestionsJson() != null) {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
+                    List<Question> loadedQuestions = gson.fromJson(quiz.getQuestionsJson(), listType);
+                    runOnUiThread(() -> {
+                        questionList.clear();
+                        questionList.addAll(loadedQuestions);
+                        displayQuestion();
+                    });
+                } else {
+                    runOnUiThread(this::loadDefaultQuestions);
+                }
+            });
+        } else {
+            loadDefaultQuestions();
+        }
+    }
+
+    private void loadDefaultQuestions() {
         questionList.add(new Question(
                 "Đạo hàm của hàm số y = sin(x) là gì?",
                 Arrays.asList("y' = cos(x)", "y' = -sin(x)", "y' = -cos(x)", "y' = tan(x)"),
@@ -139,6 +170,7 @@ public class QuizPlayActivity extends AppCompatActivity {
                 Arrays.asList("y' = x", "y' = 2x", "y' = x^2", "y' = 2"),
                 1
         ));
+        displayQuestion();
     }
 
     private void displayQuestion() {

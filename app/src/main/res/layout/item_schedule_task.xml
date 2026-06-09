@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tên nhiệm vụ"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                style="@style/AppTextAppearance.Body"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -77,7 +77,7 @@
                     android:layout_marginStart="4dp"
                     android:text="08:00 - 09:30"
                     android:textColor="@color/text_sub"
-                    android:textSize="13sp" />
+                    style="@style/AppTextAppearance.Caption" />
             </LinearLayout>
         </LinearLayout>
 

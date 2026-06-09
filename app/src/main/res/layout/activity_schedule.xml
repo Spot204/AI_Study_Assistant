@@ -29,8 +29,7 @@
             android:layout_weight="1"
             android:text="@string/schedule_title"
             android:textColor="@color/text_primary"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            style="@style/AppTextAppearance.Title" />
 
         <FrameLayout
             android:id="@+id/btnAddTask"
@@ -108,8 +107,7 @@
                             android:gravity="center"
                             android:text="Tháng 5 năm 2026"
                             android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:textSize="20sp"/>
+                            style="@style/AppTextAppearance.TitleMedium" />
 
                         <ImageView
                             android:layout_width="48dp"
@@ -145,15 +143,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="CN"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"/>
+                                style="@style/AppTextAppearance.BodySmall" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:text="17"
                                 android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
+                                style="@style/AppTextAppearance.BodyLarge"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- T2 -->
@@ -168,15 +166,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="T2"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"/>
+                                style="@style/AppTextAppearance.BodySmall" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:text="18"
                                 android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
+                                style="@style/AppTextAppearance.BodyLarge"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- T3 -->
@@ -191,15 +189,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="T3"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"/>
+                                style="@style/AppTextAppearance.BodySmall" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:text="19"
                                 android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
+                                style="@style/AppTextAppearance.BodyLarge"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- Selected T4 -->
@@ -219,15 +217,15 @@
                                     android:layout_height="wrap_content"
                                     android:text="T4"
                                     android:textColor="@android:color/white"
-                                    android:textSize="14sp"/>
+                                    style="@style/AppTextAppearance.BodySmall" />
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
                                     android:text="20"
                                     android:textColor="@android:color/white"
-                                    android:textStyle="bold"
-                                    android:textSize="18sp"/>
+                                    style="@style/AppTextAppearance.BodyLarge"
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </FrameLayout>
 
@@ -243,15 +241,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="T5"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"/>
+                                style="@style/AppTextAppearance.BodySmall" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:text="21"
                                 android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
+                                style="@style/AppTextAppearance.BodyLarge"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- T6 -->
@@ -266,15 +264,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="T6"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"/>
+                                style="@style/AppTextAppearance.BodySmall" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:text="22"
                                 android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
+                                style="@style/AppTextAppearance.BodyLarge"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- T7 -->
@@ -289,15 +287,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="T7"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="14sp"/>
+                                style="@style/AppTextAppearance.BodySmall" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:text="23"
                                 android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:textSize="18sp"/>
+                                style="@style/AppTextAppearance.BodyLarge"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -321,15 +319,14 @@
                     android:layout_weight="1"
                     android:text="@string/schedule_today_title"
                     android:textColor="@color/text_primary"
-                    android:textStyle="bold"
-                    android:textSize="24sp"/>
+                    style="@style/AppTextAppearance.Title" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/schedule_task_count"
                     android:textColor="@color/text_secondary"
-                    android:textSize="16sp"/>
+                    style="@style/AppTextAppearance.Body" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

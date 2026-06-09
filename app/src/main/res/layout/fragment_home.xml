@@ -17,15 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chào cậu, Bá Anh!"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/AppTextAppearance.Title"
             android:textColor="#111111" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cùng đạt mục tiêu hôm nay nhé!"
-            android:textSize="14sp"
+            style="@style/AppTextAppearance.Body"
             android:textColor="#666666"
             android:layout_marginTop="4dp" />
 
@@ -55,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đại học tập"
-                        android:textSize="12sp"
+                        style="@style/AppTextAppearance.Caption"
                         android:textColor="#888888" />
 
                     <TextView
@@ -63,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="7 ngày"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold"
                         android:textColor="#FF9800"
                         android:layout_marginTop="4dp" />
@@ -88,14 +87,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Flashcards đã thuộc"
-                        android:textSize="12sp"
+                        style="@style/AppTextAppearance.Caption"
                         android:textColor="#888888" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="24 / 35 thẻ"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold"
                         android:textColor="#4CAF50"
                         android:layout_marginTop="4dp" />
@@ -122,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="★ AI Daily Advice"
-                    android:textSize="11sp"
+                    style="@style/AppTextAppearance.Caption"
                     android:textStyle="bold"
                     android:textColor="#6366F1" />
 
@@ -131,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Ôn luyện ngắt quãng (Spaced Repetition) giúp tăng khả năng nhớ dài hạn lên tới 4 lần."
-                    android:textSize="13sp"
+                    style="@style/AppTextAppearance.Body"
                     android:textColor="#374151"
                     android:layout_marginTop="6dp"
                     android:lineSpacingExtra="3dp" />

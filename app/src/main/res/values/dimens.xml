@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Font sizes -->
+    <dimen name="text_size_caption">12sp</dimen>
+    <dimen name="text_size_body_small">14sp</dimen>
+    <dimen name="text_size_body_medium">16sp</dimen>
+    <dimen name="text_size_body_large">18sp</dimen>
+    <dimen name="text_size_title_medium">20sp</dimen>
+    <dimen name="text_size_title_large">24sp</dimen>
+    <dimen name="text_size_headline">28sp</dimen>
+    <dimen name="text_size_display">48sp</dimen>
+
+    <!-- Navigation sizes -->
+    <dimen name="nav_text_size">12sp</dimen>
+</resources>

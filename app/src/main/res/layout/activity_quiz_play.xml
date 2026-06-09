@@ -51,8 +51,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/quiz_sample_timer"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                style="@style/AppTextAppearance.BodyLarge" />
         </LinearLayout>
 
         <TextView
@@ -66,7 +65,7 @@
             android:paddingVertical="8dp"
             android:text="@string/quiz_sample_progress"
             android:textColor="@color/purple_primary"
-            android:textSize="14sp"
+            style="@style/AppTextAppearance.BodySmall"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/quiz_sample_question_num"
                 android:textColor="@color/text_sub"
-                android:textSize="14sp" />
+                style="@style/AppTextAppearance.BodySmall" />
 
             <TextView
                 android:id="@+id/tvQuestion"
@@ -122,8 +121,7 @@
                 android:lineSpacingExtra="4dp"
                 android:text="@string/quiz_sample_question"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                style="@style/AppTextAppearance.TitleMedium" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -171,7 +169,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/quiz_option_a"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/AppTextAppearance.BodyMedium" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -210,7 +208,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/quiz_option_b"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/AppTextAppearance.BodyMedium" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -249,7 +247,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/quiz_option_c"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/AppTextAppearance.BodyMedium" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -288,7 +286,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/quiz_option_d"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/AppTextAppearance.BodyMedium" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
