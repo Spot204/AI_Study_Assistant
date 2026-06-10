@@ -4,6 +4,7 @@ import com.example.aistudyassistant.database.entities.DocumentEntity;
 
 public class DocumentFirestore {
     private String documentId;
+
     private String userId;
     private String storageUri; // Đã sửa: Khớp đúng trường của bạn
     private String ocrTextUri; // Đã sửa: Khớp đúng trường của bạn
