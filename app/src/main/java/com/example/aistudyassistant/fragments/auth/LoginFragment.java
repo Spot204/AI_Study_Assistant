@@ -20,7 +20,6 @@ import com.example.aistudyassistant.MainActivity;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.data.repository.UserRepository;
-import com.example.aistudyassistant.fragments.home.HomeFragment;
 import com.example.aistudyassistant.services.auth.AuthService;
 import com.example.aistudyassistant.features.auth.LoginController;
 import com.example.aistudyassistant.features.auth.LoginView;
@@ -113,14 +112,12 @@ public class LoginFragment extends Fragment implements LoginView {
     public void navigateToMain(String name, String email) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                // KIỂM TRA: Đảm bảo Activity chứa Fragment này đúng là MainActivity
-                if (getActivity() instanceof MainActivity) {
-
-                    // Gọi cái hàm thần thánh bên MainActivity để nó tự động đổi sang HomeFragment
-                    // và làm hiện thanh Bottom Navigation lên!
-                    ((MainActivity) getActivity()).navigateToHomeAfterAuth();
-
-                }
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("USER_NAME", name);
+                intent.putExtra("USER_EMAIL", email);
+                startActivity(intent);
+                getActivity().finish();
             });
         }
     }

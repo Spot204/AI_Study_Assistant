@@ -1,5 +1,6 @@
 package com.example.aistudyassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,28 +16,26 @@ import com.example.aistudyassistant.data.repository.DocumentRepository;
 import com.example.aistudyassistant.data.repository.QuizRepository;
 import com.example.aistudyassistant.data.repository.ScheduleRepository;
 import com.example.aistudyassistant.data.repository.LearningGoalRepository;
-import com.example.aistudyassistant.data.repository.AchievementRepository;
 import com.example.aistudyassistant.services.SyncWorker;
-
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.ExistingPeriodicWorkPolicy;
 import java.util.concurrent.TimeUnit;
 
-// ĐƯỜNG DẪN CHUẨN CỦA NHÁNH NAM (Dùng features thay vì fragments)
-import com.example.aistudyassistant.features.home.HomeFragment;
-import com.example.aistudyassistant.features.chatbot.ChatFragment;
-import com.example.aistudyassistant.features.quiz.QuizFragment;
-import com.example.aistudyassistant.features.schedule.ScheduleFragment;
-import com.example.aistudyassistant.features.profile.ProfileFragment;
-import com.example.aistudyassistant.features.flashcard.FlashcardFragment;
-import com.example.aistudyassistant.features.auth.LoginFragment;
-import com.example.aistudyassistant.features.auth.RegisterFragment;
+import com.example.aistudyassistant.fragments.home.HomeFragment;
+import com.example.aistudyassistant.fragments.chatbot.ChatFragment;
+import com.example.aistudyassistant.fragments.quiz.QuizFragment;
+import com.example.aistudyassistant.fragments.schedule.ScheduleFragment;
+import com.example.aistudyassistant.fragments.profile.ProfileFragment;
+import com.example.aistudyassistant.fragments.flashcard.FlashcardFragment;
+import com.example.aistudyassistant.fragments.auth.LoginFragment;
+import com.example.aistudyassistant.fragments.auth.RegisterFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.work.ExistingPeriodicWorkPolicy;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,15 +50,53 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String userEmail = getIntent().getStringExtra("USER_EMAIL");
 
-        // Kiểm tra đăng nhập
         if (mAuth.getCurrentUser() == null && userEmail == null) {
             loadFragment(new LoginFragment());
             return;
         }
 
-        // Đã đăng nhập -> Chạy đồng bộ toàn tập và load Home
-        syncData();
+        // =================================================================
+        // 💥 KHỞI ĐỘNG CÁC LUỒNG ĐỒNG BỘ DỮ LIỆU TỰ ĐỘNG (BACKGROUND SYNC)
+        // =================================================================
 
+        AppDatabase db = AppDatabase.getDatabase(this);
+
+        // 1. Chạy đồng bộ ngay lập tức cho tất cả repositories
+        new UserRepository(db.userDao()).syncUnsyncedUsers();
+        UserStatsRepository statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
+        statsRepo.syncUnsyncedStats();
+
+        // Seed achievements
+        new com.example.aistudyassistant.data.repository.AchievementRepository(db.achievementDao(), db.userAchievementDao()).seedDefaultAchievements();
+
+        new UserRepository(db.userDao()).syncUnsyncedUsers();
+        new StudySetRepository(db.studySetDao()).syncUnsyncedStudySets();
+        new FlashcardRepository(db.flashcardDao(), statsRepo).syncUnsyncedFlashcards();
+        new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
+        new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
+        new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();
+        new ScheduleRepository(this, db.scheduleDao()).syncUnsyncedTasks();
+        new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
+
+        // 2. Thiết lập WorkManager để đồng bộ định kỳ mỗi 15 phút
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest syncRequest = new PeriodicWorkRequest.Builder(
+                SyncWorker.class, 15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "CloudSyncWork",
+                ExistingPeriodicWorkPolicy.KEEP,
+                syncRequest
+        );
+
+        // =================================================================
+
+        // Hiển thị màn hình Home mặc định khi ứng dụng khởi động
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
@@ -83,40 +120,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Tách riêng hàm đồng bộ để gọi lại khi cần thiết (ví dụ sau khi Login xong)
-    private void syncData() {
-        AppDatabase db = AppDatabase.getDatabase(this);
-
-        // 1. Chạy đồng bộ ngay lập tức cho tất cả repositories
-        UserStatsRepository statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
-
-        new AchievementRepository(db.achievementDao(), db.userAchievementDao()).seedDefaultAchievements();
-        new UserRepository(db.userDao()).syncUnsyncedUsers();
-        statsRepo.syncUnsyncedStats();
-        new StudySetRepository(db.studySetDao()).syncUnsyncedStudySets();
-        new FlashcardRepository(db.flashcardDao(), statsRepo).syncUnsyncedFlashcards();
-        new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
-        new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
-        new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();
-        new ScheduleRepository(this, db.scheduleDao()).syncUnsyncedTasks();
-        new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
-
-        // 2. Thiết lập WorkManager để tự động đồng bộ định kỳ mỗi 15 phút khi có mạng
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        PeriodicWorkRequest syncRequest = new PeriodicWorkRequest.Builder(SyncWorker.class, 15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "DataSync",
-                ExistingPeriodicWorkPolicy.KEEP,
-                syncRequest
-        );
-    }
-
     // Hàm loadFragment thông minh: tự ẩn/hiện BottomNav
     public void loadFragment(Fragment fragment) {
         if (bottomNav == null) {
@@ -134,11 +137,5 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
-    }
-
-    // Hàm gọi khi đăng nhập/đăng ký thành công từ các Fragment
-    public void navigateToHomeAfterAuth() {
-        syncData();
-        loadFragment(new HomeFragment());
     }
 }

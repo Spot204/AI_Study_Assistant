@@ -29,8 +29,8 @@ public class OCRSummaryActivity extends AppCompatActivity {
         documentController = new DocumentController(this);
 
         btnBack = findViewById(R.id.btn_ocr_back);
-        cvCapture = findViewById(R.id.cv_ocr_capture);
-        tvSummary = findViewById(R.id.tv_ocr_summary_text);
+       // cvCapture = findViewById(R.id.cv_ocr_capture);
+       // tvSummary = findViewById(R.id.tv_ocr_summary_text);
         btnGenerateFlashcards = findViewById(R.id.btn_generate_flashcards);
         progressBar = findViewById(R.id.pb_ocr_loading);
 

@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.features.flashcard.FlashcardDeckAdapter;
+import com.example.aistudyassistant.fragments.flashcard.FlashcardDeckAdapter;
 import com.example.aistudyassistant.features.ocr_summary.OCRSummaryActivity;
 import com.example.aistudyassistant.services.ocr_summary.OCRService;
 import com.example.aistudyassistant.services.profile.ProfileService;

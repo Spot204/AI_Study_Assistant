@@ -55,10 +55,19 @@ public class OCRSummaryActivity extends AppCompatActivity {
 
         // 1. Khởi tạo dịch vụ lõi và Database
         // LƯU Ý: Thay "YOUR_API_KEY" bằng key thực tế lấy từ Google AI Studio
-        geminiService = new GeminiService("AQ.Ab8RN6IiqZKgAdQYNcDiWSltzNnEREkuSM5d3m4qoWUeuAcbTQ");
+        geminiService = new GeminiService("AQ.Ab8RN6JG9FwkX-aNKlGAK9mXT591vlbE5z1s7ExwOu345hYxuA");
         AppDatabase db = AppDatabase.getDatabase(this);
         studySetRepository = new StudySetRepository(db.studySetDao());
-        flashcardRepository = new FlashcardRepository(db.flashcardDao());
+// Khởi tạo thêm UserStatsRepository vì FlashcardRepository bây giờ bắt buộc cần nó để đếm thẻ
+        com.example.aistudyassistant.data.repository.UserStatsRepository statsRepo =
+                new com.example.aistudyassistant.data.repository.UserStatsRepository(
+                        db.userStatsDao(),
+                        db.achievementDao(),
+                        db.userAchievementDao()
+                );
+
+// Truyền đủ 2 tham số vào là hết báo lỗi ngay
+        flashcardRepository = new FlashcardRepository(db.flashcardDao(), statsRepo);
 
         generatedSetId = UUID.randomUUID().toString();
 

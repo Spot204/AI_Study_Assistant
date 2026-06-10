@@ -42,13 +42,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".features.profile.EditProfileActivity" android:exported="false" />
-        <activity android:name=".features.profile.NotificationsActivity" android:exported="false" />
-        <activity android:name=".features.profile.NotificationsActivity$LearningGoalsActivity" android:exported="false" />
-        <activity android:name=".features.profile.HelpSupportActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.EditProfileActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.NotificationsActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.NotificationsActivity$LearningGoalsActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.HelpSupportActivity" android:exported="false" />
         <activity android:name=".features.ocr_summary.OCRSummaryActivity" android:exported="false" />
-        <activity android:name=".features.quiz.QuizPlayActivity" android:exported="false" />
-        <activity android:name=".features.quiz.QuizResultActivity" android:exported="false" />
+        <activity android:name=".fragments.quiz.QuizPlayActivity" android:exported="false" />
+        <activity android:name=".fragments.quiz.QuizResultActivity" android:exported="false" />
 
         <receiver android:name=".receivers.AlarmReceiver"
             android:enabled="true"
