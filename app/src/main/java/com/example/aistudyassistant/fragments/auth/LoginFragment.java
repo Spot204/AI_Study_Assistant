@@ -113,12 +113,14 @@ public class LoginFragment extends Fragment implements LoginView {
     public void navigateToMain(String name, String email) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("USER_NAME", name);
-                intent.putExtra("USER_EMAIL", email);
-                startActivity(intent);
-                getActivity().finish();
+                // KIỂM TRA: Đảm bảo Activity chứa Fragment này đúng là MainActivity
+                if (getActivity() instanceof MainActivity) {
+
+                    // Gọi cái hàm thần thánh bên MainActivity để nó tự động đổi sang HomeFragment
+                    // và làm hiện thanh Bottom Navigation lên!
+                    ((MainActivity) getActivity()).navigateToHomeAfterAuth();
+
+                }
             });
         }
     }

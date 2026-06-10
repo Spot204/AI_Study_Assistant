@@ -48,11 +48,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(11)
+        jvmToolchain(17)
     }
 
     androidResources{
@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    
+
     // Room
     implementation(libs.room.runtime)
     implementation(libs.firebase.auth)
@@ -88,4 +88,7 @@ dependencies {
 
     // Thư viện bóc tách chữ từ file PDF (Để làm bước tiếp theo luôn)
     implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+
+    // Thư viện Google AI Generative
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 }

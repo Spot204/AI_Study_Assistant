@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/quiz_title"
                 android:textColor="@color/black"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- AI Banner with White Background and Shadow -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +106,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Stats Row with White Background and Shadow -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -239,76 +237,32 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- Quiz Items with White Background and Shadow -->
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
+                android:layout_marginTop="12dp">
 
-                <com.google.android.material.card.MaterialCardView
+                <TextView
+                    android:id="@+id/tv_empty_quizzes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:cardBackgroundColor="@color/white">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/quizCard1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-                        <ImageView
-                            android:id="@+id/quizIcon1"
-                            android:layout_width="52dp"
-                            android:layout_height="52dp"
-                            android:background="@drawable/bg_icon_circle"
-                            android:backgroundTint="@color/icon_bg_purple"
-                            android:padding="12dp"
-                            android:src="@android:drawable/ic_menu_sort_by_size"
-                            android:contentDescription="@string/desc_quiz_icon"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/purple_primary" />
+                    android:padding="24dp"
+                    android:gravity="center"
+                    android:text="Bạn chưa có bộ bài tập Quiz nào.\nHãy bấm vào nút Tạo mới ở trên để quét tài liệu nhé!"
+                    android:textColor="@color/text_sub"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/quizTitle1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="Toán cao cấp - Chương 1"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@id/arrow1"
-                            app:layout_constraintStart_toEndOf="@id/quizIcon1"
-                            app:layout_constraintTop_toTopOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_quizzes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    tools:listitem="@layout/item_quiz" />
+            </FrameLayout>
 
-                        <TextView
-                            android:id="@+id/quizInfo1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="20 câu  •  15 phút"
-                            android:textColor="@color/text_sub"
-                            android:textSize="14sp"
-                            app:layout_constraintStart_toStartOf="@id/quizTitle1"
-                            app:layout_constraintTop_toBottomOf="@id/quizTitle1" />
-
-                        <ImageView
-                            android:id="@+id/arrow1"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_media_play"
-                            android:contentDescription="@string/desc_play_quiz"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/text_sub"
-                            android:alpha="0.5" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

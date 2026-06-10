@@ -109,4 +109,12 @@ public class MainActivity extends AppCompatActivity {
                 syncRequest
         );
     }
+    // Ném hàm này vào trong MainActivity (Nhớ để chữ public)
+    public void navigateToHomeAfterAuth() {
+        // 1. Chạy đồng bộ dữ liệu cho user mới đăng nhập
+        syncData();
+
+        // 2. Chuyển sang màn hình Home
+        loadFragment(new HomeFragment());
+    }
 }
