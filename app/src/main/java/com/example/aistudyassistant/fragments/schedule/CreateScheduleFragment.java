@@ -11,12 +11,21 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.data.repository.ScheduleRepository;
+import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.ScheduleTask;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
@@ -41,6 +50,17 @@ public class CreateScheduleFragment extends Fragment {
     private MaterialCardView typeReview, typeQuiz, typeFlashcard, typeReading;
     private String selectedTaskType = "Review";
 
+    private ScheduleRepository scheduleRepository;
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    saveTask();
+                } else {
+                    Toast.makeText(requireContext(), "Cần quyền thông báo để nhắc nhở lịch học!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +70,9 @@ public class CreateScheduleFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Khởi tạo Repository
+        scheduleRepository = new ScheduleRepository(requireContext(), AppDatabase.getDatabase(requireContext()).scheduleDao());
 
         initViews(view);
         setupTaskTypeListeners();
@@ -182,31 +205,56 @@ public class CreateScheduleFragment extends Fragment {
     // ================== LOGIC NÚT LƯU ==================
     private void setupSaveEvent() {
         btnSave.setOnClickListener(v -> {
-            String title = edtTitle.getText().toString().trim();
-            String date = tvDate.getText().toString();
-            String startTime = tvStartTime.getText().toString();
-            String endTime = tvEndTime.getText().toString();
-            String reminder = tvReminder.getText().toString();
-            String repeat = tvRepeat.getText().toString();
-
-            if (title.isEmpty()) {
-                edtTitle.setError("Vui lòng nhập tiêu đề!");
-                edtTitle.requestFocus();
-                return;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                } else {
+                    saveTask();
+                }
+            } else {
+                saveTask();
             }
-
-            // In ra Logcat để bạn dễ kiểm tra dữ liệu trước khi đẩy vào Database
-            System.out.println("--- DỮ LIỆU CHUẨN BỊ LƯU ---");
-            System.out.println("Title: " + title);
-            System.out.println("Type: " + selectedTaskType);
-            System.out.println("Date: " + date);
-            System.out.println("Time: " + startTime + " to " + endTime);
-            System.out.println("Reminder: " + reminder);
-            System.out.println("Repeat: " + repeat);
-
-            Toast.makeText(requireContext(), "Đã lưu thành công!", Toast.LENGTH_SHORT).show();
-
-            if (getActivity() != null) getActivity().getSupportFragmentManager().popBackStack();
         });
+    }
+
+    private void saveTask() {
+        String title = edtTitle.getText().toString().trim();
+        String date = tvDate.getText().toString();
+        String startTime = tvStartTime.getText().toString();
+        String endTime = tvEndTime.getText().toString();
+        String reminder = tvReminder.getText().toString();
+        String repeat = tvRepeat.getText().toString();
+
+        if (title.isEmpty()) {
+            edtTitle.setError("Vui lòng nhập tiêu đề!");
+            edtTitle.requestFocus();
+            return;
+        }
+
+        // THỰC HIỆN LƯU VÀO DATABASE
+        ScheduleTask newTask = new ScheduleTask();
+        newTask.setTitle(title);
+        newTask.setType(selectedTaskType);
+        newTask.setDate(date);
+        newTask.setStartTime(startTime);
+        newTask.setEndTime(endTime);
+
+        // Chuyển đổi Reminder sang phút
+        int reminderMin = 0;
+        if (reminder.contains("5 phút")) reminderMin = 5;
+        else if (reminder.contains("10 phút")) reminderMin = 10;
+        else if (reminder.contains("15 phút")) reminderMin = 15;
+        else if (reminder.contains("30 phút")) reminderMin = 30;
+        else if (reminder.contains("1 giờ")) reminderMin = 60;
+        else if (reminder.equals("Không thông báo")) reminderMin = -1;
+
+        newTask.setReminderMinutes(reminderMin);
+        newTask.setRepeatType(repeat);
+
+        scheduleRepository.insertTask(newTask);
+
+        Toast.makeText(requireContext(), "Đã lưu lịch học thành công!", Toast.LENGTH_SHORT).show();
+
+        if (getActivity() != null) getActivity().getSupportFragmentManager().popBackStack();
     }
 }

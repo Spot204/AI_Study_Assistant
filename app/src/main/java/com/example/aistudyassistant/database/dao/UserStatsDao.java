@@ -19,6 +19,9 @@ public interface UserStatsDao {
     @Query("SELECT * FROM user_stats WHERE userId = :userId LIMIT 1")
     UserStatsEntity getStatsByUser(String userId);
 
+    @Query("SELECT * FROM user_stats WHERE userId = :userId LIMIT 1")
+    androidx.lifecycle.LiveData<UserStatsEntity> getStatsLiveData(String userId);
+
     // =================================================================
     // 💥 CÁC HÀM BỔ SUNG PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY (FIREBASE)
     // =================================================================

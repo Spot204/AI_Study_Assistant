@@ -13,7 +13,7 @@ public interface UserAchievementDao {
     void unlockAchievement(UserAchievementEntity userAchievement);
 
     @Query("SELECT * FROM user_achievements WHERE userId = :userId")
-    List<UserAchievementEntity> getUserAchievements(String userId);
+    androidx.lifecycle.LiveData<List<UserAchievementEntity>> getUserAchievementsLiveData(String userId);
 
     @Query("SELECT EXISTS(SELECT 1 FROM user_achievements WHERE id = :id)")
     boolean isUnlocked(String id);

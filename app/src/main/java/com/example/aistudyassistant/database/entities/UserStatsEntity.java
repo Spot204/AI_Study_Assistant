@@ -11,6 +11,7 @@ public class UserStatsEntity {
     @NonNull
     private String userId; // Mã ID duy nhất của người dùng (Nên lấy trùng với Firebase UID)
     private int streakCount; // Số ngày học liên tục (Streak)
+    private int totalStudyDays; // Tổng số ngày đã học (Bao nhiêu ngày)
     private int totalFlashcards; // Tổng số thẻ flashcard đã tạo
     private int totalQuizzes; // Tổng số bộ quiz đã làm/tạo
     private double studyHours; // Tổng số giờ đã tích lũy học trên app
@@ -26,14 +27,15 @@ public class UserStatsEntity {
     public UserStatsEntity(@NonNull String userId) {
         this.userId = userId;
         this.streakCount = 0;
+        this.totalStudyDays = 0;
         this.totalFlashcards = 0;
         this.totalQuizzes = 0;
         this.studyHours = 0.0;
-        this.lastActive = System.currentTimeMillis();
+        this.lastActive = 0; // Khởi tạo bằng 0 để bài học đầu tiên được tính là ngày 1
 
         // Tự động cấu hình mốc thời gian đồng bộ mặc định khi tạo mới bản ghi local
         this.updatedAt = System.currentTimeMillis();
-        this.syncStatus = "pending_update"; // Mặc định là cần đẩy lên đám mây sao lưu ngay khi có mạng
+        this.syncStatus = "pending_update";
     }
 
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---
@@ -44,6 +46,9 @@ public class UserStatsEntity {
 
     public int getStreakCount() { return streakCount; }
     public void setStreakCount(int streakCount) { this.streakCount = streakCount; }
+
+    public int getTotalStudyDays() { return totalStudyDays; }
+    public void setTotalStudyDays(int totalStudyDays) { this.totalStudyDays = totalStudyDays; }
 
     public int getTotalFlashcards() { return totalFlashcards; }
     public void setTotalFlashcards(int totalFlashcards) { this.totalFlashcards = totalFlashcards; }

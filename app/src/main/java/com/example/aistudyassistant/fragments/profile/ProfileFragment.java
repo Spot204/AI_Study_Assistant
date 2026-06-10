@@ -11,18 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.features.profile.EditProfileActivity;
-import com.example.aistudyassistant.features.profile.HelpSupportActivity;
-import com.example.aistudyassistant.features.profile.NotificationsActivity;
+import com.example.aistudyassistant.fragments.profile.EditProfileActivity;
+import com.example.aistudyassistant.fragments.profile.HelpSupportActivity;
+import com.example.aistudyassistant.fragments.profile.NotificationsActivity;
 import com.example.aistudyassistant.fragments.auth.LoginFragment;
+import com.example.aistudyassistant.data.repository.UserStatsRepository;
+import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.services.auth.AuthService;
 import com.example.aistudyassistant.services.profile.ProfileService;
+import com.example.aistudyassistant.data.repository.AchievementRepository;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
     private ProfileService profileService;
-    private TextView tvName;
-    private TextView tvSchool;
+    private UserStatsRepository statsRepo;
+    private AchievementRepository achievementRepo;
+    private AchievementAdapter achievementAdapter;
+    private TextView tvName, tvSchool;
+    private TextView tvStreak, tvFlashcards, tvQuizzes, tvHours;
 
     @Nullable
     @Override
@@ -30,8 +38,20 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.profile_activity_main, container, false);
 
         profileService = new ProfileService(requireContext());
+        AppDatabase db = AppDatabase.getDatabase(requireContext());
+        statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
+        achievementRepo = new AchievementRepository(db.achievementDao(), db.userAchievementDao());
+
         tvName = view.findViewById(R.id.tv_profile_name);
         tvSchool = view.findViewById(R.id.tv_profile_school);
+        tvStreak = view.findViewById(R.id.tv_stat_streak);
+        tvFlashcards = view.findViewById(R.id.tv_stat_flashcards);
+        tvQuizzes = view.findViewById(R.id.tv_stat_quizzes);
+        tvHours = view.findViewById(R.id.tv_stat_hours);
+
+        RecyclerView rvAchievements = view.findViewById(R.id.achievements_recycler);
+        achievementAdapter = new AchievementAdapter();
+        rvAchievements.setAdapter(achievementAdapter);
 
         // Header actions
         view.findViewById(R.id.btn_back).setVisibility(View.GONE); // Ẩn nút back khi ở trong Navigation
@@ -47,10 +67,9 @@ public class ProfileFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), LoginFragment.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if (getActivity() instanceof com.example.aistudyassistant.MainActivity) {
+                            ((com.example.aistudyassistant.MainActivity) getActivity()).loadFragment(new LoginFragment());
+                        }
                     });
                 }
             });
@@ -70,6 +89,29 @@ public class ProfileFragment extends Fragment {
             if (user != null) {
                 tvName.setText(user.getFullName());
                 tvSchool.setText(user.getSchool());
+                loadUserStats(user.getUserId());
+                loadUserAchievements(user.getUserId());
+            }
+        });
+    }
+
+    private void loadUserAchievements(String userId) {
+        achievementRepo.getUserAchievements(userId).observe(getViewLifecycleOwner(), achievements -> {
+            if (achievements != null) {
+                achievementAdapter.setAchievements(achievements);
+            }
+        });
+    }
+
+    private void loadUserStats(String userId) {
+        // Giả sử statsRepo có phương thức trả về LiveData hoặc chúng ta lấy trực tiếp từ DAO qua Repository
+        // Ở đây tôi sẽ thêm logic lấy data từ Local DB để hiển thị
+        AppDatabase.getDatabase(requireContext()).userStatsDao().getStatsLiveData(userId).observe(getViewLifecycleOwner(), stats -> {
+            if (stats != null) {
+                tvStreak.setText(String.valueOf(stats.getStreakCount()));
+                tvFlashcards.setText(String.valueOf(stats.getTotalFlashcards()));
+                tvQuizzes.setText(String.valueOf(stats.getTotalQuizzes()));
+                tvHours.setText(String.format(Locale.getDefault(), "%.1f", stats.getStudyHours()));
             }
         });
     }

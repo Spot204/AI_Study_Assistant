@@ -44,7 +44,6 @@
             android:layout_marginEnd="12dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ivStatus"
             app:layout_constraintStart_toEndOf="@id/ivTaskIcon"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -78,11 +77,20 @@
                     android:text="08:00 - 09:30"
                     android:textColor="@color/text_sub"
                     android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/ivReminderIcon"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@android:drawable/ic_lock_idle_alarm"
+                    android:visibility="gone"
+                    app:tint="@color/purple_primary" />
             </LinearLayout>
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/ivStatus"
+            android:id="@+id/ivTaskStatus"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="16dp"
@@ -90,7 +98,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/card_border" />
-
+            app:tint="@color/purple_primary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

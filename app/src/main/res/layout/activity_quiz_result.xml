@@ -33,8 +33,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/quiz_result_title"
         android:textColor="@color/black"
-        android:textSize="28sp"
-        android:textStyle="bold"
+        style="@style/AppTextAppearance.Headline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/trophyContainer" />
@@ -46,7 +45,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/quiz_result_subtitle"
         android:textColor="@color/text_sub"
-        android:textSize="16sp"
+        style="@style/AppTextAppearance.BodyMedium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvResultTitle" />
@@ -76,8 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="67%"
                 android:textColor="@color/black"
-                android:textSize="48sp"
-                android:textStyle="bold" />
+                style="@style/AppTextAppearance.Display" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -85,7 +83,7 @@
                 android:layout_marginTop="4dp"
                 android:text="@string/quiz_result_score_label"
                 android:textColor="@color/text_sub"
-                android:textSize="14sp" />
+                style="@style/AppTextAppearance.BodySmall" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,7 +115,7 @@
                         android:layout_marginTop="8dp"
                         android:text="2"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold" />
 
                     <TextView
@@ -125,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/quiz_result_correct"
                         android:textColor="@color/text_sub"
-                        android:textSize="12sp" />
+                        style="@style/AppTextAppearance.Caption" />
                 </LinearLayout>
 
                 <!-- Incorrect -->
@@ -152,7 +150,7 @@
                         android:layout_marginTop="8dp"
                         android:text="1"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold" />
 
                     <TextView
@@ -160,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/quiz_result_incorrect"
                         android:textColor="@color/text_sub"
-                        android:textSize="12sp" />
+                        style="@style/AppTextAppearance.Caption" />
                 </LinearLayout>
 
                 <!-- Time -->
@@ -187,7 +185,7 @@
                         android:layout_marginTop="8dp"
                         android:text="2:45"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold" />
 
                     <TextView
@@ -195,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/quiz_result_time"
                         android:textColor="@color/text_sub"
-                        android:textSize="12sp" />
+                        style="@style/AppTextAppearance.Caption" />
                 </LinearLayout>
 
             </LinearLayout>

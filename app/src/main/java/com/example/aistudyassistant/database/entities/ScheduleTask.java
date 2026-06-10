@@ -17,6 +17,8 @@ public class ScheduleTask {
     private String type; // Loại nhiệm vụ: "study" | "quiz" | "flashcard" | "reading"
     private String date; // Ngày thực hiện (Ví dụ: "2026-06-04")
     private boolean isCompleted; // Trạng thái hoàn thành (True: Đã xong, False: Chưa xong)
+    private int reminderMinutes; // [THÊM] Số phút nhắc trước (ví dụ: 5, 10, 15)
+    private String repeatType; // [THÊM] "None", "Daily", "Weekly", "Monthly"
 
     // 2 trường bắt buộc bổ sung để phục vụ luồng đồng bộ hóa dữ liệu Firebase
     private long updatedAt; // Mốc thời gian chỉnh sửa trạng thái task cuối cùng
@@ -70,6 +72,12 @@ public class ScheduleTask {
 
     public boolean isCompleted() { return isCompleted; }
     public void setCompleted(boolean completed) { isCompleted = completed; }
+
+    public int getReminderMinutes() { return reminderMinutes; }
+    public void setReminderMinutes(int reminderMinutes) { this.reminderMinutes = reminderMinutes; }
+
+    public String getRepeatType() { return repeatType; }
+    public void setRepeatType(String repeatType) { this.repeatType = repeatType; }
 
     public long getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(long updatedAt) { this.updatedAt = updatedAt; }

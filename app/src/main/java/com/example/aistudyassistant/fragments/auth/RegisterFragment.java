@@ -57,8 +57,10 @@ public class RegisterFragment extends Fragment implements RegisterView {
         AuthService authService = new AuthService();
         AppDatabase db = AppDatabase.getDatabase(requireContext());
         UserRepository userRepository = new UserRepository(db.userDao());
+        com.example.aistudyassistant.data.repository.UserStatsRepository statsRepo = 
+            new com.example.aistudyassistant.data.repository.UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
 
-        registerController = new RegisterController(this, authService, userRepository);
+        registerController = new RegisterController(this, authService, userRepository, statsRepo);
 
         // ============ CHỈ BẮT SỰ KIỆN CLICK ============
 

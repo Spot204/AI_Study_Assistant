@@ -37,7 +37,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Toán cao cấp A1"            android:textColor="#111827" android:textSize="18sp"
+            android:text="Toán cao cấp A1"
+            android:textColor="#111827"
+            style="@style/AppTextAppearance.BodyLarge"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cv_deck_icon_bg"
@@ -49,7 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             tools:text="45 thẻ"
-            android:textColor="#4B5563" android:textSize="14sp"
+            android:textColor="#4B5563"
+            style="@style/AppTextAppearance.BodySmall"
             app:layout_constraintStart_toStartOf="@+id/tv_deck_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_deck_title" />
 
@@ -72,7 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="75%"
-            android:textColor="#4B5563" android:textSize="12sp"
+            android:textColor="#4B5563"
+            style="@style/AppTextAppearance.Caption"
             app:layout_constraintBottom_toBottomOf="@+id/pb_deck_progress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/pb_deck_progress" />

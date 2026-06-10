@@ -4,6 +4,7 @@ import com.example.aistudyassistant.database.entities.StudySetEntity;
 
 public class StudySetFirestore {
     private String setId;
+
     private String userId;
     private String title;
     private String visibility;

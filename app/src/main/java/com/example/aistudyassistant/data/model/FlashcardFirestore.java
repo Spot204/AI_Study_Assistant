@@ -4,6 +4,7 @@ import com.example.aistudyassistant.database.entities.FlashcardEntity;
 
 public class FlashcardFirestore {
     private String flashcardId;
+
     private String setId;
     private String userId;
     private String front;

@@ -46,8 +46,7 @@
             android:layout_marginStart="16dp"
             android:text="@string/create_schedule_title"
             android:textColor="#111111"
-            android:textSize="24dp"
-            android:textStyle="bold"/>
+            style="@style/AppTextAppearance.Title" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_title"
                 android:textColor="#777777"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.Body" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -108,7 +107,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="#111111"
                     android:textColorHint="#9E9E9E"
-                    android:textSize="17sp" />
+                    style="@style/AppTextAppearance.Body" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -118,7 +117,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/label_task_type"
                 android:textColor="#777777"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.Body" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -169,7 +168,7 @@
                                 android:layout_marginTop="12dp"
                                 android:text="@string/task_type_review"
                                 android:textColor="#111111"
-                                android:textSize="15sp"
+                                style="@style/AppTextAppearance.BodySmall"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -216,7 +215,7 @@
                                 android:layout_marginTop="12dp"
                                 android:text="@string/task_type_quiz"
                                 android:textColor="#111111"
-                                android:textSize="15sp"
+                                style="@style/AppTextAppearance.BodySmall"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -263,7 +262,7 @@
                                 android:layout_marginTop="12dp"
                                 android:text="@string/task_type_flashcard"
                                 android:textColor="#111111"
-                                android:textSize="15sp"
+                                style="@style/AppTextAppearance.BodySmall"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -310,7 +309,7 @@
                                 android:layout_marginTop="12dp"
                                 android:text="@string/task_type_reading"
                                 android:textColor="#111111"
-                                android:textSize="15sp"
+                                style="@style/AppTextAppearance.BodySmall"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -327,7 +326,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/label_date"
                 android:textColor="#777777"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.Body" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardDate"
@@ -363,7 +362,7 @@
                         android:layout_weight="1"
                         android:text="20/05/2026"
                         android:textColor="#111111"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -383,7 +382,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/label_time"
                 android:textColor="#777777"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.Body" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -425,7 +424,7 @@
                             android:layout_marginStart="12dp"
                             android:text="09:00 AM"
                             android:textColor="#111111"
-                            android:textSize="16sp"
+                            style="@style/AppTextAppearance.Body"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -438,7 +437,7 @@
                     android:layout_marginHorizontal="14dp"
                     android:text="@string/time_to"
                     android:textColor="#777777"
-                    android:textSize="16sp" />
+                    style="@style/AppTextAppearance.Body" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardEndTime"
@@ -473,7 +472,7 @@
                             android:layout_marginStart="12dp"
                             android:text="10:00 AM"
                             android:textColor="#111111"
-                            android:textSize="16sp"
+                            style="@style/AppTextAppearance.Body"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -488,7 +487,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/label_reminder"
                 android:textColor="#777777"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.Body" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardReminder"
@@ -523,7 +522,7 @@
                         android:layout_weight="1"
                         android:text="@string/reminder_15_mins"
                         android:textColor="#111111"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -542,7 +541,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/label_repeat"
                 android:textColor="#777777"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.Body" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardRepeat"
@@ -578,7 +577,7 @@
                         android:layout_weight="1"
                         android:text="@string/repeat_none"
                         android:textColor="#111111"
-                        android:textSize="18sp"
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:textStyle="bold" />
 
                     <ImageView

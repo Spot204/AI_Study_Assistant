@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class StudySessionFirestore {
     private String sessionId;
+
     private String userId;
     private String type;
     private String referenceId;

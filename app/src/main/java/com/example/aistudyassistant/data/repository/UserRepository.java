@@ -103,4 +103,44 @@ public class UserRepository {
             }
         });
     }
+
+    /**
+     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy (Không dùng callback)
+     */
+    public void downloadUserFromServer(String userId) {
+        downloadUserFromServer(userId, null);
+    }
+
+    /**
+     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy (Có callback)
+     */
+    public void downloadUserFromServer(String userId, UserDownloadCallback callback) {
+        firestore.collection(COLLECTION_NAME)
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        User remoteUser = documentSnapshot.toObject(User.class);
+                        if (remoteUser != null) {
+                            executorService.execute(() -> {
+                                remoteUser.setSyncStatus("synced");
+                                userDao.insertUser(remoteUser);
+                                if (callback != null) callback.onSuccess(remoteUser);
+                            });
+                        } else if (callback != null) {
+                            callback.onFailure("Dữ liệu trống");
+                        }
+                    } else if (callback != null) {
+                        callback.onFailure("Không tìm thấy User");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (callback != null) callback.onFailure(e.getMessage());
+                });
+    }
+
+    public interface UserDownloadCallback {
+        void onSuccess(User user);
+        void onFailure(String error);
+    }
 }

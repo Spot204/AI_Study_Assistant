@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Toán cao cấp A1"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                style="@style/AppTextAppearance.BodyLarge"
                 android:textStyle="bold" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="1 / 4"
                 android:textColor="#8A8D9F"
-                android:textSize="14sp" />
+                style="@style/AppTextAppearance.BodySmall" />
         </LinearLayout>
 
         <ImageButton
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:text="CÂU HỎI"
                 android:textColor="#B3FFFFFF"
-                android:textSize="14sp"
+                style="@style/AppTextAppearance.BodySmall"
                 android:textStyle="bold"
                 android:letterSpacing="0.1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -118,8 +118,7 @@
                 android:gravity="center"
                 android:text="Đạo hàm của hàm số y = x²"
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                style="@style/AppTextAppearance.Title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:text="Nhấn để xem đáp án"
                 android:textColor="#99FFFFFF"
-                android:textSize="14sp"
+                style="@style/AppTextAppearance.BodySmall"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -184,7 +183,7 @@
                 android:backgroundTint="#33FF4444"
                 android:text="Chưa thuộc"
                 android:textColor="#FF4444"
-                android:textSize="16sp"
+                style="@style/AppTextAppearance.BodyMedium"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 app:cornerRadius="16dp"/>
@@ -198,7 +197,7 @@
                 android:backgroundTint="#3300C853"
                 android:text="Đã thuộc"
                 android:textColor="#00C853"
-                android:textSize="16sp"
+                style="@style/AppTextAppearance.BodyMedium"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 app:cornerRadius="16dp"/>

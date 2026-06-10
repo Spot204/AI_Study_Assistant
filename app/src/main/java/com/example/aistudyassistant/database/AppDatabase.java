@@ -23,7 +23,7 @@ import com.example.aistudyassistant.database.entities.*;
         NotificationEntity.class,
         QuizEntity.class,
         DocumentEntity.class
-}, version = 5)
+}, version = 7)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
@@ -42,6 +42,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DocumentDao documentDao();
     public abstract FlashcardDao flashcardDao();
     public abstract QuizDao quizDao();
+    public abstract UserStatsDao userStatsDao();
+    public abstract LearningGoalDao learningGoalDao();
+    public abstract AchievementDao achievementDao();
+    public abstract UserAchievementDao userAchievementDao();
 
     // =================================================================
 
