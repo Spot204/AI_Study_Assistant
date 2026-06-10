@@ -12,11 +12,11 @@ import com.example.aistudyassistant.R;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.features.schedule.ScheduleController;
 import java.util.ArrayList;
 
 // Chú ý: Đã đổi Import từ Activity sang Fragment mới
-import com.example.aistudyassistant.features.schedule.ScheduleAdapter;
+import com.example.aistudyassistant.fragments.schedule.ScheduleAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,11 +24,14 @@ public class ScheduleFragment extends Fragment {
 
     private RecyclerView rvTasks;
     private ScheduleAdapter adapter;
+    private ScheduleController scheduleController;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_schedule, container, false);
+
+        scheduleController = new ScheduleController(requireContext());
 
         rvTasks = view.findViewById(R.id.rvTasks);
         rvTasks.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -44,7 +47,7 @@ public class ScheduleFragment extends Fragment {
         }
 
         // 2. Tải danh sách công việc
-        AppDatabase.getDatabase(requireContext()).scheduleDao().getAllTasks(currentUserId).observe(getViewLifecycleOwner(), tasks -> {
+        scheduleController.getAllTasks(currentUserId).observe(getViewLifecycleOwner(), tasks -> {
             if (tasks != null) {
                 adapter.updateTasks(tasks);
             }

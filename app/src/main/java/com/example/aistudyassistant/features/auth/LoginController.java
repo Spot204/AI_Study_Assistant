@@ -70,7 +70,7 @@ public class LoginController {
             @Override
             public void onFailure(String error) {
                 view.hideLoading();
-                view.showError("Lỗi: " + error);
+                view.showSuccess("Đăng nhập không thành công thành công!");
             }
         });
     }

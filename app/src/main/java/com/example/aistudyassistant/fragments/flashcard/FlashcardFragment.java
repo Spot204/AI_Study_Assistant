@@ -1,7 +1,7 @@
 package com.example.aistudyassistant.fragments.flashcard;
 
 import android.os.Bundle;
-import com.example.aistudyassistant.features.ocr_summary.OCRSummaryActivity;
+import com.example.aistudyassistant.fragments.ocr_summary.OCRSummaryActivity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.features.flashcard.FlashcardDeckAdapter;
+import com.example.aistudyassistant.features.flashcard.FlashcardController;
+import com.example.aistudyassistant.fragments.flashcard.FlashcardDeckAdapter;
 import com.example.aistudyassistant.services.profile.ProfileService;
 
 public class FlashcardFragment extends Fragment {
@@ -24,7 +24,7 @@ public class FlashcardFragment extends Fragment {
     private RecyclerView rvDecks;
     private FlashcardDeckAdapter adapter;
     private ProfileService profileService;
-    private AppDatabase db;
+    private FlashcardController flashcardController;
     private ImageButton btnBack, btnAdd;
 
     @Nullable
@@ -32,7 +32,7 @@ public class FlashcardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flashcard, container, false);
 
-        db = AppDatabase.getDatabase(requireContext());
+        flashcardController = new FlashcardController(requireContext());
         profileService = new ProfileService(requireContext());
 
         rvDecks = view.findViewById(R.id.rv_fc_decks);
@@ -56,7 +56,7 @@ public class FlashcardFragment extends Fragment {
     }
 
     private void loadStudySets(String userId) {
-        db.studySetDao().getAllSetsByUser(userId).observe(getViewLifecycleOwner(), sets -> {
+        flashcardController.getStudySets(userId).observe(getViewLifecycleOwner(), sets -> {
             if (sets != null) {
                 adapter.setStudySets(sets);
             }

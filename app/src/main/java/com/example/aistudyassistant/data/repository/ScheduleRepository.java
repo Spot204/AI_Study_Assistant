@@ -57,7 +57,7 @@ public class ScheduleRepository {
         });
     }
 
-    private void scheduleAlarm(ScheduleTask task) {
+    public void scheduleAlarm(ScheduleTask task) {
         if (task.getReminderMinutes() < 0) return;
 
         try {

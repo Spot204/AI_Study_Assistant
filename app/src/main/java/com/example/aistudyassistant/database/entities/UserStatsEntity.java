@@ -31,11 +31,11 @@ public class UserStatsEntity {
         this.totalFlashcards = 0;
         this.totalQuizzes = 0;
         this.studyHours = 0.0;
-        this.lastActive = System.currentTimeMillis();
+        this.lastActive = 0; // Khởi tạo bằng 0 để bài học đầu tiên được tính là ngày 1
 
         // Tự động cấu hình mốc thời gian đồng bộ mặc định khi tạo mới bản ghi local
         this.updatedAt = System.currentTimeMillis();
-        this.syncStatus = "pending_update"; // Mặc định là cần đẩy lên đám mây sao lưu ngay khi có mạng
+        this.syncStatus = "pending_update";
     }
 
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---

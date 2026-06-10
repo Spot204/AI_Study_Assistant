@@ -2,6 +2,8 @@ package com.example.aistudyassistant.features.auth;
 
 import com.example.aistudyassistant.database.entities.User;
 import com.example.aistudyassistant.data.repository.UserRepository;
+import com.example.aistudyassistant.data.repository.UserStatsRepository;
+import com.example.aistudyassistant.database.entities.UserStatsEntity;
 import com.example.aistudyassistant.services.auth.AuthCallback;
 import com.example.aistudyassistant.services.auth.AuthService;
 
@@ -10,11 +12,13 @@ public class RegisterController {
     private final RegisterView view;
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final UserStatsRepository statsRepo;
 
-    public RegisterController(RegisterView view, AuthService authService, UserRepository userRepository) {
+    public RegisterController(RegisterView view, AuthService authService, UserRepository userRepository, UserStatsRepository statsRepo) {
         this.view = view;
         this.authService = authService;
         this.userRepository = userRepository;
+        this.statsRepo = statsRepo;
     }
 
     // ĐÂY LÀ TOÀN BỘ LOGIC CỦA TRANG ĐĂNG KÝ
@@ -41,6 +45,9 @@ public class RegisterController {
                 User newUser = new User(uid, name, email);
                 userRepository.saveUser(newUser);
 
+                // Khởi tạo bảng chỉ số học tập (UserStats) cho người dùng mới
+                statsRepo.updateStats(new UserStatsEntity(uid));
+
                 // Báo cáo lại cho Giao diện
                 view.hideLoading();
                 view.showSuccess("Đăng ký thành công!");
@@ -51,7 +58,7 @@ public class RegisterController {
             public void onFailure(String error) {
                 // Thất bại
                 view.hideLoading();
-                view.showError("Đăng ký thất bại: " + error);
+                view.showError("Đăng ký không thành công: " + error);
             }
         });
     }

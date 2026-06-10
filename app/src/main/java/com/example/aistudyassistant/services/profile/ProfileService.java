@@ -23,7 +23,7 @@ public class ProfileService {
         this.db = AppDatabase.getDatabase(context);
         this.userDao = db.userDao();
         this.userRepository = new UserRepository(userDao);
-        this.userStatsRepository = new UserStatsRepository(db.userStatsDao());
+        this.userStatsRepository = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
         this.executorService = Executors.newSingleThreadExecutor();
     }
 

@@ -15,7 +15,7 @@ public class ProfileController {
     public ProfileController(Context context) {
         AppDatabase db = AppDatabase.getDatabase(context);
         this.userRepository = new UserRepository(db.userDao());
-        this.userStatsRepository = new UserStatsRepository(db.userStatsDao());
+        this.userStatsRepository = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
     }
 
     public LiveData<User> getUser(String userId) {

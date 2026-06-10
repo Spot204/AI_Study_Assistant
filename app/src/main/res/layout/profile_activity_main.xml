@@ -36,10 +36,10 @@
         </FrameLayout>
 
         <TextView
+            style="@style/AppTextAppearance.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hồ sơ"
-            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             app:layout_constraintStart_toEndOf="@id/btn_back"
@@ -138,21 +138,20 @@
 
                 <TextView
                     android:id="@+id/tv_profile_name"
+                    style="@style/AppTextAppearance.TitleMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nguyễn Văn A"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     android:textColor="@color/text_primary"
                     android:layout_marginTop="16dp" />
 
                 <TextView
                     android:id="@+id/tv_profile_school"
+                    style="@style/AppTextAppearance.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sinh viên năm 3"
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp"
                     android:layout_marginTop="4dp" />
 
                 <LinearLayout
@@ -170,11 +169,11 @@
                         android:src="@drawable/ic_crown"
                         app:tint="@color/chart_3" />
                     <TextView
+                        style="@style/AppTextAppearance.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Premium Member"
                         android:textColor="@color/chart_3"
-                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:layout_marginStart="8dp" />
                 </LinearLayout>
@@ -215,18 +214,19 @@
                                 android:src="@drawable/ic_flame" />
                         </FrameLayout>
                         <TextView
+                            android:id="@+id/tv_stat_streak"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="12"
+                            android:text="0"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
-                            android:textSize="18sp"
                             android:layout_marginTop="8dp" />
                         <TextView
+                            style="@style/AppTextAppearance.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Ngày streak"
-                            android:textSize="10sp"
                             android:textColor="@color/text_secondary" />
                     </LinearLayout>
 
@@ -248,18 +248,19 @@
                                 android:src="@drawable/ic_book" />
                         </FrameLayout>
                         <TextView
+                            android:id="@+id/tv_stat_flashcards"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="450"
+                            android:text="0"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
-                            android:textSize="18sp"
                             android:layout_marginTop="8dp" />
                         <TextView
+                            style="@style/AppTextAppearance.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Flashcard"
-                            android:textSize="10sp"
                             android:textColor="@color/text_secondary" />
                     </LinearLayout>
 
@@ -281,18 +282,19 @@
                                 android:src="@drawable/ic_trophy" />
                         </FrameLayout>
                         <TextView
+                            android:id="@+id/tv_stat_quizzes"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="85"
+                            android:text="0"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
-                            android:textSize="18sp"
                             android:layout_marginTop="8dp" />
                         <TextView
+                            style="@style/AppTextAppearance.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quiz"
-                            android:textSize="10sp"
                             android:textColor="@color/text_secondary" />
                     </LinearLayout>
 
@@ -314,18 +316,19 @@
                                 android:src="@drawable/ic_clock" />
                         </FrameLayout>
                         <TextView
+                            android:id="@+id/tv_stat_hours"
+                            style="@style/AppTextAppearance.BodyLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="48"
+                            android:text="0"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
-                            android:textSize="18sp"
                             android:layout_marginTop="8dp" />
                         <TextView
+                            style="@style/AppTextAppearance.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Giờ học"
-                            android:textSize="10sp"
                             android:textColor="@color/text_secondary" />
                     </LinearLayout>
                 </LinearLayout>
@@ -333,6 +336,7 @@
 
             <!-- Achievements Section -->
             <TextView
+                style="@style/AppTextAppearance.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thành tựu"
@@ -342,127 +346,19 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="12dp" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/achievements_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
                 android:clipToPadding="false"
-                android:paddingHorizontal="16dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Achievement 1 -->
-                    <LinearLayout
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rounded_card"
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:layout_marginEnd="12dp">
-                        <FrameLayout
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_achievement_unlocked">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_trophy"
-                                app:tint="@color/chart_3" />
-                        </FrameLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Người mới bắt đầu"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hoàn thành 10 flashcard đầu tiên"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Achievement 2 -->
-                    <LinearLayout
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rounded_card"
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:layout_marginEnd="12dp">
-                        <FrameLayout
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_achievement_unlocked">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_trophy"
-                                app:tint="@color/chart_3" />
-                        </FrameLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Siêng năng"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Học 7 ngày liên tiếp"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Achievement 3 (Locked) -->
-                    <LinearLayout
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rounded_card"
-                        android:alpha="0.5"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <FrameLayout
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_stat_icon">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_trophy"
-                                app:tint="@color/text_secondary" />
-                        </FrameLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quiz Master"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Đạt 100% trong 5 bài quiz"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:paddingHorizontal="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_achievement" />
 
             <!-- Settings Menu -->
             <TextView
+                style="@style/AppTextAppearance.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cài đặt"
@@ -505,6 +401,7 @@
                                 app:tint="@color/color_primary" />
                         </FrameLayout>
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -538,6 +435,7 @@
                                 app:tint="@color/color_accent" />
                         </FrameLayout>
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -571,6 +469,7 @@
                                 app:tint="@color/chart_3" />
                         </FrameLayout>
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -603,6 +502,7 @@
                                 app:tint="@color/chart_4" />
                         </FrameLayout>
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -636,6 +536,7 @@
                                 app:tint="@color/text_secondary" />
                         </FrameLayout>
                         <TextView
+                            style="@style/AppTextAppearance.Body"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -667,6 +568,7 @@
                     android:layout_height="20dp"
                     android:src="@drawable/ic_logout" />
                 <TextView
+                    style="@style/AppTextAppearance.BodyLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Đăng xuất"

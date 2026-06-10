@@ -17,24 +17,57 @@ public class UserStatsRepository {
     private final FirebaseAuth auth;
     private final ExecutorService executorService;
 
-    public UserStatsRepository(UserStatsDao userStatsDao) {
+    private final com.example.aistudyassistant.database.dao.AchievementDao achievementDao;
+    private final com.example.aistudyassistant.database.dao.UserAchievementDao userAchievementDao;
+
+    public UserStatsRepository(UserStatsDao userStatsDao, 
+                               com.example.aistudyassistant.database.dao.AchievementDao achievementDao,
+                               com.example.aistudyassistant.database.dao.UserAchievementDao userAchievementDao) {
         this.userStatsDao = userStatsDao;
+        this.achievementDao = achievementDao;
+        this.userAchievementDao = userAchievementDao;
         this.firestore = FirebaseFirestore.getInstance();
         this.auth = FirebaseAuth.getInstance();
         this.executorService = Executors.newSingleThreadExecutor();
     }
 
     /**
-     * Cập nhật toàn bộ object stats
+     * Cập nhật toàn bộ object stats và kiểm tra danh hiệu
      */
     public void updateStats(UserStatsEntity stats) {
         stats.setUpdatedAt(System.currentTimeMillis());
         stats.setSyncStatus("pending_update");
 
         executorService.execute(() -> {
-            userStatsDao.updateStats(stats);
+            userStatsDao.insertStats(stats);
+            checkAchievements(stats); // KIỂM TRA MỞ KHÓA DANH HIỆU
             syncToCloud(stats);
         });
+    }
+
+    private void checkAchievements(UserStatsEntity stats) {
+        List<com.example.aistudyassistant.database.entities.AchievementEntity> allAchievements = achievementDao.getAllAchievements();
+        for (com.example.aistudyassistant.database.entities.AchievementEntity achievement : allAchievements) {
+            String userAchId = stats.getUserId() + "_" + achievement.getAchievementId();
+            
+            // Nếu chưa mở khóa, hãy kiểm tra điều kiện
+            if (!userAchievementDao.isUnlocked(userAchId)) {
+                boolean reached = false;
+                switch (achievement.getRequirementType()) {
+                    case "streak": reached = stats.getStreakCount() >= achievement.getRequirementValue(); break;
+                    case "quiz": reached = stats.getTotalQuizzes() >= achievement.getRequirementValue(); break;
+                    case "hours": reached = stats.getStudyHours() >= achievement.getRequirementValue(); break;
+                    case "flashcards": reached = stats.getTotalFlashcards() >= achievement.getRequirementValue(); break;
+                }
+
+                if (reached) {
+                    com.example.aistudyassistant.database.entities.UserAchievementEntity newUnlock = 
+                        new com.example.aistudyassistant.database.entities.UserAchievementEntity(userAchId, stats.getUserId(), achievement.getAchievementId());
+                    userAchievementDao.unlockAchievement(newUnlock);
+                    // Đồng bộ danh hiệu lên cloud (có thể gọi repo achievement ở đây)
+                }
+            }
+        }
     }
 
     /**

@@ -24,9 +24,9 @@ public class SyncWorker extends Worker {
         try {
             // Khởi tạo các repository
             UserRepository userRepo = new UserRepository(db.userDao());
-            UserStatsRepository userStatsRepo = new UserStatsRepository(db.userStatsDao());
+            UserStatsRepository userStatsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
             StudySetRepository studySetRepo = new StudySetRepository(db.studySetDao());
-            FlashcardRepository flashcardRepo = new FlashcardRepository(db.flashcardDao());
+            FlashcardRepository flashcardRepo = new FlashcardRepository(db.flashcardDao(), userStatsRepo);
             DocumentRepository documentRepo = new DocumentRepository(db.documentDao());
             StudySessionRepository studySessionRepo = new StudySessionRepository(db.studySessionDao());
             QuizRepository quizRepo = new QuizRepository(db.quizDao());

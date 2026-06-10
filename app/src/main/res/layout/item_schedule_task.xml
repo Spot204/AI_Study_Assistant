@@ -44,7 +44,6 @@
             android:layout_marginEnd="12dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ivStatus"
             app:layout_constraintStart_toEndOf="@id/ivTaskIcon"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -91,7 +90,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/ivStatus"
+            android:id="@+id/ivTaskStatus"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="16dp"
@@ -99,7 +98,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text_sub" />
-
+            app:tint="@color/purple_primary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

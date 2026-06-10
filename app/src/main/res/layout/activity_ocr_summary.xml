@@ -23,8 +23,7 @@
         android:layout_marginStart="16dp"
         android:text="OCR &amp; Tóm tắt AI"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        style="@style/AppTextAppearance.TitleMedium"
         app:layout_constraintBottom_toBottomOf="@+id/btn_ocr_back"
         app:layout_constraintStart_toEndOf="@+id/btn_ocr_back"
         app:layout_constraintTop_toTopOf="@+id/btn_ocr_back" />
@@ -58,7 +57,7 @@
                 android:layout_marginTop="12dp"
                 android:text="Chụp ảnh hoặc tải lên tài liệu"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+                style="@style/AppTextAppearance.BodyMedium" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -70,7 +69,7 @@
         android:layout_marginTop="24dp"
         android:text="Kết quả tóm tắt"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        style="@style/AppTextAppearance.BodyLarge"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_ocr_capture" />
@@ -92,7 +91,7 @@
             android:layout_height="wrap_content"
             android:text="Kết quả tóm tắt sẽ hiển thị ở đây sau khi AI xử lý..."
             android:textColor="#8A8D9F"
-            android:textSize="14sp"
+            style="@style/AppTextAppearance.BodySmall"
             android:lineSpacingExtra="4dp"/>
     </androidx.core.widget.NestedScrollView>
 
@@ -105,7 +104,7 @@
         android:text="Tạo Flashcards từ tóm tắt"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        style="@style/AppTextAppearance.BodyMedium"
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

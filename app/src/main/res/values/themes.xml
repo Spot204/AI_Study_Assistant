@@ -6,6 +6,45 @@
 
     <style name="Theme.AiStudyAssistant" parent="Base.Theme.AiStudyAssistant" />
 
+    <!-- Standard Text Appearances -->
+    <style name="AppTextAppearance.Caption" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">@dimen/text_size_caption</item>
+    </style>
+
+    <style name="AppTextAppearance.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">@dimen/text_size_body_small</item>
+    </style>
+
+    <style name="AppTextAppearance.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">@dimen/text_size_body_medium</item>
+    </style>
+
+    <style name="AppTextAppearance.BodyMedium" parent="AppTextAppearance.Body" />
+
+    <style name="AppTextAppearance.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">@dimen/text_size_body_large</item>
+    </style>
+
+    <style name="AppTextAppearance.Headline" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">@dimen/text_size_headline</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTextAppearance.Display" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:textSize">@dimen/text_size_display</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTextAppearance.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">@dimen/text_size_title_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTextAppearance.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">@dimen/text_size_title_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Style cao cấp cho Indicator (Hình viên thuốc dẹt, hiện đại) -->
     <style name="CustomIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">#EEF2FF</item> <!-- Màu Indigo nhạt thanh lịch -->
@@ -15,7 +54,7 @@
 
     <!-- Style cho chữ (Active) -->
     <style name="NavTextActive">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/nav_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/nav_active_icon</item>
@@ -23,7 +62,7 @@
 
     <!-- Style cho chữ (Inactive) -->
     <style name="NavTextInactive">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/nav_text_size</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/nav_inactive_icon</item>
     </style>

@@ -19,8 +19,11 @@ public class FlashcardRepository {
     private final FirebaseAuth auth;
     private final ExecutorService executorService;
 
-    public FlashcardRepository(FlashcardDao flashcardDao) {
+    private final UserStatsRepository statsRepo;
+
+    public FlashcardRepository(FlashcardDao flashcardDao, UserStatsRepository statsRepo) {
         this.flashcardDao = flashcardDao;
+        this.statsRepo = statsRepo;
         this.firestore = FirebaseFirestore.getInstance();
         this.auth = FirebaseAuth.getInstance();
         this.executorService = Executors.newSingleThreadExecutor();
@@ -47,6 +50,12 @@ public class FlashcardRepository {
                 card.setSyncStatus("pending_insert");
                 flashcardDao.insertFlashcard(card);
             }
+            
+            // Cập nhật tổng số flashcard trong UserStats
+            if (currentUserId != null) {
+                statsRepo.incrementFlashcards(currentUserId, flashcards.size());
+            }
+
             syncUnsyncedFlashcards();
         });
     }

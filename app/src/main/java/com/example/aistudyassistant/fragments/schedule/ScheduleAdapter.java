@@ -1,5 +1,6 @@
-package com.example.aistudyassistant.features.schedule;
+package com.example.aistudyassistant.fragments.schedule;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,16 +39,25 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         String timeString = String.format("%s - %s", task.getStartTime(), task.getEndTime());
         holder.tvTaskTime.setText(timeString);
         
-        if (task.isCompleted()) {
-            holder.ivStatus.setImageResource(android.R.drawable.checkbox_on_background);
+        if (holder.ivTaskStatus != null) {
+            Log.d("ScheduleAdapter", "ivTaskStatus is NOT null at position " + position);
+            if (task.isCompleted()) {
+                holder.ivTaskStatus.setImageResource(android.R.drawable.checkbox_on_background);
+            } else {
+                holder.ivTaskStatus.setImageResource(android.R.drawable.checkbox_off_background);
+            }
         } else {
-            holder.ivStatus.setImageResource(android.R.drawable.checkbox_off_background);
+            Log.e("ScheduleAdapter", "ivTaskStatus IS NULL at position " + position);
         }
 
-        if (task.getReminderMinutes() > 0) {
-            holder.ivReminderIcon.setVisibility(View.VISIBLE);
+        if (holder.ivReminderIcon != null) {
+            if (task.getReminderMinutes() > 0) {
+                holder.ivReminderIcon.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivReminderIcon.setVisibility(View.GONE);
+            }
         } else {
-            holder.ivReminderIcon.setVisibility(View.GONE);
+            Log.e("ScheduleAdapter", "ivReminderIcon is null at position " + position);
         }
     }
 
@@ -58,13 +68,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTaskTitle, tvTaskTime;
-        ImageView ivStatus, ivTaskIcon, ivReminderIcon;
+        ImageView ivTaskStatus, ivTaskIcon, ivReminderIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTaskTitle = itemView.findViewById(R.id.tvTaskTitle);
             tvTaskTime = itemView.findViewById(R.id.tvTaskTime);
-            ivStatus = itemView.findViewById(R.id.ivStatus);
+            ivTaskStatus = itemView.findViewById(R.id.ivTaskStatus);
             ivTaskIcon = itemView.findViewById(R.id.ivTaskIcon);
             ivReminderIcon = itemView.findViewById(R.id.ivReminderIcon);
         }

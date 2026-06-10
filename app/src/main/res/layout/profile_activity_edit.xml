@@ -34,10 +34,10 @@
         </FrameLayout>
 
         <TextView
+            style="@style/AppTextAppearance.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chỉnh sửa hồ sơ"
-            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             app:layout_constraintStart_toEndOf="@id/btn_back"
@@ -47,12 +47,12 @@
 
         <TextView
             android:id="@+id/btn_save"
+            style="@style/AppTextAppearance.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lưu"
             android:textColor="@color/color_primary"
             android:textStyle="bold"
-            android:textSize="16sp"
             android:padding="12dp"
             android:layout_marginEnd="8dp"
             android:clickable="true"
@@ -136,34 +136,35 @@
             </FrameLayout>
 
             <TextView
+                style="@style/AppTextAppearance.BodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Họ và tên"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/edt_full_name"
+                style="@style/AppTextAppearance.Body"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="@drawable/bg_rounded_card"
                 android:paddingHorizontal="16dp"
                 android:text="Nguyễn Văn A"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
                 android:layout_marginBottom="20dp" />
 
             <TextView
+                style="@style/AppTextAppearance.BodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/edt_email"
+                style="@style/AppTextAppearance.Body"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="@drawable/bg_rounded_card"
@@ -171,19 +172,19 @@
                 android:text="vanya@example.com"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
                 android:layout_marginBottom="20dp" />
 
             <TextView
+                style="@style/AppTextAppearance.BodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mô tả bản thân"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/edt_bio"
+                style="@style/AppTextAppearance.Body"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:background="@drawable/bg_rounded_card"
@@ -191,26 +192,25 @@
                 android:text="Sinh viên năm 3 chuyên ngành Công nghệ thông tin. Yêu thích học tập và khám phá cái mới."
                 android:gravity="top"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
                 android:layout_marginBottom="20dp" />
 
             <TextView
+                style="@style/AppTextAppearance.BodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trường học"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/edt_school"
+                style="@style/AppTextAppearance.Body"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="@drawable/bg_rounded_card"
                 android:paddingHorizontal="16dp"
                 android:text="Đại học Công nghệ"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
+                android:textColor="@color/text_primary" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

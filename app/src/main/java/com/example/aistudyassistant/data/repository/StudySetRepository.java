@@ -1,6 +1,7 @@
 package com.example.aistudyassistant.data.repository;
 
 import android.util.Log;
+import androidx.lifecycle.LiveData;
 import com.example.aistudyassistant.data.model.StudySetFirestore;
 import com.example.aistudyassistant.database.dao.StudySetDao;
 import com.example.aistudyassistant.database.entities.StudySetEntity;
@@ -55,6 +56,10 @@ public class StudySetRepository {
             studySetDao.updateSet(studySet);
             syncToCloud(studySet);
         });
+    }
+
+    public LiveData<List<StudySetEntity>> getAllSetsByUser(String userId) {
+        return studySetDao.getAllSetsByUser(userId);
     }
 
     private void syncToCloud(StudySetEntity studySet) {

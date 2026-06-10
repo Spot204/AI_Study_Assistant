@@ -63,9 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
         // 1. Chạy đồng bộ ngay lập tức cho tất cả repositories
         new UserRepository(db.userDao()).syncUnsyncedUsers();
-        new UserStatsRepository(db.userStatsDao()).syncUnsyncedStats();
+        UserStatsRepository statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
+        statsRepo.syncUnsyncedStats();
+        
+        // Seed achievements
+        new com.example.aistudyassistant.data.repository.AchievementRepository(db.achievementDao(), db.userAchievementDao()).seedDefaultAchievements();
+
+        new UserRepository(db.userDao()).syncUnsyncedUsers();
         new StudySetRepository(db.studySetDao()).syncUnsyncedStudySets();
-        new FlashcardRepository(db.flashcardDao()).syncUnsyncedFlashcards();
+        new FlashcardRepository(db.flashcardDao(), statsRepo).syncUnsyncedFlashcards();
         new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
         new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
         new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();

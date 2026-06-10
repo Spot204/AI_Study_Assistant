@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.profile;
+package com.example.aistudyassistant.fragments.profile;
 
 import android.os.Bundle;
 import android.widget.EditText;

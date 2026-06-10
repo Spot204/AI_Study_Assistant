@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.quiz;
+package com.example.aistudyassistant.models;
 
 import java.util.List;
 

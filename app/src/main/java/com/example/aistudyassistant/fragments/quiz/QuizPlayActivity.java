@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.quiz;
+package com.example.aistudyassistant.fragments.quiz;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,16 +13,25 @@ import androidx.core.content.ContextCompat;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.database.entities.StudySessionEntity;
-// [ĐÃ THÊM] Import Repository chuẩn thay cho FirestoreService
+import com.example.aistudyassistant.data.repository.QuizRepository;
 import com.example.aistudyassistant.data.repository.StudySessionRepository;
+import com.example.aistudyassistant.data.repository.UserStatsRepository;
+import com.example.aistudyassistant.database.entities.QuizEntity;
+import com.example.aistudyassistant.models.Question;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class QuizPlayActivity extends AppCompatActivity {
 
@@ -33,14 +42,19 @@ public class QuizPlayActivity extends AppCompatActivity {
     private LinearProgressIndicator progressBar;
     private ImageView btnBack;
 
-    private List<Question> questionList;
+    private List<Question> questionList = new ArrayList<>();
+    private List<Integer> userAnswers = new ArrayList<>(); // [THÊM] Lưu câu trả lời của user
     private int currentQuestionIndex = 0;
     private int score = 0;
     private boolean isAnswered = false;
     private String sessionId;
+    private String quizId;
 
     // [ĐÃ THÊM] Khai báo Repository để quản lý lưu trữ
     private StudySessionRepository sessionRepo;
+    private QuizRepository quizRepo; 
+    private UserStatsRepository statsRepo; // [THÊM]
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private long startTime;
     private final Handler timerHandler = new Handler();
@@ -64,10 +78,13 @@ public class QuizPlayActivity extends AppCompatActivity {
         // [ĐÃ THÊM] Khởi tạo Repository một lần duy nhất lúc mở màn hình
         AppDatabase db = AppDatabase.getDatabase(this);
         sessionRepo = new StudySessionRepository(db.studySessionDao());
+        quizRepo = new QuizRepository(db.quizDao());
+        statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
+
+        quizId = getIntent().getStringExtra("QUIZ_ID");
 
         initViews();
         loadQuestions();
-        displayQuestion();
 
         sessionId = UUID.randomUUID().toString();
         startTime = System.currentTimeMillis();
@@ -123,7 +140,29 @@ public class QuizPlayActivity extends AppCompatActivity {
     }
 
     private void loadQuestions() {
-        questionList = new ArrayList<>();
+        if (quizId != null) {
+            executor.execute(() -> {
+                com.example.aistudyassistant.database.entities.QuizEntity quiz =
+                        AppDatabase.getDatabase(this).quizDao().getQuizById(quizId);
+                if (quiz != null && quiz.getQuestionsJson() != null) {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
+                    List<Question> loadedQuestions = gson.fromJson(quiz.getQuestionsJson(), listType);
+                    runOnUiThread(() -> {
+                        questionList.clear();
+                        questionList.addAll(loadedQuestions);
+                        displayQuestion();
+                    });
+                } else {
+                    runOnUiThread(this::loadDefaultQuestions);
+                }
+            });
+        } else {
+            loadDefaultQuestions();
+        }
+    }
+
+    private void loadDefaultQuestions() {
         questionList.add(new Question(
                 "Đạo hàm của hàm số y = sin(x) là gì?",
                 Arrays.asList("y' = cos(x)", "y' = -sin(x)", "y' = -cos(x)", "y' = tan(x)"),
@@ -139,6 +178,7 @@ public class QuizPlayActivity extends AppCompatActivity {
                 Arrays.asList("y' = x", "y' = 2x", "y' = x^2", "y' = 2"),
                 1
         ));
+        displayQuestion();
     }
 
     private void displayQuestion() {
@@ -181,6 +221,9 @@ public class QuizPlayActivity extends AppCompatActivity {
     private void checkAnswer(int selectedIndex, MaterialCardView selectedCard, TextView selectedLetter) {
         if (isAnswered) return;
         isAnswered = true;
+
+        // [THÊM] Lưu câu trả lời của người dùng
+        userAnswers.add(selectedIndex);
 
         Question currentQuestion = questionList.get(currentQuestionIndex);
         if (selectedIndex == currentQuestion.getCorrectAnswerIndex()) {
@@ -229,19 +272,44 @@ public class QuizPlayActivity extends AppCompatActivity {
         long endTime = System.currentTimeMillis();
         int durationMillis = (int) (endTime - startTime);
         int durationMinutes = durationMillis / 60000;
+        double durationHours = durationMinutes / 60.0;
 
         StudySessionEntity session = new StudySessionEntity(sessionId, null, "quiz");
+        session.setReferenceId(quizId); // [THÊM] Gắn ID của bộ Quiz
         session.setScore(score);
         session.setDurationMinutes(durationMinutes);
         session.setStartedAt(startTime);
         session.setEndedAt(endTime);
+        
+        // [THÊM] Chuyển danh sách câu trả lời sang JSON để lưu
+        session.setUserAnswersJson(new Gson().toJson(userAnswers));
 
         // [ĐÃ SỬA] Bàn giao gói dữ liệu cho Repository lưu (Đã tích hợp sẵn luồng chạy ngầm)
         sessionRepo.insertSession(session);
 
+        // [THÊM] Cập nhật thành tựu người dùng
+        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        if (userId != null) {
+            statsRepo.incrementQuizzes(userId);
+            statsRepo.addStudyHours(userId, durationHours);
+            statsRepo.updateStudyDays(userId);
+        }
+
+        // [THÊM] Kiểm tra và cập nhật điểm cao nhất cho bộ Quiz này
+        if (quizId != null) {
+            executor.execute(() -> {
+                QuizEntity quiz = AppDatabase.getDatabase(this).quizDao().getQuizById(quizId);
+                if (quiz != null && score > quiz.getBestScore()) {
+                    quiz.setBestScore(score);
+                    quizRepo.updateQuiz(quiz);
+                }
+            });
+        }
+
         Intent intent = new Intent(this, QuizResultActivity.class);
         intent.putExtra("SCORE", score);
         intent.putExtra("TOTAL", questionList.size());
+        intent.putExtra("TIME", tvTimer.getText().toString());
         startActivity(intent);
         finish();
     }

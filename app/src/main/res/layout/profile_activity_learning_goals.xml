@@ -32,10 +32,10 @@
         </FrameLayout>
 
         <TextView
+            style="@style/AppTextAppearance.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mục tiêu học tập"
-            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             app:layout_constraintStart_toEndOf="@id/btn_back"
@@ -82,19 +82,19 @@
                     android:padding="16dp">
 
                     <TextView
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mục tiêu hàng ngày"
                         android:textColor="@color/text_primary"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:textStyle="bold" />
 
                     <TextView
+                        style="@style/AppTextAppearance.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hoàn thành 50 flashcards mỗi ngày"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
                         android:layout_marginTop="4dp" />
 
                     <ProgressBar
@@ -107,11 +107,11 @@
                         android:progressDrawable="@drawable/progress_custom" />
 
                     <TextView
+                        style="@style/AppTextAppearance.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="30/50 flashcards"
                         android:textColor="@color/color_primary"
-                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:gravity="end"
                         android:layout_marginTop="8dp" />
@@ -135,19 +135,19 @@
                     android:padding="16dp">
 
                     <TextView
+                        style="@style/AppTextAppearance.BodyLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mục tiêu hàng tuần"
                         android:textColor="@color/text_primary"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:textStyle="bold" />
 
                     <TextView
+                        style="@style/AppTextAppearance.BodySmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đạt 100% điểm trong 5 bài Quiz"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
                         android:layout_marginTop="4dp" />
 
                     <ProgressBar
@@ -160,11 +160,11 @@
                         android:progressDrawable="@drawable/progress_custom_accent" />
 
                     <TextView
+                        style="@style/AppTextAppearance.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="2/5 bài Quiz"
                         android:textColor="@color/color_accent"
-                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:gravity="end"
                         android:layout_marginTop="8dp" />
@@ -181,6 +181,7 @@
                 android:clickable="true"
                 android:focusable="true">
                 <TextView
+                    style="@style/AppTextAppearance.Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+ Thêm mục tiêu mới"

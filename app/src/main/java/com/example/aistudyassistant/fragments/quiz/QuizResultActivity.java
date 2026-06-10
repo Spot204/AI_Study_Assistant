@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.features.quiz;
+package com.example.aistudyassistant.fragments.quiz;
 
 import android.content.Intent;
 import android.os.Bundle;
