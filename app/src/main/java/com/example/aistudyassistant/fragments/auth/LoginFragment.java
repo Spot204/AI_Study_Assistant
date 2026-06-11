@@ -20,7 +20,6 @@ import com.example.aistudyassistant.MainActivity;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
 import com.example.aistudyassistant.data.repository.UserRepository;
-import com.example.aistudyassistant.fragments.home.HomeFragment;
 import com.example.aistudyassistant.services.auth.AuthService;
 import com.example.aistudyassistant.features.auth.LoginController;
 import com.example.aistudyassistant.features.auth.LoginView;

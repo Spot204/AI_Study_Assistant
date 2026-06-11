@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
@@ -19,6 +22,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AiStudyAssistant">
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -29,33 +42,13 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".fragments.profile.EditProfileActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".fragments.profile.NotificationsActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".fragments.profile.NotificationsActivity$LearningGoalsActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".fragments.profile.HelpSupportActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".fragments.ocr_summary.OCRSummaryActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".fragments.quiz.QuizPlayActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".fragments.quiz.QuizResultActivity"
-            android:exported="false" />
+        <activity android:name=".fragments.profile.EditProfileActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.NotificationsActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.NotificationsActivity$LearningGoalsActivity" android:exported="false" />
+        <activity android:name=".fragments.profile.HelpSupportActivity" android:exported="false" />
+        <activity android:name=".features.ocr_summary.OCRSummaryActivity" android:exported="false" />
+        <activity android:name=".fragments.quiz.QuizPlayActivity" android:exported="false" />
+        <activity android:name=".fragments.quiz.QuizResultActivity" android:exported="false" />
 
         <receiver android:name=".receivers.AlarmReceiver"
             android:enabled="true"
@@ -68,6 +61,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

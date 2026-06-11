@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottomNavigation);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String userEmail = getIntent().getStringExtra("USER_EMAIL");
-        
+
         if (mAuth.getCurrentUser() == null && userEmail == null) {
             loadFragment(new LoginFragment());
             return;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         new UserRepository(db.userDao()).syncUnsyncedUsers();
         UserStatsRepository statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
         statsRepo.syncUnsyncedStats();
-        
+
         // Seed achievements
         new com.example.aistudyassistant.data.repository.AchievementRepository(db.achievementDao(), db.userAchievementDao()).seedDefaultAchievements();
 

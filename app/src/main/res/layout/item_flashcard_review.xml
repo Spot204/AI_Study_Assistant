@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="2dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp">
+
+        <EditText
+            android:id="@+id/et_item_front"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E5E7EB"
+            android:hint="Mặt trước (Câu hỏi)"
+            android:textColor="#1F2937"
+            android:textColorHint="#9CA3AF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:inputType="textMultiLine"
+            android:minLines="1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_item_delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_item_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#E5E7EB"
+            android:hint="Mặt sau (Câu trả lời)"
+            android:textColor="#4B5563"
+            android:textColorHint="#9CA3AF"
+            android:textSize="14sp"
+            android:inputType="textMultiLine"
+            android:minLines="1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_item_delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_item_front" />
+
+        <ImageButton
+            android:id="@+id/btn_item_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:src="@android:drawable/ic_menu_delete"
+            android:background="@android:color/transparent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#EF4444" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

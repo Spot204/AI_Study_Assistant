@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/quizCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/quizIcon"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_icon_circle"
+            android:backgroundTint="@color/icon_bg_purple"
+            android:padding="12dp"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:contentDescription="@string/desc_quiz_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/purple_primary" />
+
+        <TextView
+            android:id="@+id/quizTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Tên bài trắc nghiệm mẫu"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/arrow"
+            app:layout_constraintStart_toEndOf="@id/quizIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/quizInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="20 câu  •  15 phút"
+            android:textColor="@color/text_sub"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/quizTitle"
+            app:layout_constraintTop_toBottomOf="@id/quizTitle" />
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_media_play"
+            android:contentDescription="@string/desc_play_quiz"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_sub"
+            android:alpha="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

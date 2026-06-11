@@ -21,24 +21,24 @@
 
     <TextView
         android:id="@+id/tv_bs_title"
-        style="@style/AppTextAppearance.BodyLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Chọn phương thức nạp dữ liệu"
         android:textColor="#111827"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_bs_handle" />
 
     <TextView
         android:id="@+id/tv_bs_subtitle"
-        style="@style/AppTextAppearance.BodySmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Hệ thống AI sẽ tự động phân tích và tạo bộ thẻ cho bạn"
         android:textColor="#6B7280"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_bs_title" />
 
@@ -64,36 +64,34 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="#7C4DFF" />
-
-        <TextView
-            android:id="@+id/tv_title_file"
-            style="@style/AppTextAppearance.Body"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Tải lên Tài liệu"
-            android:textColor="#111827"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_icon_file"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:tint="#7C4DFF" /> <TextView
+        android:id="@+id/tv_title_file"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Tải lên Tài liệu"
+        android:textColor="#111827"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon_file"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_desc_file"
-            style="@style/AppTextAppearance.Caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text="Hỗ trợ các tệp tin dạng văn bản như PDF, Word, TXT"
             android:textColor="#6B7280"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title_file"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_file" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_option_ocr"
+        android:id="@+id/layout_option_camera"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -107,39 +105,85 @@
         app:layout_constraintTop_toBottomOf="@+id/layout_option_file">
 
         <ImageView
-            android:id="@+id/iv_icon_ocr"
+            android:id="@+id/iv_icon_camera"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="#10B981" />
+            app:tint="#3B82F6" /> <TextView
+        android:id="@+id/tv_title_camera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Chụp ảnh Máy ảnh (Camera)"
+        android:textColor="#111827"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon_camera"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_title_ocr"
-            style="@style/AppTextAppearance.Body"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Quét tài liệu bằng Hình ảnh (OCR)"
-            android:textColor="#111827"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_icon_ocr"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_desc_ocr"
-            style="@style/AppTextAppearance.Caption"
+            android:id="@+id/tv_desc_camera"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Chụp ảnh sách vở, giáo trình để trích xuất chữ tự động"
+            android:text="Chụp trực tiếp trang sách, giáo trình để quét"
             android:textColor="#6B7280"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_title_ocr"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_ocr" />
+            app:layout_constraintStart_toStartOf="@+id/tv_title_camera"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_camera" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_option_gallery"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_field"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_option_camera">
+
+        <ImageView
+            android:id="@+id/iv_icon_gallery"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#10B981" /> <TextView
+        android:id="@+id/tv_title_gallery"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Chọn ảnh từ Thư viện"
+        android:textColor="#111827"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon_gallery"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_desc_gallery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Chọn hình ảnh đã chụp sẵn trong máy điện thoại"
+            android:textColor="#6B7280"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_gallery"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_gallery" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
