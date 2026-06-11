@@ -11,6 +11,7 @@ public class DocumentEntity {
     @NonNull
     private String documentId; // Mã ID duy nhất của file tài liệu (UUID)
     private String userId; // Mã ID người dùng sở hữu tài liệu này
+    private String title; // Tiêu đề tài liệu
     private String storageUri; // Đường dẫn URL trỏ đến file gốc (.pdf, .png...) lưu trên Firebase Storage
     private String ocrTextUri; // Đường dẫn hoặc nội dung văn bản thô sau khi đã quét trích xuất chữ (OCR)
     private String summary; // Đoạn văn bản ngắn tóm tắt nội dung chính của tài liệu do AI xử lý
@@ -23,9 +24,10 @@ public class DocumentEntity {
     /**
      * Constructor để sử dụng khi người dùng bấm chọn tải lên một tài liệu mới
      */
-    public DocumentEntity(@NonNull String documentId, String userId, String storageUri) {
+    public DocumentEntity(@NonNull String documentId, String userId, String title, String storageUri) {
         this.documentId = documentId;
         this.userId = userId;
+        this.title = title;
         this.storageUri = storageUri;
         this.uploadedAt = System.currentTimeMillis();
 
@@ -49,6 +51,9 @@ public class DocumentEntity {
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
     public String getStorageUri() { return storageUri; }
     public void setStorageUri(String storageUri) { this.storageUri = storageUri; }

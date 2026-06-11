@@ -123,24 +123,31 @@ public class DocumentRepository {
     }
 
     /**
-     * HÀM DOWNLOAD: Kéo các tài liệu mới mà user quét từ thiết bị khác về máy này
+     * HÀM DOWNLOAD: Kéo các tài liệu mới mà user quét từ thiết bị khác về máy này (Đồng bộ cho Worker)
      */
     public void downloadNewDocumentsFromServer(String userId) {
-        executorService.execute(() -> {
-            long maxUpdatedAt = documentDao.getMaxUpdatedAt();
+        long maxUpdatedAt = documentDao.getMaxUpdatedAt();
 
-            firestore.collection(COLLECTION_NAME)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection(COLLECTION_NAME)
                     .whereEqualTo("userId", userId)
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<DocumentFirestore> remoteDocs = queryDocumentSnapshots.toObjects(DocumentFirestore.class);
-                            for (DocumentFirestore remoteDoc : remoteDocs) {
-                                documentDao.insertDocument(remoteDoc.toEntity());
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<DocumentFirestore> remoteDocs = queryDocumentSnapshots.toObjects(DocumentFirestore.class);
+                for (DocumentFirestore remoteDoc : remoteDocs) {
+                    com.example.aistudyassistant.database.entities.DocumentEntity entity = remoteDoc.toEntity();
+                    entity.setSyncStatus("synced");
+                    documentDao.insertDocument(entity);
+                    android.util.Log.d("DocumentRepository", "Downloaded document: " + entity.getDocumentId());
+                }
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DocumentRepository", "Lỗi khi tải tài liệu: " + e.getMessage());
+        }
     }
 }

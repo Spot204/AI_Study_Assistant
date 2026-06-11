@@ -105,24 +105,31 @@ public class StudySetRepository {
     }
 
     public void downloadNewStudySetsFromServer() {
-        executorService.execute(() -> {
-            String path = getUserCollectionPath();
-            if (path == null) return;
+        String path = getUserCollectionPath();
+        if (path == null) return;
 
-            long maxUpdatedAt = studySetDao.getMaxUpdatedAt();
+        long maxUpdatedAt = studySetDao.getMaxUpdatedAt();
 
-            firestore.collection(path)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection(path)
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<StudySetFirestore> remoteSets = queryDocumentSnapshots.toObjects(StudySetFirestore.class);
-                            for (StudySetFirestore remoteSet : remoteSets) {
-                                studySetDao.insertSet(remoteSet.toEntity());
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<StudySetFirestore> remoteSets = queryDocumentSnapshots.toObjects(StudySetFirestore.class);
+                for (StudySetFirestore remoteSet : remoteSets) {
+                    StudySetEntity entity = remoteSet.toEntity();
+                    entity.setSyncStatus("synced");
+                    studySetDao.insertSet(entity);
+                    Log.d(TAG, "Downloaded study set: " + entity.getTitle());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải bộ học tập: " + e.getMessage());
+        }
     }
 
     public interface OnSuccessCallback {

@@ -50,57 +50,21 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNavigation);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        
+        // Nhận dữ liệu từ Intent (do LoginFragment truyền sang)
         String userEmail = getIntent().getStringExtra("USER_EMAIL");
 
+        // Nếu cả Firebase session và Intent đều không có user -> bắt đăng nhập
         if (mAuth.getCurrentUser() == null && userEmail == null) {
             loadFragment(new LoginFragment());
             return;
         }
 
-        // =================================================================
-        // 💥 KHỞI ĐỘNG CÁC LUỒNG ĐỒNG BỘ DỮ LIỆU TỰ ĐỘNG (BACKGROUND SYNC)
-        // =================================================================
-
-        AppDatabase db = AppDatabase.getDatabase(this);
-
-        // 1. Chạy đồng bộ ngay lập tức cho tất cả repositories
-        new UserRepository(db.userDao()).syncUnsyncedUsers();
-        UserStatsRepository statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
-        statsRepo.syncUnsyncedStats();
-
-        // Seed achievements
-        new com.example.aistudyassistant.data.repository.AchievementRepository(db.achievementDao(), db.userAchievementDao()).seedDefaultAchievements();
-
-        new UserRepository(db.userDao()).syncUnsyncedUsers();
-        new StudySetRepository(db.studySetDao()).syncUnsyncedStudySets();
-        new FlashcardRepository(db.flashcardDao(), statsRepo).syncUnsyncedFlashcards();
-        new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
-        new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
-        new QuizRepository(db.quizDao(), db.studySetDao()).syncUnsyncedQuizzes();
-        new ScheduleRepository(this, db.scheduleDao()).syncUnsyncedTasks();
-        new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
-
-        // 2. Thiết lập WorkManager để đồng bộ định kỳ mỗi 15 phút
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        PeriodicWorkRequest syncRequest = new PeriodicWorkRequest.Builder(
-                SyncWorker.class, 15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "CloudSyncWork",
-                ExistingPeriodicWorkPolicy.KEEP,
-                syncRequest
-        );
-
-        // =================================================================
-
-        // Hiển thị màn hình Home mặc định khi ứng dụng khởi động
+        // Nếu đã có user, đảm bảo hiển thị HomeFragment
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
+            // Cập nhật item được chọn trên BottomNav là Home
+            bottomNav.setSelectedItemId(R.id.nav_home);
         }
 
         // Tự động ẩn BottomNav khi bàn phím hiện lên để tránh bị đẩy lên (đè lên thanh navigate)

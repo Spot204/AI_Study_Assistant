@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.LearningGoalEntity;
 import com.example.aistudyassistant.database.entities.StudySetEntity;
 import com.example.aistudyassistant.database.entities.UserStatsEntity;
 import com.example.aistudyassistant.fragments.flashcard.FlashcardStudyFragment;
@@ -113,28 +114,16 @@ public class HomeFragment extends Fragment {
             if (isAdded() && stats != null) {
                 requireActivity().runOnUiThread(() -> {
                     tvStreak.setText(stats.getStreakCount() + " ngày");
+                    // Hiển thị tổng giờ học cho thống nhất với Profile
+                    tvStudyTime.setText(String.format(java.util.Locale.getDefault(), "%.1f giờ", stats.getStudyHours()));
                 });
             }
         }).start();
     }
 
+    // Xóa hoặc comment hàm cũ nếu không muốn dùng tính toán theo phút của riêng ngày hôm nay
     private void loadStudyTime(String userId) {
-        new Thread(() -> {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            long todayStart = calendar.getTimeInMillis();
-
-            int totalMinutes = db.studySessionDao().getTodayStudyTimeMinutes(userId, todayStart);
-            
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
-                    tvStudyTime.setText(totalMinutes + "/5 phút");
-                });
-            }
-        }).start();
+        // Hàm này có thể để trống hoặc xóa đi vì đã gộp vào loadUserStats cho thống nhất
     }
 
     private void loadStudySets(String userId) {

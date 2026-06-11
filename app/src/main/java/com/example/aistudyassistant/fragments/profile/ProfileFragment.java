@@ -125,6 +125,27 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupMenuItems(View view) {
+        // Xử lý nút Đồng bộ dữ liệu
+        view.findViewById(R.id.menu_sync_data).setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Đang bắt đầu đồng bộ...", Toast.LENGTH_SHORT).show();
+            
+            androidx.work.OneTimeWorkRequest syncRequest = new androidx.work.OneTimeWorkRequest.Builder(com.example.aistudyassistant.services.SyncWorker.class).build();
+            
+            androidx.work.WorkManager.getInstance(requireContext())
+                    .enqueueUniqueWork("ManualSync", androidx.work.ExistingWorkPolicy.REPLACE, syncRequest);
+
+            // Theo dõi trạng thái để báo cho người dùng
+            androidx.work.WorkManager.getInstance(requireContext())
+                    .getWorkInfoByIdLiveData(syncRequest.getId())
+                    .observe(getViewLifecycleOwner(), workInfo -> {
+                        if (workInfo != null && workInfo.getState() == androidx.work.WorkInfo.State.SUCCEEDED) {
+                            Toast.makeText(getContext(), "Đồng bộ thành công!", Toast.LENGTH_SHORT).show();
+                        } else if (workInfo != null && workInfo.getState() == androidx.work.WorkInfo.State.FAILED) {
+                            Toast.makeText(getContext(), "Đồng bộ thất bại, vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        });
+
         view.findViewById(R.id.menu_edit_profile).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
             startActivity(intent);

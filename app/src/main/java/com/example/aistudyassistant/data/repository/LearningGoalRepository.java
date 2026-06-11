@@ -89,25 +89,31 @@ public class LearningGoalRepository {
     }
 
     public void downloadNewGoalsFromServer() {
-        executorService.execute(() -> {
-            String uid = auth.getUid();
-            if (uid == null) return;
+        String uid = auth.getUid();
+        if (uid == null) return;
 
-            long maxUpdatedAt = learningGoalDao.getMaxUpdatedAt();
+        long maxUpdatedAt = learningGoalDao.getMaxUpdatedAt();
 
-            firestore.collection("users").document(uid)
+        // Sử dụng Tasks.await để đợi kết quả từ Firebase (vì đang ở luồng của Worker)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection("users").document(uid)
                     .collection("learning_goals")
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<LearningGoalEntity> remoteGoals = queryDocumentSnapshots.toObjects(LearningGoalEntity.class);
-                            for (LearningGoalEntity remoteGoal : remoteGoals) {
-                                remoteGoal.setSyncStatus("synced");
-                                learningGoalDao.insertGoal(remoteGoal);
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<LearningGoalEntity> remoteGoals = queryDocumentSnapshots.toObjects(LearningGoalEntity.class);
+                for (LearningGoalEntity remoteGoal : remoteGoals) {
+                    remoteGoal.setSyncStatus("synced");
+                    learningGoalDao.insertGoal(remoteGoal);
+                    Log.d(TAG, "Downloaded goal: " + remoteGoal.getTitle());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải mục tiêu học tập: " + e.getMessage());
+        }
     }
 }

@@ -184,24 +184,27 @@ public class UserStatsRepository {
     }
 
     public void downloadStatsFromServer() {
-        executorService.execute(() -> {
-            String uid = auth.getUid();
-            if (uid == null) return;
+        String uid = auth.getUid();
+        if (uid == null) return;
 
-            firestore.collection("users").document(uid)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.DocumentSnapshot> task = 
+                firestore.collection("users").document(uid)
                     .collection("stats").document("current")
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            UserStatsEntity remoteStats = documentSnapshot.toObject(UserStatsEntity.class);
-                            if (remoteStats != null) {
-                                executorService.execute(() -> {
-                                    remoteStats.setSyncStatus("synced");
-                                    userStatsDao.insertStats(remoteStats);
-                                });
-                            }
-                        }
-                    });
-        });
+                    .get();
+            
+            com.google.firebase.firestore.DocumentSnapshot documentSnapshot = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (documentSnapshot.exists()) {
+                UserStatsEntity remoteStats = documentSnapshot.toObject(UserStatsEntity.class);
+                if (remoteStats != null) {
+                    remoteStats.setSyncStatus("synced");
+                    userStatsDao.insertStats(remoteStats);
+                    Log.d(TAG, "Downloaded stats for user: " + uid);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải chỉ số người dùng: " + e.getMessage());
+        }
     }
 }

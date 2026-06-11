@@ -331,6 +331,40 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <!-- Sync Data -->
+                    <LinearLayout
+                        android:id="@+id/menu_sync_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="?attr/selectableItemBackground">
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_stat_icon">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_clock"
+                                app:tint="@color/color_primary" />
+                        </FrameLayout>
+                        <TextView
+                            style="@style/AppTextAppearance.Body"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Đồng bộ dữ liệu Cloud"
+                            android:textColor="@color/text_primary"
+                            android:layout_marginStart="16dp" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right" />
+                    </LinearLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_color" />
+
                     <!-- Edit Profile -->
                     <LinearLayout
                         android:id="@+id/menu_edit_profile"

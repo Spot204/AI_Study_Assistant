@@ -166,28 +166,34 @@ public class StudySessionRepository {
     }
 
     /**
-     * HÀM DOWNLOAD: Lấy dữ liệu phiên học từ đám mây về máy
-     * Rất hữu ích khi user đăng nhập trên một chiếc điện thoại mới
+     * HÀM DOWNLOAD: Lấy dữ liệu phiên học từ đám mây về máy (Đồng bộ cho Worker)
      */
     public void downloadNewSessionsFromServer() {
-        executorService.execute(() -> {
-            String collectionPath = getUserCollectionPath();
-            if (collectionPath == null) return;
+        String collectionPath = getUserCollectionPath();
+        if (collectionPath == null) return;
 
-            // Tìm mốc thời gian cập nhật lớn nhất dưới máy hiện tại
-            long maxUpdatedAt = studySessionDao.getMaxUpdatedAt();
+        // Tìm mốc thời gian cập nhật lớn nhất dưới máy hiện tại
+        long maxUpdatedAt = studySessionDao.getMaxUpdatedAt();
 
-            firestore.collection(collectionPath)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection(collectionPath)
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<StudySessionFirestore> remoteSessions = queryDocumentSnapshots.toObjects(StudySessionFirestore.class);
-                            for (StudySessionFirestore remoteSession : remoteSessions) {
-                                studySessionDao.insertSession(remoteSession.toEntity());
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<StudySessionFirestore> remoteSessions = queryDocumentSnapshots.toObjects(StudySessionFirestore.class);
+                for (StudySessionFirestore remoteSession : remoteSessions) {
+                    StudySessionEntity entity = remoteSession.toEntity();
+                    entity.setSyncStatus("synced");
+                    studySessionDao.insertSession(entity);
+                    Log.d(TAG, "Downloaded session: " + entity.getSessionId());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải lịch sử phiên học: " + e.getMessage());
+        }
     }
 }

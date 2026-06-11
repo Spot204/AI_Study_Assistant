@@ -145,25 +145,30 @@ public class ScheduleRepository {
     }
 
     public void downloadNewTasksFromServer() {
-        executorService.execute(() -> {
-            String uid = auth.getUid();
-            if (uid == null) return;
+        String uid = auth.getUid();
+        if (uid == null) return;
 
-            long maxUpdatedAt = scheduleDao.getMaxUpdatedAt();
+        long maxUpdatedAt = scheduleDao.getMaxUpdatedAt();
 
-            firestore.collection("users").document(uid)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection("users").document(uid)
                     .collection("schedules")
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<ScheduleTask> remoteTasks = queryDocumentSnapshots.toObjects(ScheduleTask.class);
-                            for (ScheduleTask remoteTask : remoteTasks) {
-                                remoteTask.setSyncStatus("synced");
-                                scheduleDao.insertTask(remoteTask);
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<ScheduleTask> remoteTasks = queryDocumentSnapshots.toObjects(ScheduleTask.class);
+                for (ScheduleTask remoteTask : remoteTasks) {
+                    remoteTask.setSyncStatus("synced");
+                    scheduleDao.insertTask(remoteTask);
+                    Log.d(TAG, "Downloaded task: " + remoteTask.getTitle());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải lịch trình: " + e.getMessage());
+        }
     }
 }

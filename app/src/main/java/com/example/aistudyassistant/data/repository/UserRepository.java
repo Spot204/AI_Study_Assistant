@@ -105,19 +105,33 @@ public class UserRepository {
     }
 
     /**
-     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy (Không dùng callback)
+     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy (Chạy đồng bộ để dùng trong Worker)
      */
     public void downloadUserFromServer(String userId) {
-        downloadUserFromServer(userId, null);
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.DocumentSnapshot> task = 
+                firestore.collection(COLLECTION_NAME).document(userId).get();
+            
+            com.google.firebase.firestore.DocumentSnapshot documentSnapshot = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (documentSnapshot.exists()) {
+                User remoteUser = documentSnapshot.toObject(User.class);
+                if (remoteUser != null) {
+                    remoteUser.setSyncStatus("synced");
+                    userDao.insertUser(remoteUser);
+                    android.util.Log.d("UserRepository", "Downloaded user: " + remoteUser.getFullName());
+                }
+            }
+        } catch (Exception e) {
+            android.util.Log.e("UserRepository", "Lỗi khi tải thông tin User: " + e.getMessage());
+        }
     }
 
     /**
-     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy (Có callback)
+     * HÀM DOWNLOAD: Kéo thông tin người dùng từ Cloud về máy (Dùng cho Login - Có callback)
      */
     public void downloadUserFromServer(String userId, UserDownloadCallback callback) {
-        firestore.collection(COLLECTION_NAME)
-                .document(userId)
-                .get()
+        firestore.collection(COLLECTION_NAME).document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         User remoteUser = documentSnapshot.toObject(User.class);
@@ -125,13 +139,17 @@ public class UserRepository {
                             executorService.execute(() -> {
                                 remoteUser.setSyncStatus("synced");
                                 userDao.insertUser(remoteUser);
-                                if (callback != null) callback.onSuccess(remoteUser);
+
+                                // Trả kết quả về UI thread để Controller cập nhật giao diện
+                                new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                                    if (callback != null) callback.onSuccess(remoteUser);
+                                });
                             });
-                        } else if (callback != null) {
-                            callback.onFailure("Dữ liệu trống");
+                        } else {
+                            if (callback != null) callback.onFailure("Dữ liệu người dùng trống");
                         }
-                    } else if (callback != null) {
-                        callback.onFailure("Không tìm thấy User");
+                    } else {
+                        if (callback != null) callback.onFailure("Không tìm thấy người dùng");
                     }
                 })
                 .addOnFailureListener(e -> {

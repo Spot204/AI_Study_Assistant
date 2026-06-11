@@ -111,23 +111,30 @@ public class FlashcardRepository {
     }
 
     public void downloadNewFlashcardsFromServer() {
-        executorService.execute(() -> {
-            String path = getUserCollectionPath();
-            if (path == null) return;
+        String path = getUserCollectionPath();
+        if (path == null) return;
 
-            long maxUpdatedAt = flashcardDao.getMaxUpdatedAt();
+        long maxUpdatedAt = flashcardDao.getMaxUpdatedAt();
 
-            firestore.collection(path)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection(path)
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<FlashcardFirestore> remoteCards = queryDocumentSnapshots.toObjects(FlashcardFirestore.class);
-                            for (FlashcardFirestore remoteCard : remoteCards) {
-                                flashcardDao.insertFlashcard(remoteCard.toEntity());
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<FlashcardFirestore> remoteCards = queryDocumentSnapshots.toObjects(FlashcardFirestore.class);
+                for (FlashcardFirestore remoteCard : remoteCards) {
+                    FlashcardEntity entity = remoteCard.toEntity();
+                    entity.setSyncStatus("synced");
+                    flashcardDao.insertFlashcard(entity);
+                    Log.d(TAG, "Downloaded flashcard: " + entity.getFlashcardId());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải flashcards: " + e.getMessage());
+        }
     }
 }

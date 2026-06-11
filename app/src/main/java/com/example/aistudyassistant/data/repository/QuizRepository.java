@@ -82,26 +82,31 @@ public class QuizRepository {
     }
 
     public void downloadNewQuizzesFromServer() {
-        executorService.execute(() -> {
-            String uid = auth.getUid();
-            if (uid == null) return;
+        String uid = auth.getUid();
+        if (uid == null) return;
 
-            long maxUpdatedAt = quizDao.getMaxUpdatedAt();
+        long maxUpdatedAt = quizDao.getMaxUpdatedAt();
 
-            firestore.collection("users").document(uid)
+        try {
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task = 
+                firestore.collection("users").document(uid)
                     .collection("quizzes")
                     .whereGreaterThan("updatedAt", maxUpdatedAt)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> executorService.execute(() -> {
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            List<QuizEntity> remoteQuizzes = queryDocumentSnapshots.toObjects(QuizEntity.class);
-                            for (QuizEntity remoteQuiz : remoteQuizzes) {
-                                remoteQuiz.setSyncStatus("synced");
-                                quizDao.insertQuiz(remoteQuiz);
-                            }
-                        }
-                    }));
-        });
+                    .get();
+            
+            com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots = com.google.android.gms.tasks.Tasks.await(task);
+            
+            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                List<QuizEntity> remoteQuizzes = queryDocumentSnapshots.toObjects(QuizEntity.class);
+                for (QuizEntity remoteQuiz : remoteQuizzes) {
+                    remoteQuiz.setSyncStatus("synced");
+                    quizDao.insertQuiz(remoteQuiz);
+                    Log.d(TAG, "Downloaded quiz: " + remoteQuiz.getTitle());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi tải danh sách Quiz: " + e.getMessage());
+        }
     }
 
     // Thêm phương thức lấy danh sách Quiz VÀ StudySet để hiển thị ở màn hình Quiz

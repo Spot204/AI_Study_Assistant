@@ -6,6 +6,7 @@ public class DocumentFirestore {
     private String documentId;
 
     private String userId;
+    private String title;
     private String storageUri; // Đã sửa: Khớp đúng trường của bạn
     private String ocrTextUri; // Đã sửa: Khớp đúng trường của bạn
     private String summary;
@@ -21,6 +22,7 @@ public class DocumentFirestore {
     public DocumentFirestore(DocumentEntity entity) {
         this.documentId = entity.getDocumentId();
         this.userId = entity.getUserId();
+        this.title = entity.getTitle();
         this.storageUri = entity.getStorageUri();   // Đóng gói đúng trường storageUri
         this.ocrTextUri = entity.getOcrTextUri();   // Đóng gói đúng trường ocrTextUri
         this.summary = entity.getSummary();
@@ -33,7 +35,7 @@ public class DocumentFirestore {
      */
     public DocumentEntity toEntity() {
         // Khởi tạo lại đúng Constructor thực tế của bạn
-        DocumentEntity entity = new DocumentEntity(documentId, userId, storageUri);
+        DocumentEntity entity = new DocumentEntity(documentId, userId, title, storageUri);
         entity.setOcrTextUri(this.ocrTextUri); // Bổ sung trường này
         entity.setSummary(this.summary);
         entity.setUploadedAt(this.uploadedAt);
@@ -48,6 +50,9 @@ public class DocumentFirestore {
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
     public String getStorageUri() { return storageUri; }
     public void setStorageUri(String storageUri) { this.storageUri = storageUri; }

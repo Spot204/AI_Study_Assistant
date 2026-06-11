@@ -49,8 +49,15 @@ public class LoginController {
                     @Override
                     public void onSuccess(User user) {
                         view.hideLoading();
-                        view.showSuccess("Đăng nhập thành công!");
-                        view.navigateToMain(user.getFullName(), user.getEmail());
+                        if (user != null && user.getEmail() != null) {
+                            view.showSuccess("Đăng nhập thành công!");
+                            String displayName = (user.getFullName() != null && !user.getFullName().isEmpty()) 
+                                    ? user.getFullName() : user.getEmail().split("@")[0];
+                            view.navigateToMain(displayName, user.getEmail());
+                        } else {
+                            // Trường hợp dữ liệu user trên server bị thiếu thông tin
+                            onFailure("Dữ liệu người dùng không hợp lệ trên máy chủ");
+                        }
                     }
 
                     @Override
@@ -70,7 +77,7 @@ public class LoginController {
             @Override
             public void onFailure(String error) {
                 view.hideLoading();
-                view.showSuccess("Đăng nhập không thành công thành công!");
+                view.showError("Đăng nhập thất bại: " + error);
             }
         });
     }
