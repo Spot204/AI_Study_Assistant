@@ -10,7 +10,7 @@ public class QuizController {
 
     public QuizController(Context context) {
         AppDatabase db = AppDatabase.getDatabase(context);
-        this.quizRepository = new QuizRepository(db.quizDao());
+        this.quizRepository = new QuizRepository(db.quizDao(), db.studySetDao());
     }
 
     public void saveQuiz(QuizEntity quiz) {

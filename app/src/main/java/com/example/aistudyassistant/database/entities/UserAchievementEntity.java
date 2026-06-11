@@ -32,6 +32,13 @@ public class UserAchievementEntity {
         this.syncStatus = "pending_insert"; // Mặc định là cần đẩy lên đám mây sao lưu
     }
 
+    /**
+     * No-argument constructor required for Firestore deserialization
+     */
+    @androidx.room.Ignore
+    public UserAchievementEntity() {
+    }
+
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---
 
     @NonNull

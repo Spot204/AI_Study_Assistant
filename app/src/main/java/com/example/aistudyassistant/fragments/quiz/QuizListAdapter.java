@@ -13,10 +13,19 @@ import java.util.List;
 
 public class QuizListAdapter extends RecyclerView.Adapter<QuizListAdapter.ViewHolder> {
 
-    private List<QuizEntity> quizList = new ArrayList<>();
+    private List<PracticeItem> itemList = new ArrayList<>();
+    private OnItemClickListener listener;
 
-    public void setData(List<QuizEntity> newList) {
-        this.quizList = newList;
+    public interface OnItemClickListener {
+        void onItemClick(PracticeItem item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setData(List<PracticeItem> newList) {
+        this.itemList = newList;
         notifyDataSetChanged();
     }
 
@@ -29,24 +38,33 @@ public class QuizListAdapter extends RecyclerView.Adapter<QuizListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        QuizEntity quiz = quizList.get(position);
-        holder.tvTitle.setText(quiz.getTitle());
-        // Bạn có thể bổ sung hiển thị số câu hỏi hoặc điểm cao nhất ở đây
-        holder.tvStats.setText("Thời gian: " + quiz.getTimeLimitMinutes() + " phút | Điểm cao nhất: " + quiz.getBestScore());
+        PracticeItem item = itemList.get(position);
+        holder.tvTitle.setText(item.getTitle());
+        holder.tvInfo.setText(item.getInfo());
+
+        // Lắng nghe click trên chính view có hiệu ứng gợn sóng để tránh bị chặn sự kiện
+        View clickableView = holder.itemView.findViewById(R.id.quizCard);
+        if (clickableView == null) clickableView = holder.itemView;
+
+        clickableView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return quizList.size();
+        return itemList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvStats;
+        TextView tvTitle, tvInfo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvQuizTitle);
-            tvStats = itemView.findViewById(R.id.tvQuizStats);
+            tvTitle = itemView.findViewById(R.id.quizTitle);
+            tvInfo = itemView.findViewById(R.id.quizInfo);
         }
     }
 }

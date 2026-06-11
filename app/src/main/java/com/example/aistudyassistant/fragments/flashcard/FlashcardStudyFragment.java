@@ -12,16 +12,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.aistudyassistant.R;
+import com.example.aistudyassistant.data.repository.StudySetRepository;
 import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.dao.StudySetDao;
 import com.example.aistudyassistant.database.entities.FlashcardEntity;
 import com.example.aistudyassistant.database.entities.StudySetEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class FlashcardStudyFragment extends Fragment {
 
@@ -31,6 +37,7 @@ public class FlashcardStudyFragment extends Fragment {
     private String setId;
     private String setTitle;
     private List<FlashcardEntity> flashcards = new ArrayList<>();
+    private Set<String> masteredCards = new HashSet<>();
     private int currentIndex = 0;
     private boolean isShowingFront = true;
 
@@ -94,18 +101,23 @@ public class FlashcardStudyFragment extends Fragment {
         btnPrev.setOnClickListener(v -> prevCard());
         
         btnRight.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Đã thuộc!", Toast.LENGTH_SHORT).show();
+            if (!flashcards.isEmpty() && currentIndex < flashcards.size()) {
+                masteredCards.add(flashcards.get(currentIndex).getFlashcardId());
+            }
             nextCard();
         });
 
         btnWrong.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Cần học lại!", Toast.LENGTH_SHORT).show();
+            if (!flashcards.isEmpty() && currentIndex < flashcards.size()) {
+                masteredCards.remove(flashcards.get(currentIndex).getFlashcardId());
+            }
             nextCard();
         });
 
         btnReset.setOnClickListener(v -> {
             currentIndex = 0;
             isShowingFront = true;
+            masteredCards.clear();
             updateCardDisplay();
         });
     }
@@ -146,8 +158,47 @@ public class FlashcardStudyFragment extends Fragment {
             isShowingFront = true;
             updateCardDisplay();
         } else {
-            Toast.makeText(getContext(), "Đã hoàn thành bộ thẻ!", Toast.LENGTH_SHORT).show();
+            finishStudy();
         }
+    }
+
+    private void finishStudy() {
+        if (flashcards.isEmpty()) return;
+
+        int total = flashcards.size();
+        int mastered = masteredCards.size();
+        float percentage = ((float) mastered / total) * 100;
+
+        android.content.Context context = getContext();
+        if (context == null) return;
+
+        // Use Repository to handle DB update and cloud sync
+        AppDatabase db = AppDatabase.getDatabase(context);
+        StudySetRepository repository = new StudySetRepository(db.studySetDao());
+        
+        new Thread(() -> {
+            StudySetEntity set = db.studySetDao().getSetById(setId);
+            if (set != null) {
+                set.setMasteryPercentage(percentage);
+                repository.updateSet(set);
+            }
+            
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Hoàn thành bài học!")
+                            .setMessage("Bạn đã thuộc " + mastered + " / " + total + " thẻ.\n" +
+                                    "Tỷ lệ thuộc: " + String.format(Locale.getDefault(), "%.1f", percentage) + "%")
+                            .setPositiveButton("Kết thúc", (dialog, which) -> {
+                                if (isAdded()) {
+                                    getParentFragmentManager().popBackStack();
+                                }
+                            })
+                            .setCancelable(false)
+                            .show();
+                });
+            }
+        }).start();
     }
 
     private void prevCard() {

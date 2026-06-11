@@ -64,6 +64,7 @@ public class StudySessionRepository {
 
     private void syncSessionToCloud(StudySessionEntity session) {
         String collectionPath = getUserCollectionPath();
+        Log.d(TAG, "DEBUG_PATH: " + collectionPath);
         if (collectionPath != null) {
             StudySessionFirestore cloudModel = new StudySessionFirestore(session);
             firestore.collection(collectionPath)

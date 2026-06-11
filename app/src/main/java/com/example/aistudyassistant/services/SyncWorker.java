@@ -29,7 +29,7 @@ public class SyncWorker extends Worker {
             FlashcardRepository flashcardRepo = new FlashcardRepository(db.flashcardDao(), userStatsRepo);
             DocumentRepository documentRepo = new DocumentRepository(db.documentDao());
             StudySessionRepository studySessionRepo = new StudySessionRepository(db.studySessionDao());
-            QuizRepository quizRepo = new QuizRepository(db.quizDao());
+            QuizRepository quizRepo = new QuizRepository(db.quizDao(), db.studySetDao());
             ScheduleRepository scheduleRepo = new ScheduleRepository(getApplicationContext(), db.scheduleDao());
             LearningGoalRepository learningGoalRepo = new LearningGoalRepository(db.learningGoalDao());
 

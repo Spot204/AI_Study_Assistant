@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         new FlashcardRepository(db.flashcardDao(), statsRepo).syncUnsyncedFlashcards();
         new DocumentRepository(db.documentDao()).uploadUnsyncedDocumentsToServer();
         new StudySessionRepository(db.studySessionDao()).syncUnsyncedSessions();
-        new QuizRepository(db.quizDao()).syncUnsyncedQuizzes();
+        new QuizRepository(db.quizDao(), db.studySetDao()).syncUnsyncedQuizzes();
         new ScheduleRepository(this, db.scheduleDao()).syncUnsyncedTasks();
         new LearningGoalRepository(db.learningGoalDao()).syncUnsyncedGoals();
 

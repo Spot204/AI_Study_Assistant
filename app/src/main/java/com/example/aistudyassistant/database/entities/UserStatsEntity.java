@@ -38,6 +38,13 @@ public class UserStatsEntity {
         this.syncStatus = "pending_update";
     }
 
+    /**
+     * No-argument constructor required for Firestore deserialization
+     */
+    @androidx.room.Ignore
+    public UserStatsEntity() {
+    }
+
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---
 
     @NonNull

@@ -39,6 +39,13 @@ public class QuizEntity {
         this.syncStatus = "pending_insert";
     }
 
+    /**
+     * No-argument constructor required for Firestore deserialization
+     */
+    @androidx.room.Ignore
+    public QuizEntity() {
+    }
+
     // --- Hệ thống Getter và Setter ---
     @NonNull
     public String getQuizId() { return quizId; }

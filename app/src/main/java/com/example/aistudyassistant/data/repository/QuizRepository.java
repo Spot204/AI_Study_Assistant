@@ -2,7 +2,9 @@ package com.example.aistudyassistant.data.repository;
 
 import android.util.Log;
 import com.example.aistudyassistant.database.dao.QuizDao;
+import com.example.aistudyassistant.database.dao.StudySetDao;
 import com.example.aistudyassistant.database.entities.QuizEntity;
+import com.example.aistudyassistant.database.entities.StudySetEntity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
@@ -17,8 +19,11 @@ public class QuizRepository {
     private final FirebaseAuth auth;
     private final ExecutorService executorService;
 
-    public QuizRepository(QuizDao quizDao) {
+    private final StudySetDao studySetDao;
+
+    public QuizRepository(QuizDao quizDao, StudySetDao studySetDao) {
         this.quizDao = quizDao;
+        this.studySetDao = studySetDao;
         this.firestore = FirebaseFirestore.getInstance();
         this.auth = FirebaseAuth.getInstance();
         this.executorService = Executors.newSingleThreadExecutor();
@@ -97,5 +102,31 @@ public class QuizRepository {
                         }
                     }));
         });
+    }
+
+    // Thêm phương thức lấy danh sách Quiz VÀ StudySet để hiển thị ở màn hình Quiz
+    public void getAllQuizzesAndSets(String userId, OnDataLoadedListener listener) {
+        executorService.execute(() -> {
+            List<QuizEntity> quizzes = quizDao.getQuizzesByUser(userId);
+            List<StudySetEntity> studySets = studySetDao.getStudySetsByUser(userId);
+            
+            List<com.example.aistudyassistant.fragments.quiz.PracticeItem> items = new java.util.ArrayList<>();
+            
+            for (QuizEntity q : quizzes) {
+                items.add(new com.example.aistudyassistant.fragments.quiz.PracticeItem(
+                    q.getQuizId(), q.getTitle(), q.getTimeLimitMinutes() + " phút", com.example.aistudyassistant.fragments.quiz.PracticeItem.TYPE_QUIZ));
+            }
+            
+            for (StudySetEntity s : studySets) {
+                items.add(new com.example.aistudyassistant.fragments.quiz.PracticeItem(
+                    s.getSetId(), s.getTitle(), "Học phần", com.example.aistudyassistant.fragments.quiz.PracticeItem.TYPE_STUDY_SET));
+            }
+            
+            listener.onLoaded(items);
+        });
+    }
+
+    public interface OnDataLoadedListener {
+        void onLoaded(List<com.example.aistudyassistant.fragments.quiz.PracticeItem> items);
     }
 }

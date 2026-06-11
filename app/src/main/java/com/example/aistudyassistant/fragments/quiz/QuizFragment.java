@@ -41,6 +41,8 @@ public class QuizFragment extends Fragment {
     private RecyclerView rvQuizzes;
     private TextView tvEmptyQuizzes;
     private MaterialButton btnCreateAi;
+    private QuizListAdapter adapter;
+    private com.example.aistudyassistant.data.repository.QuizRepository quizRepository;
 
     // Bộ công cụ đời mới quản lý mở Camera, Thư viện và Chọn File hệ thống
     private ActivityResultLauncher<String> pickImageLauncher;
@@ -93,13 +95,91 @@ public class QuizFragment extends Fragment {
         tvEmptyQuizzes = view.findViewById(R.id.tv_empty_quizzes);
         btnCreateAi = view.findViewById(R.id.btnCreateAi);
 
+        // Khởi tạo Repository và Adapter
+        com.example.aistudyassistant.database.AppDatabase db = com.example.aistudyassistant.database.AppDatabase.getDatabase(requireContext());
+        quizRepository = new com.example.aistudyassistant.data.repository.QuizRepository(db.quizDao(), db.studySetDao());
+        
+        adapter = new QuizListAdapter();
+        adapter.setOnItemClickListener(item -> {
+            if (item.getType() == PracticeItem.TYPE_QUIZ) {
+                // Mở màn hình chơi Quiz trực tiếp
+                Intent intent = new Intent(getActivity(), QuizPlayActivity.class);
+                intent.putExtra("QUIZ_ID", item.getId());
+                startActivity(intent);
+            } else if (item.getType() == PracticeItem.TYPE_STUDY_SET) {
+                // Khi nhấn vào Học phần, ta lấy nội dung để tạo Quiz bằng AI
+                fetchStudySetAndGenerateQuiz(item.getId());
+            }
+        });
+        rvQuizzes.setAdapter(adapter);
+
         // Chọc nút Tạo mới gọi ra cái Bottom Sheet xịn của bro
         btnCreateAi.setOnClickListener(v -> showCreateOptionsBottomSheet());
 
-        tvEmptyQuizzes.setVisibility(View.VISIBLE);
-        rvQuizzes.setVisibility(View.GONE);
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadQuizzes();
+    }
+
+    private void loadQuizzes() {
+        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser() != null 
+                ? com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid() 
+                : "mock_user";
+
+        quizRepository.getAllQuizzesAndSets(userId, items -> {
+            if (getActivity() == null) return;
+            getActivity().runOnUiThread(() -> {
+                if (items == null || items.isEmpty()) {
+                    tvEmptyQuizzes.setVisibility(View.VISIBLE);
+                    rvQuizzes.setVisibility(View.GONE);
+                } else {
+                    tvEmptyQuizzes.setVisibility(View.GONE);
+                    rvQuizzes.setVisibility(View.VISIBLE);
+                    adapter.setData(items);
+                }
+            });
+        });
+    }
+
+    private void fetchStudySetAndGenerateQuiz(String setId) {
+        com.example.aistudyassistant.database.AppDatabase db = com.example.aistudyassistant.database.AppDatabase.getDatabase(requireContext());
+        java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
+            com.example.aistudyassistant.database.entities.StudySetEntity studySet = db.studySetDao().getSetById(setId);
+            java.util.List<com.example.aistudyassistant.database.entities.FlashcardEntity> flashcards = db.flashcardDao().getFlashcardsBySet(setId);
+
+            if (flashcards == null || flashcards.isEmpty()) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Học phần này chưa có thẻ nào để tạo Quiz!", Toast.LENGTH_SHORT).show()
+                    );
+                }
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Title: ").append(studySet.getTitle()).append("\n\n");
+            for (com.example.aistudyassistant.database.entities.FlashcardEntity card : flashcards) {
+                sb.append("Front: ").append(card.getFront()).append(" | Back: ").append(card.getBack()).append("\n");
+            }
+
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    try {
+                        Intent intent = new Intent(getActivity(), Class.forName("com.example.aistudyassistant.features.ocr_summary.OCRSummaryActivity"));
+                        intent.putExtra("TARGET_MODE", "GENERATE_QUIZ");
+                        intent.putExtra("EXTRACTED_TEXT", sb.toString());
+                        startActivity(intent);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Không tìm thấy OCRSummaryActivity!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     private void showCreateOptionsBottomSheet() {

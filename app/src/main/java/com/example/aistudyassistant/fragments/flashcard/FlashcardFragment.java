@@ -73,6 +73,16 @@ public class FlashcardFragment extends Fragment {
 
         rvDecks.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new FlashcardDeckAdapter();
+        adapter.setOnDeckClickListener(studySet -> {
+            FlashcardStudyFragment studyFragment = FlashcardStudyFragment.newInstance(
+                    studySet.getSetId(),
+                    studySet.getTitle()
+            );
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, studyFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
         rvDecks.setAdapter(adapter);
 
         profileService.getCurrentUser().observe(getViewLifecycleOwner(), user -> {

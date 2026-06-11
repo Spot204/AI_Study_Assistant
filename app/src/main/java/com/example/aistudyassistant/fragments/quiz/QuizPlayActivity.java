@@ -3,6 +3,7 @@ package com.example.aistudyassistant.fragments.quiz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,7 +79,7 @@ public class QuizPlayActivity extends AppCompatActivity {
         // [ĐÃ THÊM] Khởi tạo Repository một lần duy nhất lúc mở màn hình
         AppDatabase db = AppDatabase.getDatabase(this);
         sessionRepo = new StudySessionRepository(db.studySessionDao());
-        quizRepo = new QuizRepository(db.quizDao());
+        quizRepo = new QuizRepository(db.quizDao(), db.studySetDao());
         statsRepo = new UserStatsRepository(db.userStatsDao(), db.achievementDao(), db.userAchievementDao());
 
         quizId = getIntent().getStringExtra("QUIZ_ID");
@@ -145,15 +146,23 @@ public class QuizPlayActivity extends AppCompatActivity {
                 com.example.aistudyassistant.database.entities.QuizEntity quiz =
                         AppDatabase.getDatabase(this).quizDao().getQuizById(quizId);
                 if (quiz != null && quiz.getQuestionsJson() != null) {
+                    Log.d("QuizPlay", "JSON from DB: " + quiz.getQuestionsJson());
                     Gson gson = new Gson();
                     Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
                     List<Question> loadedQuestions = gson.fromJson(quiz.getQuestionsJson(), listType);
+                    Log.d("QuizPlay", "Loaded questions size: " + (loadedQuestions != null ? loadedQuestions.size() : 0));
                     runOnUiThread(() -> {
-                        questionList.clear();
-                        questionList.addAll(loadedQuestions);
-                        displayQuestion();
+                        if (loadedQuestions != null && !loadedQuestions.isEmpty()) {
+                            questionList.clear();
+                            questionList.addAll(loadedQuestions);
+                            displayQuestion();
+                        } else {
+                            Log.e("QuizPlay", "Loaded questions list is empty or null");
+                            loadDefaultQuestions();
+                        }
                     });
                 } else {
+                    Log.w("QuizPlay", "Quiz or QuestionsJson is null for ID: " + quizId);
                     runOnUiThread(this::loadDefaultQuestions);
                 }
             });

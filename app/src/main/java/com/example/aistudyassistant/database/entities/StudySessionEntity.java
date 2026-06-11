@@ -43,6 +43,13 @@ public class StudySessionEntity {
         this.syncStatus = "pending_insert";
     }
 
+    /**
+     * No-argument constructor required for Firestore deserialization
+     */
+    @androidx.room.Ignore
+    public StudySessionEntity() {
+    }
+
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---
 
     @NonNull

@@ -24,6 +24,9 @@ public interface StudySetDao {
     @Query("SELECT * FROM study_sets WHERE userId = :userId")
     LiveData<List<StudySetEntity>> getAllSetsByUser(String userId);
 
+    @Query("SELECT * FROM study_sets WHERE userId = :userId")
+    List<StudySetEntity> getStudySetsByUser(String userId);
+
     @Query("SELECT * FROM study_sets WHERE setId = :setId LIMIT 1")
     StudySetEntity getSetById(String setId);
 

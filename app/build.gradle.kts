@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.work.runtime)
+    implementation(libs.firebase.storage)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))

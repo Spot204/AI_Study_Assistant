@@ -28,6 +28,13 @@ public class AchievementEntity {
         this.requirementValue = requirementValue;
     }
 
+    /**
+     * No-argument constructor required for Firestore deserialization
+     */
+    @androidx.room.Ignore
+    public AchievementEntity() {
+    }
+
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---
 
     @NonNull

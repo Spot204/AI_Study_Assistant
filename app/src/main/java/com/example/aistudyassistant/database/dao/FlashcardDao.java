@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+import androidx.lifecycle.LiveData;
 import com.example.aistudyassistant.database.entities.FlashcardEntity;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public interface FlashcardDao {
 
     @Query("SELECT * FROM flashcards WHERE setId = :setId")
     List<FlashcardEntity> getFlashcardsBySet(String setId);
+
+    @Query("SELECT * FROM flashcards WHERE setId = :setId")
+    LiveData<List<FlashcardEntity>> getFlashcardsBySetLive(String setId);
 
     @Query("SELECT * FROM flashcards WHERE nextReviewAt <= :currentTime ORDER BY nextReviewAt ASC")
     List<FlashcardEntity> getCardsToReview(long currentTime);
