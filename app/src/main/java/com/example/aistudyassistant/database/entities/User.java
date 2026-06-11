@@ -55,13 +55,6 @@ public class User {
         this.syncStatus = "pending_update";
     }
 
-    /**
-     * No-argument constructor required for Firestore deserialization
-     */
-    @androidx.room.Ignore
-    public User() {
-    }
-
     // --- Hệ thống Getter và Setter bắt buộc cho Room DB ---
 
     @NonNull
