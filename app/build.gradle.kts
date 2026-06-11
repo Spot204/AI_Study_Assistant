@@ -91,4 +91,12 @@ dependencies {
 
     // Thư viện Google AI Generative
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation("com.google.firebase:firebase-storage")
+
+    // Glide (Dùng để hiển thị ảnh từ URL)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    ksp("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Cloudinary (Lưu trữ ảnh miễn phí)
+    implementation("com.cloudinary:cloudinary-android:3.0.2")
 }
