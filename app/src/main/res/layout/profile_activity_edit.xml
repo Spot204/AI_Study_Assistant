@@ -9,7 +9,6 @@
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="114dp"
-        android:paddingTop="40dp"
         android:background="@color/card_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
