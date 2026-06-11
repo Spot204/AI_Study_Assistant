@@ -15,8 +15,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Header actions
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_settings).setOnClickListener(v -> 
-            Toast.makeText(this, "Cài đặt", Toast.LENGTH_SHORT).show());
+
 
         setupMenuItems();
         
@@ -28,16 +27,6 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupMenuItems() {
         findViewById(R.id.menu_edit_profile).setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.menu_notifications).setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, NotificationsActivity.class);
-            startActivity(intent);
-        });
-
-        findViewById(R.id.menu_goals).setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, NotificationsActivity.LearningGoalsActivity.class);
             startActivity(intent);
         });
         

@@ -29,6 +29,9 @@ public interface StudySessionDao {
     @Query("DELETE FROM study_sessions")
     void deleteAll();
 
+    @Query("SELECT COALESCE(SUM(durationMinutes), 0) FROM study_sessions WHERE userId = :userId AND startedAt >= :todayStart")
+    int getTodayStudyTimeMinutes(String userId, long todayStart);
+
     // =================================================================
     // 💥 CÁC HÀM PHỤC VỤ LUỒNG ĐỒNG BỘ ĐÁM MÂY
     // =================================================================
@@ -38,4 +41,5 @@ public interface StudySessionDao {
 
     @Query("SELECT COALESCE(MAX(updatedAt), 0) FROM study_sessions")
     long getMaxUpdatedAt();
+
 }

@@ -14,9 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.aistudyassistant.R;
-import com.example.aistudyassistant.fragments.profile.EditProfileActivity;
-import com.example.aistudyassistant.fragments.profile.HelpSupportActivity;
-import com.example.aistudyassistant.fragments.profile.NotificationsActivity;
 import com.example.aistudyassistant.fragments.auth.LoginFragment;
 import com.example.aistudyassistant.data.repository.UserStatsRepository;
 import com.example.aistudyassistant.database.AppDatabase;
@@ -60,9 +57,6 @@ public class ProfileFragment extends Fragment {
 
         // Header actions
         view.findViewById(R.id.btn_back).setVisibility(View.GONE); // Ẩn nút back khi ở trong Navigation
-        view.findViewById(R.id.btn_settings).setOnClickListener(v -> 
-            Toast.makeText(getContext(), "Cài đặt", Toast.LENGTH_SHORT).show());
-
         setupMenuItems(view);
         
         // Logout action
@@ -135,17 +129,6 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
             startActivity(intent);
         });
-
-        view.findViewById(R.id.menu_notifications).setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), NotificationsActivity.class);
-            startActivity(intent);
-        });
-
-        view.findViewById(R.id.menu_goals).setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), NotificationsActivity.LearningGoalsActivity.class);
-            startActivity(intent);
-        });
-        
         view.findViewById(R.id.menu_help).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), HelpSupportActivity.class);
             startActivity(intent);
