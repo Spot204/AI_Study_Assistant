@@ -36,6 +36,7 @@ public class SyncWorker extends Worker {
             String currentUid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
 
             // 1. Đồng bộ chiều LÊN (Upload local changes)
+            Log.d(TAG, "Đang đẩy dữ liệu local lên server...");
             userRepo.syncUnsyncedUsers();
             userStatsRepo.syncUnsyncedStats();
             studySetRepo.syncUnsyncedStudySets();
@@ -45,9 +46,11 @@ public class SyncWorker extends Worker {
             quizRepo.syncUnsyncedQuizzes();
             scheduleRepo.syncUnsyncedTasks();
             learningGoalRepo.syncUnsyncedGoals();
+            Log.d(TAG, "Hoàn tất đẩy dữ liệu local.");
 
             // 2. Đồng bộ chiều XUỐNG (Download remote changes)
             if (currentUid != null) {
+                Log.d(TAG, "Bắt đầu tải dữ liệu từ Firebase cho UID: " + currentUid);
                 userRepo.downloadUserFromServer(currentUid);
                 userStatsRepo.downloadStatsFromServer();
                 studySetRepo.downloadNewStudySetsFromServer();
@@ -57,6 +60,9 @@ public class SyncWorker extends Worker {
                 quizRepo.downloadNewQuizzesFromServer();
                 scheduleRepo.downloadNewTasksFromServer();
                 learningGoalRepo.downloadNewGoalsFromServer();
+                Log.d(TAG, "Hoàn tất yêu cầu tải dữ liệu từ Firebase.");
+            } else {
+                Log.w(TAG, "Không thể tải dữ liệu: UID người dùng hiện tại là null.");
             }
 
             Log.i(TAG, "Đồng bộ hoàn tất thành công.");

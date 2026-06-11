@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import com.example.aistudyassistant.database.entities.StudySessionEntity;
+import com.example.aistudyassistant.database.entities.StudySessionWithTitle;
 import java.util.List;
 
 @Dao
@@ -22,6 +23,11 @@ public interface StudySessionDao {
 
     @Query("SELECT * FROM study_sessions WHERE userId = :userId ORDER BY startedAt DESC")
     List<StudySessionEntity> getSessionsByUser(String userId);
+
+    @Query("SELECT s.*, t.title as studySetTitle FROM study_sessions s " +
+           "LEFT JOIN study_sets t ON s.referenceId = t.setId " +
+           "WHERE s.userId = :userId ORDER BY s.startedAt DESC")
+    List<StudySessionWithTitle> getSessionsWithTitleByUser(String userId);
 
     @Query("SELECT * FROM study_sessions WHERE sessionId = :sessionId LIMIT 1")
     StudySessionEntity getSessionById(String sessionId);

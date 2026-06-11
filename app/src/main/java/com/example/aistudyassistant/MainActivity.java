@@ -36,6 +36,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,6 +103,26 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(new HomeFragment());
         }
 
+        // Tự động ẩn BottomNav khi bàn phím hiện lên để tránh bị đẩy lên (đè lên thanh navigate)
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                boolean isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+                if (bottomNav != null) {
+                    if (isKeyboardVisible) {
+                        bottomNav.setVisibility(View.GONE);
+                    } else {
+                        // Chỉ hiện lại nếu không phải trang Auth (Login/Register)
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                        if (!(currentFragment instanceof LoginFragment || currentFragment instanceof RegisterFragment)) {
+                            bottomNav.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                return ViewCompat.onApplyWindowInsets(v, insets);
+            });
+        }
+
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
@@ -126,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNav = findViewById(R.id.bottomNavigation);
         }
 
-        // Nếu là trang Auth thì ẩn thanh điều hướng
+        // Nếu là trang Auth thì ẩn thanh điều hướng (Chat sẽ tự ẩn khi hiện bàn phím)
         if (fragment instanceof LoginFragment || fragment instanceof RegisterFragment) {
             if (bottomNav != null) bottomNav.setVisibility(View.GONE);
         } else {

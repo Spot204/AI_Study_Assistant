@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
-import com.example.aistudyassistant.database.entities.StudySessionEntity;
+import com.example.aistudyassistant.database.entities.StudySetEntity;
 import com.example.aistudyassistant.database.entities.UserStatsEntity;
+import com.example.aistudyassistant.fragments.flashcard.FlashcardStudyFragment;
 
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +28,7 @@ public class HomeFragment extends Fragment {
 
     private String userName = "bạn";
     private TextView tvWelcome, tvStreak, tvStudyTime, tvTip;
+    private ImageView ivAvatar;
     private RecyclerView rvRecent;
     private RecentStudyAdapter adapter;
     private AppDatabase db;
@@ -48,6 +52,7 @@ public class HomeFragment extends Fragment {
         tvStudyTime = view.findViewById(R.id.tvStudyTimeDisplay);
         tvTip = view.findViewById(R.id.tvDailyTipText);
         rvRecent = view.findViewById(R.id.rvRecentStudy);
+        ivAvatar = view.findViewById(R.id.ivUserAvatar);
 
         setupRecyclerView();
         displayRandomTip();
@@ -57,6 +62,16 @@ public class HomeFragment extends Fragment {
 
     private void setupRecyclerView() {
         adapter = new RecentStudyAdapter();
+        adapter.setOnItemClickListener(studySet -> {
+            FlashcardStudyFragment studyFragment = FlashcardStudyFragment.newInstance(
+                    studySet.getSetId(),
+                    studySet.getTitle()
+            );
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, studyFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
         rvRecent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvRecent.setAdapter(adapter);
     }
@@ -74,9 +89,18 @@ public class HomeFragment extends Fragment {
             if (user != null) {
                 userName = user.getFullName();
                 tvWelcome.setText("Chào bạn, " + (userName != null ? userName : "") + "!");
+                
+                if (user.getAvatarPath() != null && !user.getAvatarPath().isEmpty()) {
+                    Glide.with(this)
+                            .load(user.getAvatarPath())
+                            .placeholder(R.drawable.ic_user)
+                            .circleCrop()
+                            .into(ivAvatar);
+                }
+
                 loadUserStats(user.getUserId());
                 loadStudyTime(user.getUserId());
-                loadRecentSessions(user.getUserId());
+                loadStudySets(user.getUserId());
             } else {
                 tvWelcome.setText("Chào bạn!");
             }
@@ -113,14 +137,14 @@ public class HomeFragment extends Fragment {
         }).start();
     }
 
-    private void loadRecentSessions(String userId) {
+    private void loadStudySets(String userId) {
         new Thread(() -> {
-            List<StudySessionEntity> sessions = db.studySessionDao().getSessionsByUser(userId);
-            if (isAdded() && sessions != null) {
+            List<StudySetEntity> sets = db.studySetDao().getStudySetsByUser(userId);
+            if (isAdded() && sets != null) {
                 requireActivity().runOnUiThread(() -> {
-                    // Hiển thị tối đa 5 phiên gần nhất
-                    int limit = Math.min(sessions.size(), 5);
-                    adapter.setSessions(sessions.subList(0, limit));
+                    // Hiển thị tối đa 5 bộ học tập mới nhất/gần đây
+                    int limit = Math.min(sets.size(), 5);
+                    adapter.setStudySets(sets.subList(0, limit));
                 });
             }
         }).start();
