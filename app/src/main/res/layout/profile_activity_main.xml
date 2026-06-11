@@ -113,8 +113,10 @@
                         app:layout_constraintEnd_toEndOf="parent" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:id="@+id/iv_profile_avatar"
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_user"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"

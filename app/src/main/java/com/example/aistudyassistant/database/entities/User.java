@@ -21,6 +21,12 @@ public class User {
     private String syncStatus; // Trạng thái đồng bộ: "synced", "pending_update"
 
     /**
+     * Constructor không tham số bắt buộc cho Firebase Firestore
+     */
+    public User() {
+    }
+
+    /**
      * Constructor chính được Room DB sử dụng để tương tác dữ liệu
      */
     public User(@NonNull String userId, String fullName, String email, String bio, String school) {

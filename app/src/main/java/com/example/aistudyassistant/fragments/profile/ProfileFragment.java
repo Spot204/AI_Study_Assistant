@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.fragments.profile.EditProfileActivity;
 import com.example.aistudyassistant.fragments.profile.HelpSupportActivity;
@@ -31,6 +34,7 @@ public class ProfileFragment extends Fragment {
     private AchievementAdapter achievementAdapter;
     private TextView tvName, tvSchool;
     private TextView tvStreak, tvFlashcards, tvQuizzes, tvHours;
+    private ImageView ivAvatar;
 
     @Nullable
     @Override
@@ -44,6 +48,7 @@ public class ProfileFragment extends Fragment {
 
         tvName = view.findViewById(R.id.tv_profile_name);
         tvSchool = view.findViewById(R.id.tv_profile_school);
+        ivAvatar = view.findViewById(R.id.iv_profile_avatar);
         tvStreak = view.findViewById(R.id.tv_stat_streak);
         tvFlashcards = view.findViewById(R.id.tv_stat_flashcards);
         tvQuizzes = view.findViewById(R.id.tv_stat_quizzes);
@@ -89,6 +94,15 @@ public class ProfileFragment extends Fragment {
             if (user != null) {
                 tvName.setText(user.getFullName());
                 tvSchool.setText(user.getSchool());
+                
+                if (user.getAvatarPath() != null && !user.getAvatarPath().isEmpty()) {
+                    Glide.with(this)
+                            .load(user.getAvatarPath())
+                            .placeholder(R.drawable.ic_user)
+                            .circleCrop()
+                            .into(ivAvatar);
+                }
+
                 loadUserStats(user.getUserId());
                 loadUserAchievements(user.getUserId());
             }
