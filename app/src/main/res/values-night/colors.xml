@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Mode Colors -->
+    <color name="background">#121212</color>
+    <color name="card_background">#1E1E1E</color>
+    <color name="background_page">#121212</color>
+    <color name="secondary_background">#242424</color>
+
+    <color name="text_primary">#F5F5F5</color>
+    <color name="text_secondary">#AAAAAA</color>
+    <color name="text_grey">#999999</color>
+    <color name="text_sub">#777777</color>
+
+    <color name="border_color">#333333</color>
+    <color name="card_border">#333333</color>
+    <color name="bg_light">#1A1A1A</color>
+
+    <!-- Adjusting semi-transparent or specific backgrounds for dark mode -->
+    <color name="tab_container">#2D2D2D</color>
+    <color name="nav_item_active_bg">#2D3142</color>
+
+    <!-- Soften specific component colors if they are too bright -->
+    <color name="purple_bg">#261B35</color>
+    <color name="purple_stroke">#3B2B50</color>
+    <color name="ai_card_bg">#1E1B2E</color>
+
+    <color name="white">#1E1E1E</color> <!-- Be careful with this, usually better to use semantic names -->
+</resources>

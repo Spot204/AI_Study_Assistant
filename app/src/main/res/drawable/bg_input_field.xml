@@ -10,7 +10,7 @@
     <!-- Main layer -->
     <item android:bottom="2dp">
         <shape>
-            <solid android:color="#F3F4F6" />
+            <solid android:color="@color/bg_light" />
             <corners android:radius="24dp" />
         </shape>
     </item>

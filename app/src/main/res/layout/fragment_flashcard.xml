@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:background="#FFFFFF"
+    android:background="@color/background_page"
     android:padding="20dp">
 
     <TextView
@@ -13,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Flashcards"
-        android:textColor="#111827"
+        android:textColor="@color/text_primary"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +27,7 @@
         android:contentDescription="Thêm mới"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#111827" />
+        app:tint="@color/text_primary" />
 
     <EditText
         android:id="@+id/et_fc_search"
@@ -41,8 +40,8 @@
         android:hint="Tìm kiếm bộ thẻ..."
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="#111827"
-        android:textColorHint="#6B7280"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_sub"
         android:textSize="15sp"
         android:inputType="text"
         android:importantForAutofill="no"
@@ -117,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Bộ thẻ của bạn"
-        android:textColor="#111827"
+        android:textColor="@color/text_primary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

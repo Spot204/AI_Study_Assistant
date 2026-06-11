@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +59,8 @@ public class ProfileFragment extends Fragment {
 
         // Header actions
         view.findViewById(R.id.btn_back).setVisibility(View.GONE); // Ẩn nút back khi ở trong Navigation
+        
+        setupDarkMode(view);
         setupMenuItems(view);
         
         // Logout action
@@ -121,6 +125,36 @@ public class ProfileFragment extends Fragment {
                 tvQuizzes.setText(String.valueOf(stats.getTotalQuizzes()));
                 tvHours.setText(String.format(Locale.getDefault(), "%.1f", stats.getStudyHours()));
             }
+        });
+    }
+
+    private void setupDarkMode(View view) {
+        SwitchCompat switchDarkMode = view.findViewById(R.id.switch_dark_mode);
+        
+        // Kiểm tra trạng thái hiện tại của theme
+        int currentMode = AppCompatDelegate.getDefaultNightMode();
+        if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
+            switchDarkMode.setChecked(true);
+        } else if (currentMode == AppCompatDelegate.MODE_NIGHT_NO) {
+            switchDarkMode.setChecked(false);
+        } else {
+            // Nếu là MODE_NIGHT_FOLLOW_SYSTEM, kiểm tra config thực tế
+            int nightModeFlags = getContext().getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+            switchDarkMode.setChecked(nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES);
+        }
+
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            
+            // Lưu vào SharedPreferences để duy trì trạng thái khi khởi động lại app
+            getContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("dark_mode", isChecked)
+                    .apply();
         });
     }
 

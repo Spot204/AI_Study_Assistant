@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC"
+    android:background="@color/background_page"
     android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,14 +33,14 @@
                     android:text="Chào bạn!"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="#1E293B" />
+                    android:textColor="@color/text_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hôm nay bạn muốn học gì nào? 🚀"
                     android:textSize="14sp"
-                    android:textColor="#64748B"
+                    android:textColor="@color/text_secondary"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
 
@@ -52,9 +52,9 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_user"
                 android:padding="4dp"
-                android:background="#EEF2FF"
+                android:background="@color/bg_light"
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="@color/border_color"
                 app:strokeWidth="1dp"
                 android:contentDescription="Ảnh đại diện" />
         </RelativeLayout>
@@ -75,8 +75,8 @@
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#E2E8F0"
-                app:cardBackgroundColor="#FFFFFF"
+                app:strokeColor="@color/border_color"
+                app:cardBackgroundColor="@color/card_background"
                 app:layout_constraintEnd_toStartOf="@+id/cardStudyTime"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="0 ngày"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Chuỗi học tập"
-                        android:textColor="#64748B"
+                        android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -121,8 +121,8 @@
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#E2E8F0"
-                app:cardBackgroundColor="#FFFFFF"
+                app:strokeColor="@color/border_color"
+                app:cardBackgroundColor="@color/card_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardStreak"
                 app:layout_constraintTop_toTopOf="@+id/cardStreak">
@@ -146,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="0/5 phút"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -155,7 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thời gian học"
-                        android:textColor="#64748B"
+                        android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -168,9 +168,9 @@
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#EEF2FF"
+                app:cardBackgroundColor="@color/ai_card_bg"
                 app:strokeWidth="1dp"
-                app:strokeColor="#C7D2FE"
+                app:strokeColor="@color/purple_stroke"
                 app:layout_constraintTop_toBottomOf="@id/cardStreak">
 
                 <LinearLayout
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Đang tải lời khuyên hữu ích cho bạn..."
-                        android:textColor="#374151"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:lineSpacingExtra="4dp" />
                 </LinearLayout>
@@ -208,7 +208,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Tiếp tục học"
-            android:textColor="#1E293B"
+            android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
