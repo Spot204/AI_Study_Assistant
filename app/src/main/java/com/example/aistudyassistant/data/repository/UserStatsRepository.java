@@ -188,13 +188,13 @@ public class UserStatsRepository {
         if (uid == null) return;
 
         try {
-            com.google.android.gms.tasks.Task<com.google.firebase.firestore.DocumentSnapshot> task = 
+            com.google.android.gms.tasks.Task<com.google.firebase.firestore.DocumentSnapshot> task =
                 firestore.collection("users").document(uid)
                     .collection("stats").document("current")
                     .get();
-            
+
             com.google.firebase.firestore.DocumentSnapshot documentSnapshot = com.google.android.gms.tasks.Tasks.await(task);
-            
+
             if (documentSnapshot.exists()) {
                 UserStatsEntity remoteStats = documentSnapshot.toObject(UserStatsEntity.class);
                 if (remoteStats != null) {

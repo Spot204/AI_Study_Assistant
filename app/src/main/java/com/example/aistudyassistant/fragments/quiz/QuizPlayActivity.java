@@ -18,7 +18,6 @@ import com.example.aistudyassistant.data.repository.QuizRepository;
 import com.example.aistudyassistant.data.repository.StudySessionRepository;
 import com.example.aistudyassistant.data.repository.UserStatsRepository;
 import com.example.aistudyassistant.database.entities.QuizEntity;
-import com.example.aistudyassistant.models.Question;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 

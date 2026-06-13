@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.receivers;
+package com.example.aistudyassistant.fragments.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.example.aistudyassistant.models;
+package com.example.aistudyassistant.fragments.quiz;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;

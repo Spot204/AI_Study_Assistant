@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.aistudyassistant.database.dao.ScheduleDao;
 import com.example.aistudyassistant.database.entities.ScheduleTask;
-import com.example.aistudyassistant.receivers.AlarmReceiver;
+import com.example.aistudyassistant.fragments.receivers.AlarmReceiver;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 

@@ -50,11 +50,11 @@
         <activity android:name=".fragments.quiz.QuizPlayActivity" android:exported="false" />
         <activity android:name=".fragments.quiz.QuizResultActivity" android:exported="false" />
 
-        <receiver android:name=".receivers.AlarmReceiver"
+        <receiver android:name=".fragments.receivers.AlarmReceiver"
             android:enabled="true"
             android:exported="false" />
 
-        <receiver android:name=".receivers.BootReceiver"
+        <receiver android:name=".fragments.receivers.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
