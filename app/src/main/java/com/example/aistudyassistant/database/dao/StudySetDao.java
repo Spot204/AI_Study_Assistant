@@ -16,10 +16,10 @@ public interface StudySetDao {
     void insertSet(StudySetEntity studySet);
 
     @Update
-    void updateSet(StudySetEntity studySet);
+    void update(StudySetEntity studySet);
 
     @Delete
-    void deleteSet(StudySetEntity studySet);
+    void delete(StudySetEntity studySet);
 
     @Query("SELECT * FROM study_sets WHERE userId = :userId")
     LiveData<List<StudySetEntity>> getAllSetsByUser(String userId);

@@ -41,7 +41,7 @@ public class FlashcardStudyFragment extends Fragment {
     private int currentIndex = 0;
     private boolean isShowingFront = true;
 
-    private TextView tvTitle, tvProgressCount, tvCardLabel, tvCardContent;
+    private TextView tvTitle, tvProgressCount, tvCardLabel, tvCardContent, tvCardHint;
     private ProgressBar pbProgress;
     private CardView cvFlashcard;
     private ImageButton btnBack, btnReset, btnPrev, btnNext;
@@ -79,6 +79,7 @@ public class FlashcardStudyFragment extends Fragment {
         tvProgressCount = view.findViewById(R.id.tv_study_progress_count);
         tvCardLabel = view.findViewById(R.id.tv_card_label);
         tvCardContent = view.findViewById(R.id.tv_card_content);
+        tvCardHint = view.findViewById(R.id.tv_card_hint);
         pbProgress = view.findViewById(R.id.pb_study_progress);
         cvFlashcard = view.findViewById(R.id.cv_flashcard);
         btnBack = view.findViewById(R.id.btn_study_back);
@@ -141,11 +142,15 @@ public class FlashcardStudyFragment extends Fragment {
 
         FlashcardEntity currentCard = flashcards.get(currentIndex);
         if (isShowingFront) {
-            tvCardLabel.setText("MẶT TRƯỚC");
+            tvCardLabel.setText("CÂU HỎI");
             tvCardContent.setText(currentCard.getFront());
+            tvCardHint.setText("Nhấn để xem đáp án");
+            cvFlashcard.setCardBackgroundColor(android.graphics.Color.parseColor("#7C4DFF")); // Tím cho câu hỏi
         } else {
-            tvCardLabel.setText("MẶT SAU");
+            tvCardLabel.setText("ĐÁP ÁN");
             tvCardContent.setText(currentCard.getBack());
+            tvCardHint.setText("Nhấn để quay lại câu hỏi");
+            cvFlashcard.setCardBackgroundColor(android.graphics.Color.parseColor("#00BFA5")); // Teal cho đáp án
         }
 
         tvProgressCount.setText((currentIndex + 1) + " / " + flashcards.size());
@@ -180,7 +185,7 @@ public class FlashcardStudyFragment extends Fragment {
             StudySetEntity set = db.studySetDao().getSetById(setId);
             if (set != null) {
                 set.setMasteryPercentage(percentage);
-                repository.updateSet(set);
+                repository.update(set);
             }
             
             if (getActivity() != null) {

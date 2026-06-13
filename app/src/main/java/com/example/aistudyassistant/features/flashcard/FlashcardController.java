@@ -30,7 +30,7 @@ public class FlashcardController {
     }
 
     public void updateStudySet(StudySetEntity set) {
-        studySetRepository.updateSet(set);
+        studySetRepository.update(set);
     }
 
     public void addFlashcards(List<FlashcardEntity> cards) {
