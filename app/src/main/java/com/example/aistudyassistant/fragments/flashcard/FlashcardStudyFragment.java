@@ -185,7 +185,7 @@ public class FlashcardStudyFragment extends Fragment {
             StudySetEntity set = db.studySetDao().getSetById(setId);
             if (set != null) {
                 set.setMasteryPercentage(percentage);
-                repository.updateSet(set);
+                repository.update(set);
             }
             
             if (getActivity() != null) {

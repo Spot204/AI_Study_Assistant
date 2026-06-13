@@ -3,9 +3,11 @@ package com.example.aistudyassistant.fragments.flashcard;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.entities.StudySetEntity;
@@ -19,6 +21,8 @@ public class FlashcardDeckAdapter extends RecyclerView.Adapter<FlashcardDeckAdap
 
     public interface OnDeckClickListener {
         void onDeckClick(StudySetEntity studySet);
+        void onEditClick(StudySetEntity studySet);
+        void onDeleteClick(StudySetEntity studySet);
     }
 
     public void setOnDeckClickListener(OnDeckClickListener listener) {
@@ -50,6 +54,24 @@ public class FlashcardDeckAdapter extends RecyclerView.Adapter<FlashcardDeckAdap
                 listener.onDeckClick(studySet);
             }
         });
+
+        holder.btnMore.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(holder.itemView.getContext(), holder.btnMore);
+            popup.getMenu().add("Chỉnh sửa");
+            popup.getMenu().add("Xóa");
+            
+            popup.setOnMenuItemClickListener(item -> {
+                if (listener != null) {
+                    if (item.getTitle().equals("Chỉnh sửa")) {
+                        listener.onEditClick(studySet);
+                    } else if (item.getTitle().equals("Xóa")) {
+                        listener.onDeleteClick(studySet);
+                    }
+                }
+                return true;
+            });
+            popup.show();
+        });
     }
 
     @Override
@@ -60,6 +82,7 @@ public class FlashcardDeckAdapter extends RecyclerView.Adapter<FlashcardDeckAdap
     static class DeckViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvCount, tvProgressText;
         ProgressBar progressBar;
+        ImageButton btnMore;
 
         public DeckViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +90,7 @@ public class FlashcardDeckAdapter extends RecyclerView.Adapter<FlashcardDeckAdap
             tvCount = itemView.findViewById(R.id.tv_deck_count);
             tvProgressText = itemView.findViewById(R.id.tv_deck_progress_text);
             progressBar = itemView.findViewById(R.id.pb_deck_progress);
+            btnMore = itemView.findViewById(R.id.btn_deck_more);
         }
     }
 }

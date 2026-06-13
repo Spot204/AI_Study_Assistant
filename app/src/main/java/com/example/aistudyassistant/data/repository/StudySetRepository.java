@@ -49,11 +49,11 @@ public class StudySetRepository {
         });
     }
 
-    public void updateSet(StudySetEntity studySet) {
+    public void update(StudySetEntity studySet) {
         studySet.setUpdatedAt(System.currentTimeMillis());
         studySet.setSyncStatus("pending_update");
         executorService.execute(() -> {
-            studySetDao.updateSet(studySet);
+            studySetDao.update(studySet);
             syncToCloud(studySet);
         });
     }
@@ -72,7 +72,7 @@ public class StudySetRepository {
                 .set(cloudModel)
                 .addOnSuccessListener(aVoid -> executorService.execute(() -> {
                     studySet.setSyncStatus("synced");
-                    studySetDao.updateSet(studySet);
+                    studySetDao.update(studySet);
                     Log.d(TAG, "StudySet synced to cloud");
                 }))
                 .addOnFailureListener(e -> Log.e(TAG, "StudySet sync failed", e));
@@ -98,7 +98,7 @@ public class StudySetRepository {
 
             batch.commit().addOnSuccessListener(aVoid -> executorService.execute(() -> {
                 for (StudySetEntity set : setsToUpdateLocal) {
-                    studySetDao.updateSet(set);
+                    studySetDao.update(set);
                 }
             }));
         });

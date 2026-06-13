@@ -40,13 +40,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:text="Toán cao cấp A1"
             android:textColor="@color/text_primary"
             style="@style/AppTextAppearance.BodyLarge"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_deck_more"
             app:layout_constraintStart_toEndOf="@+id/cv_deck_icon_bg"
             app:layout_constraintTop_toTopOf="@+id/cv_deck_icon_bg" />
+
+        <ImageButton
+            android:id="@+id/btn_deck_more"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_deck_title"
+            app:tint="@color/text_secondary" />
 
         <TextView
             android:id="@+id/tv_deck_count"

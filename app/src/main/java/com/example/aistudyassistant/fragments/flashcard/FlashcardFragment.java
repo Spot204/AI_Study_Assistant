@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aistudyassistant.R;
 import com.example.aistudyassistant.database.AppDatabase;
+import com.example.aistudyassistant.database.entities.StudySetEntity;
 import com.example.aistudyassistant.fragments.flashcard.FlashcardDeckAdapter;
 import com.example.aistudyassistant.features.ocr_summary.OCRSummaryActivity;
 import com.example.aistudyassistant.services.ocr_summary.OCRService;
@@ -73,15 +74,50 @@ public class FlashcardFragment extends Fragment {
 
         rvDecks.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new FlashcardDeckAdapter();
-        adapter.setOnDeckClickListener(studySet -> {
-            FlashcardStudyFragment studyFragment = FlashcardStudyFragment.newInstance(
-                    studySet.getSetId(),
-                    studySet.getTitle()
-            );
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, studyFragment)
-                    .addToBackStack(null)
-                    .commit();
+        adapter.setOnDeckClickListener(new FlashcardDeckAdapter.OnDeckClickListener() {
+            @Override
+            public void onDeckClick(StudySetEntity studySet) {
+                FlashcardStudyFragment studyFragment = FlashcardStudyFragment.newInstance(
+                        studySet.getSetId(),
+                        studySet.getTitle()
+                );
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, studyFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            public void onEditClick(StudySetEntity studySet) {
+                FlashcardEditFragment editFragment = FlashcardEditFragment.newInstance(studySet.getSetId());
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, editFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            @Override
+            public void onDeleteClick(StudySetEntity studySet) {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Xóa bộ thẻ")
+                        .setMessage("Bạn có chắc chắn muốn xóa bộ thẻ \"" + studySet.getTitle() + "\" không? Hành động này không thể hoàn tác.")
+                        .setPositiveButton("Xóa", (dialog, which) -> {
+                            new Thread(() -> {
+                                db.studySetDao().delete(studySet);
+                                // Lưu ý: Nếu có thiết lập ForeignKey CASCADE thì Flashcards sẽ tự mất
+                                // Nếu không, ta cần xóa thủ công flashcards thuộc setId này.
+                                db.flashcardDao().deleteFlashcardsBySetId(studySet.getSetId());
+                                
+                                if (getActivity() != null) {
+                                    getActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), " Đã xóa bộ thẻ", Toast.LENGTH_SHORT).show();
+                                    });
+                                }
+                            }).start();
+                        })
+                        .setNegativeButton("Hủy", null)
+                        .show();
+            }
         });
         rvDecks.setAdapter(adapter);
 
