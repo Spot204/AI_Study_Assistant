@@ -111,18 +111,25 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="16dp"/>
 
-            <TextView
-                android:id="@+id/tv_card_content"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Đạo hàm của hàm số y = x²"
-                android:textColor="#FFFFFF"
-                style="@style/AppTextAppearance.Title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="0dp"
+                android:layout_marginVertical="16dp"
+                android:fillViewport="true"
+                app:layout_constraintTop_toBottomOf="@id/tv_card_label"
+                app:layout_constraintBottom_toTopOf="@id/tv_card_hint"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_card_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Đạo hàm của hàm số y = x²"
+                    android:textColor="#FFFFFF"
+                    style="@style/AppTextAppearance.Title" />
+            </androidx.core.widget.NestedScrollView>
 
             <TextView
                 android:id="@+id/tv_card_hint"
